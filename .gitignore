@@ -8,9 +8,9 @@
 latex-template-kabook
 bitacora-proyectos-cs
 documentation
-.history
+.history/
 .markdownlint.json
-
+.vscode/
 
 # User-specific files
 *.rsuser
