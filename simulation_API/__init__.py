@@ -14,4 +14,4 @@ app.mount("/static", StaticFiles(directory='./simulation_API/static'), name='sta
 templates = Jinja2Templates(directory="./simulation_API/templates")
 
 # Import the file that will manage all the requests made to our app
-from simulation_API.views import main
+from simulation_API.controller import main
