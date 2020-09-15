@@ -1,0 +1,21 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "*"
+matplotlib = "*"
+
+[packages]
+fastapi = "*"
+scipy = "*"
+jinja2 = "*"
+uvicorn = "*"
+aiofiles = "*"
+
+[requires]
+python_version = "3.6"
+
+[scripts]
+simulation_API = "python run.py"
