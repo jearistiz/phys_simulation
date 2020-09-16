@@ -1,10 +1,9 @@
 """This module simulates mechanical systems"""
-from typing import Optional, List
+from typing import Optional, List, Tuple
 
 from datetime import datetime
 from scipy.integrate import solve_ivp
 from scipy.integrate._ivp.ivp import OdeResult
-
 
 
 class Simulation(object):
@@ -12,53 +11,61 @@ class Simulation(object):
 
     Attributes
     ---------
-    t_span : 2-tuple of floats
+    t_span : list of floats shape (2,) or None
         Interval of integration (t0, tf).
-    t_eval : array_like or None, optional
+    t_eval : array_like or None
         Times at which to store the computed solution, must be sorted and
         lie within t_span.
     ini_cndtn : array_like or None
         Initial condition of simulation, its specification depends on
         the system being simulated.
-    results : OdeResult or None
-        Results of simulation.
-    system : string or None, optional
-        Description of simulated system.
+    params : dict or None
+        Contains all the parameters of the simulation (e.g. for the harmonic
+        oscillator `self.params = {"m": 1., "k": 1.}`)
     method : str, optional
         Method of integration.
-    user_name : str, optional
+    user_name : str or None
         Username that called the simulation.
+    system : string or None
+        Description of simulated system.
     date : datetime.
         UTC date and time of instantiation of object.
+    results : Any or None
+        Results of simulation.
     """
     def __init__(self,
-                 t_span: tuple,
+                 t_span: Optional[List[float]] = None,
                  t_eval: Optional[list] = None,
                  ini_cndtn: Optional[list] = None,
-                 method: str = 'RK45',
+                 params: Optional[dict] = None,
+                 method: Optional[str] = None,
                  user_name: Optional[str] = None) -> None:
         """
         Parameters
         ----------
-        t_span : 2-tuple of floats
+        t_span : 2-tuple of floats, optional
             Interval of integration (t0, tf). The solver starts with t=t0 and
             integrates until it reaches t=tf.
         t_eval : array_like or None, optional
             Times at which to store the computed solution, must be sorted and
             lie within t_span. If None (default), use points selected by the
             solver.
-        ini_cndtn : array_like, shape (2,)
+        ini_cndtn : list, shape (2,), optional
             Initial condition of simulated system.
+        params : dict or None, optional
+            Contains all the parameters of the simulation (e.g. the harmonic
+            oscillator will contain {"m": 1., "k": 1.})
         method : string, optional
             Method of integration, varies depending on simulation. See
             avaliable methods on `scipy.integrate.solve_ivp` documentation.
-            Default is 'RK45'.
+            Default is None.
         user_name : string, optional
             Username that called the simulation. Default is None.
         """
         self.t_span = t_span
         self.t_eval = t_eval
         self.ini_cndtn = ini_cndtn
+        self.params = params
         self.method = method
         self.user_name = user_name
         self.results = None
@@ -96,13 +103,12 @@ class HarmonicOsc1D(Simulation):
     """
     
     def __init__(self,
-                 t_span, 
+                 t_span: Tuple[float, float], 
                  t_eval: Optional[tuple] = None,
-                 m: float = 1.,
-                 k: float = 1.,
                  ini_cndtn: List[float] = [0., 1.],
+                 params: dict = {"m": 1., "k": 1.},
                  method: str = 'RK45',
-                 user_name: Optional[str] = None) -> None:   
+                 user_name: Optional[str] = None) -> None:
         """Extends __init__ from Simulation
         
         Adds attributes `k` and `m` Simulation's attributes.
@@ -124,6 +130,13 @@ class HarmonicOsc1D(Simulation):
             Initial condition of 1D Harmonic Oscillator. Convention: [q0, p0].
             Default is [0., 1.]. A list of initial conditions can be used, in 
             this case a list of solutions will be returned by `simulate` method.
+        params : dict, optional
+            Contains all the parameters of the simulation.
+            Default is  {"m": 1., "k": 1.}. Signature must match
+                `{
+                    "m": float,
+                    "k": float,
+                }`
         method : str, optional
             Method of integration, varies depending on simulation. See
             avaliable methods on `scipy.integrate.solve_ivp` documentation.
@@ -131,10 +144,10 @@ class HarmonicOsc1D(Simulation):
         user_name : str, optional
             Username that called the simulation.
         """
-        super().__init__(t_span, t_eval, ini_cndtn, method, user_name)
-        self.m = m
-        self.k = k
-        self.system = "1D Harmonic Oscillator"
+        super().__init__(t_span, t_eval, ini_cndtn, params, method, user_name)
+        self.m = params["m"]
+        self.k = params["k"]
+        self.system = "Harmonic-Oscillator"
 
     def h_eqns(self, t: float, y: List[float]) -> List[float]:
         """Hamilton's equations for 1D-Harmonic Oscillator

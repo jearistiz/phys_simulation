@@ -4,22 +4,23 @@ import numpy as np
 import matplotlib.pyplot as plt
 from time import time
 
-from .simulation import HarmonicOsc1D
+from simulation import HarmonicOsc1D
 
 # Number of time steps for simulation
 t_steps = 100
 
 # Parameters of simulation
-t_span = (0, 2 * np.pi)
-t_eval = np.linspace(t_span[0], t_span[-1], t_steps)
+t_span = [0, 2 * np.pi]
+t_eval = list(np.linspace(t_span[0], t_span[-1], t_steps))
 m, k = 1, 1
+params = {"m": m, "k": k}
 ini_cndtn = [1., 0.]
 method = 'RK45'
 user_name = 'Juan'
 
 t_0 = time()
 # HarmonicOsc1D object with specified parameters of simulation
-HO_simulation = HarmonicOsc1D(t_span, t_eval, m, k, ini_cndtn, method,
+HO_simulation = HarmonicOsc1D(t_span, t_eval, ini_cndtn, params, method,
                               user_name)
 
 # Simulate 1d-HO
@@ -54,3 +55,4 @@ plt.title('Solution')
 plt.legend()
 plt.show()
 plt.close()
+
