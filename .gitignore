@@ -11,6 +11,8 @@ documentation
 .history/
 .markdownlint.json
 .vscode/
+*.pickle
+*.png
 
 # User-specific files
 *.rsuser

@@ -55,4 +55,3 @@ plt.title('Solution')
 plt.legend()
 plt.show()
 plt.close()
-
