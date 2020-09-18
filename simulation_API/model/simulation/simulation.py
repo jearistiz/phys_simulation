@@ -70,7 +70,7 @@ class Simulation(object):
         self.user_name = user_name
         self.results = None
         self.system = None
-        self.date = datetime.utcnow()
+        self.date = str(datetime.utcnow())
         
 
 

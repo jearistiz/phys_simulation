@@ -8,6 +8,9 @@ from pydantic import BaseModel
 from scipy.integrate._ivp.ivp import OdeResult
 from numpy import pi, linspace
 
+###############################################################################
+################### Schemas needed in main.py and tasks.py ####################
+###############################################################################
 
 class SimSystem(str, Enum):
     """List of the available systems to simulate
@@ -48,7 +51,8 @@ class SimRequest(BaseModel):
     # The backend will assign a sim_id, so it is not necessary to provide one.
     sim_id: Optional[str] = None
     # If we implement logging, user_id will be handled by backend
-    user_id: Optional[int] = None
+    user_id: Optional[int]
+    username: str = "Pepito Perez"
 
 
 class SimIdResponse(BaseModel):
@@ -56,6 +60,8 @@ class SimIdResponse(BaseModel):
     "/api/simulate/{sim_sys}"
     """
     sim_id : str
+    user_id : int
+    username : str
     sim_system : SimSystem
     sim_status_path : str
     sim_pickle_path : str
@@ -93,8 +99,8 @@ class SimStatus(BaseModel):
     plot_query_values : list of strings
         Query params values of different automatically generated plots.
         These values are needed to download the plots. 
-    status : bool
-        Status of simulation.
+    success : bool
+        Success status of simulation.
     message : str
         Additional information on status of simulation.
     """
@@ -114,5 +120,103 @@ class SimStatus(BaseModel):
     route_results: Optional[str]
     route_plots: Optional[str]
     plot_query_values: Optional[List[str]]
-    status : bool
+    success : bool
     message : Optional[str]
+
+
+
+
+###############################################################################
+################### Schemas needed for databse interaction ####################
+###############################################################################
+
+class UserDBSchBase(BaseModel):
+    username: Optional[str]
+
+
+class UserDBSch(UserDBSchBase):
+    user_id : Optional[int]
+    # This is needed to include (when reading) database relations created by ORM in sqlalchemy  
+    # Read more in FastAPI docs: https://fastapi.tiangolo.com/tutorial/sql-databases/#use-pydantics-orm_mode   
+    class Config:
+        orm_model = True
+
+
+class UserDBSchCreate(BaseModel):
+    # Just for now store Null hash TODO TODO TODO change when logging
+    # Production username and hash_value must be mandatory
+    username : str
+    hash_value: Optional[str]
+    pass
+
+
+
+
+class SimulationDBSchBase(BaseModel):
+    sim_id: Optional[str]
+    user_id: Optional[int]
+    date: Optional[str]
+    system: Optional[str]
+    method: Optional[str]
+    route_pickle: Optional[str]
+    route_results: Optional[str]
+    route_plots: Optional[str]
+    success: Optional[bool]
+    message: Optional[str]
+
+
+class SimulationDBSch(SimulationDBSchBase):
+    # This is needed to include (when reading) database relations created by ORM in sqlalchemy  
+    # Read more in FastAPI docs: https://fastapi.tiangolo.com/tutorial/sql-databases/#use-pydantics-orm_mode   
+    class Config:
+        orm_model = True
+
+
+class SimulationDBSchCreate(SimulationDBSchBase):
+    sim_id: str
+    user_id: int
+    date: str
+    system: str
+    success: bool
+    
+
+
+
+class PlotDBSchBase(BaseModel):
+    sim_id: Optional[str]
+    plot_query_value: Optional[str]
+
+
+class PlotDBSch(PlotDBSchBase):
+    plot_id: Optional[int]
+    # This is needed to include (when reading) database relations created by ORM in sqlalchemy  
+    # Read more in FastAPI docs: https://fastapi.tiangolo.com/tutorial/sql-databases/#use-pydantics-orm_mode   
+    class Config:
+        orm_model = True
+
+
+class PlotDBSchCreate(PlotDBSchBase):
+    sim_id: str
+    plot_query_value: str
+
+
+
+
+class ParameterDBSchBase(BaseModel):
+    sim_id: Optional[str]
+    param_type: Optional[str]
+    param_value: Optional[float]
+
+
+class ParameterDBSch(ParameterDBSchBase):
+    param_id: Optional[int]
+    # This is needed to include (when reading) database relations created by ORM in sqlalchemy  
+    # Read more in FastAPI docs: https://fastapi.tiangolo.com/tutorial/sql-databases/#use-pydantics-orm_mode   
+    class Config:
+        orm_model = True
+
+
+class ParameterDBSchCreate(ParameterDBSchBase):
+    sim_id: str
+    param_type: str
+    param_value: float

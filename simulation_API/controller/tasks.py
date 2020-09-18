@@ -1,15 +1,14 @@
 """This file will do background tasks e.g. the simulation
 """
-import time
 from datetime import datetime
 from typing import Optional, Any
 
-from fastapi import Request, status, BackgroundTasks
-from fastapi.responses import JSONResponse
-import numpy as np 
-import matplotlib as mpl
+from fastapi import Depends
+# Database related
+from sqlalchemy.orm import Session
+# import matplotlib as mpl
 from matplotlib.figure import Figure
-#import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import pickle as pkl
 
 # Import app instance
@@ -18,9 +17,11 @@ from simulation_API import app
 from simulation_API.config import PATH_PLOTS, PATH_PICKLES
 # Import simulation module
 from simulation_API.model.simulation.simulation import HarmonicOsc1D
-# Import pydantic model for Harmonic Oscillator request
-from simulation_API.controller.schemas import (SimSystem, SimRequest,
-                                               SimStatus, SimResults)
+# Import pydantic schemas
+from .schemas import *
+# Database related
+from simulation_API.model.db.db_manager import SessionLocal
+from simulation_API.model.db import crud, models
 
 
 """Next line of code avoids a warning when generating matplotlib figures: 
@@ -61,21 +62,19 @@ def _run_simulation(sim_params: SimRequest) -> None:
     Returns
     -------
     """
+    # Start session in dbase
+    db = SessionLocal()
 
     # Convert the request type to dict (allows us to provide them as kwargs to HarmonicOsc1D)
-    sim_params = sim_params.dict()
-    
+    sim_params = sim_params.dict()    
+
     # Pop "system", "sim_id" and "user_id" from sim_params, bc we do
-    # not need them Remember "system" will be instance of SimSystem defined in
-    # schemas.py
+    # not need to pass them to Simulation class.
+    # Remember "system" will be instance of SimSystem defined in schemas.py
     system = sim_params.pop("system")
     sim_id = sim_params.pop("sim_id")
+    username = sim_params.pop("username")
     user_id = sim_params.pop("user_id")
-
-    # Store simulation parameters in database ???
-    # TODO TODO TODO TODO TODO TODO
-    # TODO TODO TODO TODO TODO TODO
-    # TODO TODO TODO TODO TODO TODO
 
     try:
         if system.value == SimSystem.ho:
@@ -84,50 +83,76 @@ def _run_simulation(sim_params: SimRequest) -> None:
             simulation = simulation_instance.simulate()
         elif system == SimSystem.qho:
             # Quantum Harmonic Oscillator simulation not available
-            sim_status = SimStatus(user_id=user_id,
-                                   sim_id=sim_id,
-                                   date=datetime.now(),
-                                   system=system,
-                                   status=False,
-                                   message="Not Available")
-            return sim_status
+            # Create a simulation status entry for database
+            create_simulation_status_db = SimulationDBSchCreate(
+                sim_id=sim_id,
+                user_id=user_id,
+                date=str(datetime.utcnow()),
+                system=system,
+                success=False,
+                message="QHO simulation is not available at the moment"
+            )
+            # Save simulation status in database
+            crud._create_simulation(db, create_simulation_status_db)
+            # Close db session
+            db.close()
+
+            # Exit this function
+            return
     
     except Exception as e:
         
-        # Store error message in database
-        # TODO TODO TODO TODO TODO TODO Change this when dbase is added
-        # TODO TODO TODO TODO TODO TODO Change this when dbase is added
-        # TODO TODO TODO TODO TODO TODO Change this when dbase is added
+        create_simulation_status_db = SimulationDBSchCreate(
+            sim_id=sim_id,
+            user_id=user_id,
+            date=datetime.utcnow(),
+            system=system,
+            success=False,
+            message=str(e)
+        )
+        crud._create_simulation(db, create_simulation_status_db)
+        db.close()
         
-        return SimStatus(sim_id=sim_id, user_id=user_id, date=datetime.now(),
-                         system=system, status=False,
-                         message=str(e))
+        return
 
     # Store simulation result in pickle
     _pickle(sim_id + ".pickle", PATH_PICKLES, dict(simulation))
     route_pickle = PATH_PICKLES
-
+    
     # Create and save plots
     plot_query_values = _plot_solution(SimResults(sim_results=simulation),
-                              system, PATH_PLOTS, sim_id)
+                                       system, PATH_PLOTS, sim_id)
 
-    # Save simulation status
-    # TODO TODO TODO TODO TODO TODO   Change this when dbase is added
-    # TODO TODO TODO TODO TODO TODO   Change this when dbase is added
-    # TODO TODO TODO TODO TODO TODO   Change this when dbase is added
-    sim_status = SimStatus(sim_id=sim_id,
-                           user_id=user_id,
-                           date=simulation_instance.date,
-                           system=system,
-                           ini_cndtn=sim_params["ini_cndtn"],
-                           params=sim_params["params"],
-                           method=sim_params["method"],
-                           route_pickle="morning morning",
-                           route_results="hi there",
-                           route_plots=["hello", "world"],
-                           plot_query_values=plot_query_values,
-                           status=True,
-                           message="Finished")
+    # Create a simulation status entry for database
+    create_simulation_status_db = SimulationDBSchCreate(
+        sim_id=sim_id,
+        user_id=user_id,
+        date=simulation_instance.date,
+        system=system,
+        method=sim_params["method"],
+        route_pickle=_create_pickle_path(sim_id),
+        route_results=_create_sim_status_path(sim_id),
+        route_plots=_create_plots_path(sim_id),
+        success=True,
+        message="Finished."
+    )
+    # Save simulation status in database
+    crud._create_simulation(db, create_simulation_status_db)
+
+    # Store simulation parameters in database
+    # TODO TODO TODO TODO TODO TODO
+    # TODO TODO TODO TODO TODO TODO
+    # TODO TODO TODO TODO TODO TODO
+
+    plot_query_values = [
+        PlotDBSchCreate(sim_id=sim_id, plot_query_value=plot_qb)
+        for plot_qb in plot_query_values
+    ]
+
+    crud._create_plot_query_values(db, plot_query_values)
+
+    # Close db session
+    db.close()
 
     return 
 
@@ -239,3 +264,24 @@ def _pickle(
             loaded_object = pkl.load(file)
 
     return loaded_object
+
+
+def _create_sim_status_path(sim_id: str) -> str:
+    """Given simulation id, creates path to access simulation status"""
+    return f'/api/results/{sim_id}'
+
+
+def _create_pickle_path(sim_id: str) -> str:
+    return f'/api/results/{sim_id}/pickle'
+
+
+def _create_plots_path(sim_id: str) -> str:
+    return f'/api/results/{sim_id}/plot'
+
+
+def _create_pickle_path_disk(sim_id: str) -> str:
+    return PATH_PICKLES + sim_id + ".pickle"
+
+
+def _create_plot_path_disk(sim_id: str, query_param: str) -> str:
+    return PATH_PLOTS + sim_id + "_" + query_param + ".png"
