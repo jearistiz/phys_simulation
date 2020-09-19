@@ -1,6 +1,6 @@
 
 
-from typing import Optional, List, Tuple, Dict
+from typing import Optional, List, Dict
 from enum import Enum
 from datetime import datetime
 
@@ -8,19 +8,23 @@ from pydantic import BaseModel
 from scipy.integrate._ivp.ivp import OdeResult
 from numpy import pi, linspace
 
+
+
 ###############################################################################
 ################### Schemas needed in main.py and tasks.py ####################
 ###############################################################################
 
 class SimSystem(str, Enum):
-    """List of the available systems to simulate
+    """List of available systems for simulation.
     
-    Caution: this list needs to coincide with SimulationSubclass.system
-    attributes of Simulations defined in simulations.py. Otherwise the code
-    will break. (qho is an exception to test the api).
+    Notes
+    -----
+    CAUTION: This list must coincide with the dictionary list `Simulations`
+    defined in __init__.py in the module simulations, otherwise the system
+    won't be simulated by the backend.
     """
-    ho = "Harmonic-Oscillator"
-    qho = "Quantum-Harmonic-Oscillator" #Just an example. Not simulating it.
+    Harmonic_Oscillator = "Harmonic-Oscillator"
+    Quantum_Harmonic_Oscillator = "Quantum-Harmonic-Oscillator"
 
 
 class IntegrationMethods(str, Enum):
@@ -42,9 +46,9 @@ class SimRequest(BaseModel):
     `HarmonicOsc1D.__init__` method. See `HarmonicOsc1D` documentation
     in simulation.py to understand them. 
     """
-    system: SimSystem
+    system: SimSystem = SimSystem.Harmonic_Oscillator
     t_span: Optional[List[float]] = [0, 2 * pi]
-    t_eval: Optional[List[float]]
+    t_eval: Optional[List[float]] = list(linspace(0, 2 * pi, 20))
     ini_cndtn: Optional[List[float]] = [1, 0]
     params: Optional[HOParams] = HOParams(m=1, k=1)
     method: Optional[IntegrationMethods] = 'RK45'
@@ -130,6 +134,7 @@ class SimStatus(BaseModel):
 ################### Schemas needed for databse interaction ####################
 ###############################################################################
 
+############################ Users ############################
 class UserDBSchBase(BaseModel):
     username: Optional[str]
 
@@ -150,8 +155,7 @@ class UserDBSchCreate(BaseModel):
     pass
 
 
-
-
+############################ Simulation status ############################
 class SimulationDBSchBase(BaseModel):
     sim_id: Optional[str]
     user_id: Optional[int]
@@ -180,8 +184,7 @@ class SimulationDBSchCreate(SimulationDBSchBase):
     success: bool
     
 
-
-
+############################ Plots ############################
 class PlotDBSchBase(BaseModel):
     sim_id: Optional[str]
     plot_query_value: Optional[str]
@@ -200,12 +203,18 @@ class PlotDBSchCreate(PlotDBSchBase):
     plot_query_value: str
 
 
+############################ Parameters ############################
+class ParamType(str, Enum):
+    ini_cndtn = "initial condition"
+    param = "parameter"
 
 
 class ParameterDBSchBase(BaseModel):
     sim_id: Optional[str]
-    param_type: Optional[str]
-    param_value: Optional[float]
+    param_type: Optional[ParamType]
+    param_key: Optional[str]
+    ini_cndtn_id: Optional[int]
+    value: Optional[float]
 
 
 class ParameterDBSch(ParameterDBSchBase):
@@ -218,5 +227,5 @@ class ParameterDBSch(ParameterDBSchBase):
 
 class ParameterDBSchCreate(ParameterDBSchBase):
     sim_id: str
-    param_type: str
-    param_value: float
+    param_type: ParamType
+    value: float

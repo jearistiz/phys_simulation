@@ -99,10 +99,15 @@ class ParameterDB(Base):
 
     param_id = Column(Integer(), primary_key=True)
     sim_id = Column(String(32), ForeignKey("simulations.sim_id"), nullable=False)
-    # values will be "parameter" or "init_cond_i" where i is the position of
-    # initial condition in array
-    param_type = Column(String(11), nullable=False)
-    param_value = Column(Float, nullable=False)
+    # values will be "parameter" or "initial condition"
+    param_type = Column(String(17), nullable=False)
+    # if param_type = "parameter" param_key is the name of the parameter
+    param_key = Column(String(5))
+    # if param_type = "initial condition" then init_cndtn_id is position in the array
+    ini_cndtn_id = Column(Integer())
+    # this is the value of the parameter wether it be "initial condition" or "parameter"
+    value = Column(Float, nullable=False)
+    
     # Relationships
     simulation = relationship("SimulationDB", back_populates="parameters")
 
@@ -110,4 +115,6 @@ class ParameterDB(Base):
         return f"ParameterDB(param_id={self.param_id}, " \
                              f"sim_id={self.sim_id}, " \
                              f"param_type={self.param_type}, " \
-                             f"param_value={self.param_value})"
+                             f"param_key={self.param_key}, " \
+                             f"init_cndtn_id={self.init_cndtn_id}, " \
+                             f"value={self.param_value})"

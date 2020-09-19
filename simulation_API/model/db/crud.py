@@ -1,6 +1,8 @@
 """This program manages database querys.
 CRUD comes from: Create, Read, Update, and Delete.
 """
+from typing import Union
+
 from sqlalchemy.orm import Session
 
 from .models import *
@@ -20,6 +22,7 @@ def _create_user(db: Session, user: UserDBSchCreate) -> UserDB:
     db.refresh(db_user)
     # Finally return the user that was geretated 
     return db_user
+
 
 def _create_simulation(db: Session,
                        simulation: SimulationDBSchCreate) -> SimulationDB:
@@ -53,3 +56,27 @@ def _get_plot_query_values(db: Session, sim_id: str):
         result[-1] for result in 
         db.query(PlotDB.plot_query_value).filter(PlotDB.sim_id == sim_id).all()
     ]
+
+
+def _create_parameters(db: Session,
+                       parameters: List[ParameterDBSchCreate]) -> None:
+    """Insert parameter entry into parameters table"""
+    db_parameters = [
+        ParameterDB(**parameter.dict()) for parameter in parameters
+    ]
+    db.bulk_save_objects(db_parameters)
+    db.commit()
+    return
+
+def _get_parameters(db: Session, sim_id: str,
+                    param_type: str) -> Union[List[float], Dict[str, float]]:
+    """Get parameters from parameters table"""
+    query = db.query(ParameterDB) \
+                .filter((ParameterDB.param_type == param_type) & (ParameterDB.sim_id == sim_id)) \
+                    .order_by(ParameterDB.ini_cndtn_id.asc()) \
+                        .all()
+
+    if param_type == ParamType.ini_cndtn:
+        return [Param.value for Param in query]
+    else:
+        return {Param.param_key: Param.value for Param in query}

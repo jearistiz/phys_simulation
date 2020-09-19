@@ -16,7 +16,7 @@ from simulation_API import app
 # Import path to save plots
 from simulation_API.config import PATH_PLOTS, PATH_PICKLES
 # Import simulation module
-from simulation_API.model.simulation.simulation import HarmonicOsc1D
+from simulation_API.model.simulation import Simulations
 # Import pydantic schemas
 from .schemas import *
 # Database related
@@ -45,6 +45,7 @@ Next line of code is only needed if using pyplot (which is not recommended)
 """
 # mpl.use('Agg')
 
+na_message = "The system you requested is not available for simulation."
 
 def _run_simulation(sim_params: SimRequest) -> None: 
     """Run the requested simulation of Harmonic Oscillator
@@ -77,20 +78,19 @@ def _run_simulation(sim_params: SimRequest) -> None:
     user_id = sim_params.pop("user_id")
 
     try:
-        if system.value == SimSystem.ho:
+        if (system in SimSystem) and (system != SimSystem.Quantum_Harmonic_Oscillator):
             # Run simulation and get results as returned by scipy.integrate.solve_ivp
-            simulation_instance = HarmonicOsc1D(**sim_params)
+            LocalSimulation = Simulations[system.value]
+            simulation_instance = LocalSimulation(**sim_params)
             simulation = simulation_instance.simulate()
-        elif system == SimSystem.qho:
-            # Quantum Harmonic Oscillator simulation not available
-            # Create a simulation status entry for database
+        else:
             create_simulation_status_db = SimulationDBSchCreate(
                 sim_id=sim_id,
                 user_id=user_id,
                 date=str(datetime.utcnow()),
-                system=system,
+                system=system.value,
                 success=False,
-                message="QHO simulation is not available at the moment"
+                message=na_message
             )
             # Save simulation status in database
             crud._create_simulation(db, create_simulation_status_db)
@@ -105,8 +105,8 @@ def _run_simulation(sim_params: SimRequest) -> None:
         create_simulation_status_db = SimulationDBSchCreate(
             sim_id=sim_id,
             user_id=user_id,
-            date=datetime.utcnow(),
-            system=system,
+            date=str(datetime.utcnow()),
+            system=system.value,
             success=False,
             message=str(e)
         )
@@ -117,18 +117,17 @@ def _run_simulation(sim_params: SimRequest) -> None:
 
     # Store simulation result in pickle
     _pickle(sim_id + ".pickle", PATH_PICKLES, dict(simulation))
-    route_pickle = PATH_PICKLES
     
     # Create and save plots
     plot_query_values = _plot_solution(SimResults(sim_results=simulation),
                                        system, PATH_PLOTS, sim_id)
 
-    # Create a simulation status entry for database
+    # Save simulation status in database
     create_simulation_status_db = SimulationDBSchCreate(
         sim_id=sim_id,
         user_id=user_id,
         date=simulation_instance.date,
-        system=system,
+        system=system.value,
         method=sim_params["method"],
         route_pickle=_create_pickle_path(sim_id),
         route_results=_create_sim_status_path(sim_id),
@@ -136,21 +135,29 @@ def _run_simulation(sim_params: SimRequest) -> None:
         success=True,
         message="Finished."
     )
-    # Save simulation status in database
     crud._create_simulation(db, create_simulation_status_db)
 
-    # Store simulation parameters in database
-    # TODO TODO TODO TODO TODO TODO
-    # TODO TODO TODO TODO TODO TODO
-    # TODO TODO TODO TODO TODO TODO
-
+    #  Save plot query values to database
     plot_query_values = [
         PlotDBSchCreate(sim_id=sim_id, plot_query_value=plot_qb)
         for plot_qb in plot_query_values
     ]
-
     crud._create_plot_query_values(db, plot_query_values)
 
+    # Store simulation parameters in database
+    parameters = []
+    for key, value in simulation_instance.params.items():
+        parameter = ParameterDBSchCreate(sim_id=sim_id,
+                                         param_type=ParamType.param.value,
+                                         param_key=key, value=value)
+        parameters.append(parameter)
+    for i, ini_cndtn_val in enumerate(simulation_instance.ini_cndtn):
+        ini_cndtn = ParameterDBSchCreate(sim_id=sim_id,
+                                         param_type=ParamType.ini_cndtn,
+                                         ini_cndtn_id=i, value=ini_cndtn_val)
+        parameters.append(ini_cndtn)
+    crud._create_parameters(db, parameters)
+    
     # Close db session
     db.close()
 
@@ -158,7 +165,7 @@ def _run_simulation(sim_params: SimRequest) -> None:
 
 
 def _plot_solution(sim_results: SimResults, system: SimSystem,
-                   path: str = '', plot_basename : str = "00000") -> list:
+                   path: str = '', plot_basename: str = "00000") -> list:
     """Plot solutions. Right now only support Harmonic Oscillator plots"""
     # Get simulation results as OdeResult instance
     

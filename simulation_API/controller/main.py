@@ -13,7 +13,7 @@ from .schemas import *
 # Simulation handler
 from .tasks import (_run_simulation, _create_pickle_path,
                     _create_sim_status_path, _create_pickle_path_disk,
-                    _create_plot_path_disk)
+                    _create_plot_path_disk, na_message)
 # Database-related
 from simulation_API.model.db import crud, models
 from simulation_API.model.db.db_manager import SessionLocal, engine
@@ -152,7 +152,8 @@ async def api_simulate_sim_system(sim_system: SimSystem,
     # Check that the client is accessing the right path for the right simulation
     # sim_system.value NEEDS to match the request given in JSON as
     # sim_params.system
-    if not sim_system.value == sim_params.system:
+
+    if not sim_system.value == sim_params.system.value:
         raise HTTPException(
             status_code=404,
             detail="Path does not coincide with 'system' key value in JSON file"
@@ -163,7 +164,7 @@ async def api_simulate_sim_system(sim_system: SimSystem,
 
     # Simulate system in BACKGROUND
     # TODO TODO TODO Por dentro _run_simulation puede abrir un socket para
-    # indicar que la simulación ya se completó
+    # TODO TODO TODO indicar que la simulación ya se completó
     background_tasks.add_task(_run_simulation, sim_params)
 
     # Declare some variables needed as params to SimIdResponse
@@ -173,8 +174,8 @@ async def api_simulate_sim_system(sim_system: SimSystem,
     message1 = "(When –and if– available) request via GET your simulation's" \
                "status in route 'sim_status_path' or download your results" \
                "(pickle fomat) via GET in route 'sim_pickle_path'"
-    message2 = "This simulation is not available at the moment"
-    message = message1 if sim_params.system == SimSystem.ho else message2
+    message2 = na_message
+    message = message1 if sim_params.system == SimSystem.Harmonic_Oscillator else message2
 
     sim_id_response = SimIdResponse(
         sim_id=sim_params.sim_id,
@@ -196,10 +197,16 @@ async def api_results_sim_id(sim_id: str,
 
     # Simulation status
     sim_status = crud._get_simulation(db, sim_id)
-    # Query params possible values
+    # Plot uery params possible values
     plot_query_values = crud._get_plot_query_values(db, sim_id)
+    # Parameters
+    params = crud._get_parameters(db, sim_id, ParamType.param)
+    # Initial conditions
+    ini_cndtn = crud._get_parameters(db, sim_id, ParamType.ini_cndtn)
 
     return SimStatus(
+        ini_cndtn = ini_cndtn,
+        params=params,
         plot_query_values=plot_query_values,
         **sim_status.__dict__
     )

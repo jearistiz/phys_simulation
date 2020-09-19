@@ -1,5 +1,6 @@
 """This module simulates mechanical systems"""
 from typing import Optional, List, Tuple
+from math import pi
 
 from datetime import datetime
 from scipy.integrate import solve_ivp
@@ -101,9 +102,10 @@ class HarmonicOsc1D(Simulation):
         
         H = \sqrt{1}{2}p^2 + \sqrt{1}{2}k q^2
     """
-    
+    system = "Harmonic-Oscillator"
+
     def __init__(self,
-                 t_span: Tuple[float, float], 
+                 t_span: Optional[Tuple[float, float]] = [0, 2 * pi], 
                  t_eval: Optional[tuple] = None,
                  ini_cndtn: List[float] = [0., 1.],
                  params: dict = {"m": 1., "k": 1.},
@@ -147,7 +149,6 @@ class HarmonicOsc1D(Simulation):
         super().__init__(t_span, t_eval, ini_cndtn, params, method, user_name)
         self.m = params["m"]
         self.k = params["k"]
-        self.system = "Harmonic-Oscillator"
 
     def h_eqns(self, t: float, y: List[float]) -> List[float]:
         """Hamilton's equations for 1D-Harmonic Oscillator
