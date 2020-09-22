@@ -17,6 +17,8 @@ matplotlib = "*"
 starlette = "*"
 async-exit-stack = "*"
 async-generator = "*"
+python-multipart = "*"
+requests = "*"
 
 [requires]
 python_version = "3.6"

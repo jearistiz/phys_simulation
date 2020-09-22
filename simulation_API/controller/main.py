@@ -1,19 +1,23 @@
 """This file manages all requests that are made to our app
+TODO|FIXME|BUG|HACK|NOTE|
 """
 from os.path import isfile
 from uuid import uuid4
 
-from simulation_API import app, templates
-from fastapi import Request, status, BackgroundTasks, HTTPException, Depends
+import requests
+from fastapi import Request, BackgroundTasks, HTTPException, Depends, Form
 from sqlalchemy.orm import Session
-from starlette.responses import FileResponse
+from starlette.responses import FileResponse, RedirectResponse
 
+
+# App instance and templates
+from simulation_API import app, templates
 # Schemas
 from .schemas import *
 # Simulation handler
 from .tasks import (_run_simulation, _create_pickle_path,
                     _create_sim_status_path, _create_pickle_path_disk,
-                    _create_plot_path_disk, na_message)
+                    _create_plot_path_disk, _sim_form_to_sim_request)
 # Database-related
 from simulation_API.model.db import crud, models
 from simulation_API.model.db.db_manager import SessionLocal, engine
@@ -74,24 +78,70 @@ async def simulate(request: Request):
 # Depending on the system the user decides to simulate, there are different
 # routes, bc we need different parameters
 @app.get("/simulate/{sim_system}")
-async def simulate_sim_system(request: Request, sim_system: SimSystem):
+async def simulate_sim_system(request: Request, 
+                              sim_system: SimSystem):
     """Returns a form the user will fill up to request simulation of specific
     system."""
 
+    sim_form = SimFormDict[sim_system.value]()
+
+    # FIXME FIXME FIXME REMOVE NEXT LINE
+    # FIXME FIXME FIXME REMOVE NEXT LINE
+    # FIXME FIXME FIXME REMOVE NEXT LINE
+    print(sim_form)
+
     return templates.TemplateResponse(
-        f"{sim_system.value}.html", {"request": request}
+        f"{sim_system.value.lower()}.html",
+        {
+            "sim_system": str(sim_system.value),
+            "request": request,
+            "integration_methods": integration_methods,
+            **sim_form.dict(),
+        }
     )
 
 
 @app.post("/simulate/{sim_system}")
-async def simulate_post_form(request: Request, sim_system: SimSystem):
+async def simulate_post_form(request: Request, sim_sys: SimSystem = Form(...), 
+                             username: str = Form(...), t0: float = Form(...),
+                             tf: float = Form(...), dt: float = Form(...),
+                             method: IntegrationMethods = Form(...)):
+    """This route will receive the form requesting a simulation (and filled in
+    frontend via GET in route "/simulate/{sim_system}"). The simulation is
+    internally requested via the API in route "/api/simulate/{sim_system} via
+    POST. Finally the client is redirected to the "Simulation Status" frontend
+    page, where further information about the simulation is displayed.
+    """
     # This will get all the simulation info from the frontend and simulate it
+    
+    # Here we get form directly from request.
+    # NOTE The other method is using FastAPI's Form function, but here it is
+    # easier to access the form directly from request (as below).
+    # NOTE This method does NOT provide pydantic type checking. However, type
+    # checking is more or less provided in the frontend by the form itself.
+    form = await request.form()
+    form = form.__dict__['_dict']
 
-    # TODO TODO TODO
-    # TODO TODO TODO
-    # TODO TODO TODO
+    # TODO TODO TODO request simulation from the backend via route 
+    # "/api/simulate/{sim_system}"
+    # Change format from form data to SimRequest schema.
+    sim_request = _sim_form_to_sim_request(form)
 
-    return {"message": "Working on it"}
+    request_simulation_url = app.url_path_for(
+        "api_request_sim",
+        sim_system=sim_request.system.value
+    )
+
+    # FIXME La idea es solicitar la simulación con la misma api
+    # (/api/simulate/{sim_system}) y luego renderizar una página con la info
+    # del estatus de la simulación que retorna esta ruta
+    # FIXME req = RedirectResponse(request_simulation_url)
+    # FIXME req = requests.post("http://0.0.0.0:5700" + request_simulation_url, data=sim_request.json() )
+    # print("\n\n\n", req, "\n\n\n")
+    
+    # TODO TODO TODO Chage this return. Instead, render a template with
+    # sim_request data.
+    return sim_request
 
 
 # Let the user see all the available results including his/her results
@@ -112,14 +162,14 @@ async def results_sim_system_sim_id(sim_system: SimSystem):
     return
 
 
-@app.post("/api/simulate/{sim_system}")
+@app.post("/api/simulate/{sim_system}", name="api_request_sim")
 async def api_simulate_sim_system(sim_system: SimSystem,
                                   sim_params: SimRequest,
                                   background_tasks: BackgroundTasks,
                                   db: Session = Depends(get_db)) -> SimIdResponse:
     """Simulate Harmonic Oscillator Using BackgroundTasks
 
-    When cient requests a simulation via '/api/simulate/{sim_system}', he/she
+    When client requests a simulation via '/api/simulate/{sim_system}', he/she
     obtains relevant information on how to get the results of the simulation.
 
     Parameters
@@ -175,13 +225,13 @@ async def api_simulate_sim_system(sim_system: SimSystem,
                "status in route 'sim_status_path' or download your results" \
                "(pickle fomat) via GET in route 'sim_pickle_path'"
     message2 = na_message
-    message = message1 if sim_params.system == SimSystem.Harmonic_Oscillator else message2
+    message = message1 if sim_params.system == SimSystem.HO else message2
 
     sim_id_response = SimIdResponse(
         sim_id=sim_params.sim_id,
         user_id=sim_params.user_id,
         username=sim_params.username,
-        sim_system=sim_params.system,
+        sim_sys=sim_params.system,
         sim_status_path=sim_status_path,
         sim_pickle_path=sim_pickle_path,
         message=message
@@ -190,26 +240,41 @@ async def api_simulate_sim_system(sim_system: SimSystem,
     return sim_id_response
 
 
-@app.get("/api/results/{sim_id}")
+@app.get("/api/results/status/{sim_id}")
 async def api_results_sim_id(sim_id: str,
                              db: Session = Depends(get_db)) -> SimStatus:
     """Get status of previously requested simulation"""
 
     # Simulation status
     sim_status = crud._get_simulation(db, sim_id)
-    # Plot uery params possible values
-    plot_query_values = crud._get_plot_query_values(db, sim_id)
+    # Plot query params possible values
+    plot_query_values = [
+        "?value=" + value for value in crud._get_plot_query_values(db, sim_id)
+    ]
     # Parameters
     params = crud._get_parameters(db, sim_id, ParamType.param)
     # Initial conditions
     ini_cndtn = crud._get_parameters(db, sim_id, ParamType.ini_cndtn)
 
-    return SimStatus(
-        ini_cndtn = ini_cndtn,
-        params=params,
-        plot_query_values=plot_query_values,
-        **sim_status.__dict__
-    )
+    sim_status_NA = {
+        "sim_id": "NA",
+        "user_id": 0,
+        "date": str(datetime.utcnow()),
+        "system": "Harmonic-Oscillator",
+        "success": False,
+        "message": sim_id_not_found_message
+    }
+
+    sim_status = sim_status.__dict__ if sim_status else sim_status_NA
+
+    sim_status_complete = {
+        "ini_cndtn": ini_cndtn,
+        "params": params,
+        "plot_query_values": plot_query_values,
+        **sim_status,
+    }
+
+    return SimStatus(**sim_status_complete)
 
 
 @app.get("/api/results/{sim_id}/pickle")
@@ -225,12 +290,14 @@ async def api_results_sim_id(sim_id: str):
                   "an internal server error and the file you requested is " \
                   "not available."
         raise HTTPException(404, detail=message)
-
-    return FileResponse(pickle_path_disk, media_type="binary",
+    
+    # Media type application/octet-stream is any type of binary data
+    # The technical name of media types is "MIME types"
+    return FileResponse(pickle_path_disk, media_type="application/octet-stream",
                         filename=sim_id + ".pickle")
 
 
-# `plot_id` is a query parameter and its value must match one of the plot_ids
+# `value` is a query parameter and its value must match one of the plot_ids
 # given in simulation status via GET in route "/api/results/{sim_id}"
 @app.get("/api/results/{sim_id}/plot")
 async def api_results_sim_id(sim_id: str, value: str):
@@ -247,5 +314,5 @@ async def api_results_sim_id(sim_id: str, value: str):
                   "error and the plot you requested is not available."
         raise HTTPException(404, detail=message)
 
-    return FileResponse(plot_path_disk, media_type="png",
+    return FileResponse(plot_path_disk, media_type="image/png",
                         filename=sim_id + ".png")

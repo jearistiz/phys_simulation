@@ -3,16 +3,12 @@
 from datetime import datetime
 from typing import Optional, Any
 
-from fastapi import Depends
-# Database related
-from sqlalchemy.orm import Session
 # import matplotlib as mpl
 from matplotlib.figure import Figure
 # import matplotlib.pyplot as plt
 import pickle as pkl
+from numpy import arange
 
-# Import app instance
-from simulation_API import app
 # Import path to save plots
 from simulation_API.config import PATH_PLOTS, PATH_PICKLES
 # Import simulation module
@@ -21,7 +17,7 @@ from simulation_API.model.simulation import Simulations
 from .schemas import *
 # Database related
 from simulation_API.model.db.db_manager import SessionLocal
-from simulation_API.model.db import crud, models
+from simulation_API.model.db import crud
 
 
 """Next line of code avoids a warning when generating matplotlib figures: 
@@ -45,7 +41,6 @@ Next line of code is only needed if using pyplot (which is not recommended)
 """
 # mpl.use('Agg')
 
-na_message = "The system you requested is not available for simulation."
 
 def _run_simulation(sim_params: SimRequest) -> None: 
     """Run the requested simulation of Harmonic Oscillator
@@ -78,7 +73,7 @@ def _run_simulation(sim_params: SimRequest) -> None:
     user_id = sim_params.pop("user_id")
 
     try:
-        if (system in SimSystem) and (system != SimSystem.Quantum_Harmonic_Oscillator):
+        if (system in SimSystem) and (system != SimSystem.QHO):
             # Run simulation and get results as returned by scipy.integrate.solve_ivp
             LocalSimulation = Simulations[system.value]
             simulation_instance = LocalSimulation(**sim_params)
@@ -133,7 +128,7 @@ def _run_simulation(sim_params: SimRequest) -> None:
         route_results=_create_sim_status_path(sim_id),
         route_plots=_create_plots_path(sim_id),
         success=True,
-        message="Finished."
+        message=sim_status_finished_message
     )
     crud._create_simulation(db, create_simulation_status_db)
 
@@ -272,23 +267,68 @@ def _pickle(
 
     return loaded_object
 
+def _sim_form_to_sim_request(form: Dict[str, str]) -> Optional[SimRequest]:
+    t0 = float(form["t0"])
+    tf = float(form["tf"])
+    
+    # Manually check that t0 < tf
+    if not t0 < tf:
+        return None
+
+    dt = float(form["dt"])
+    t_eval = list(arange(t0, tf, dt))
+
+    # Initial conditions
+    ini_cndtn_keys = [key for key in form.keys() if key[:3]=="ini"]
+    ini_cndtn = [float(form[f"ini{i}"]) for i in range(len(ini_cndtn_keys))]
+    
+    # Parameters
+    # NOTE
+    # We need to get the actual names of the parameters, bc the convention in
+    # frontend form is `param0`, `param1`, ... but SimRequest receives the
+    # actual name of the parameters (e.g. for the HO `m` and `k`)
+    param_convention = system_to_params_dict[form["sim_sys"]]
+    param_keys = [key for key in form.keys() if key[:5]=="param"]
+    params = {
+        param_convention[f"param{i}"]: float(form[f"param{i}"]) 
+            for i in range(len(param_keys))
+    }
+
+    sim_request = {
+        "system": form["sim_sys"],
+        "t_span": [t0, tf],
+        "t_eval": t_eval,
+        "ini_cndtn": ini_cndtn,
+        "params": params,
+        "method": form["method"],
+        "username": form["username"],
+    }
+
+    return SimRequest(**sim_request)
+
+
+############################## Paths and routes ###############################
 
 def _create_sim_status_path(sim_id: str) -> str:
-    """Given simulation id, creates path to access simulation status"""
-    return f'/api/results/{sim_id}'
+    """Creates routes to access simulation status by sim_id"""
+    return f'/api/results/status/{sim_id}'
 
 
 def _create_pickle_path(sim_id: str) -> str:
+    """Creates routes to download simulation results (pickle) by sim_id"""
     return f'/api/results/{sim_id}/pickle'
 
 
 def _create_plots_path(sim_id: str) -> str:
+    """Creates routes to download plots of simulation results (png) by sim_id"""
     return f'/api/results/{sim_id}/plot'
 
 
 def _create_pickle_path_disk(sim_id: str) -> str:
+    """Creates disk path to simulation results (pickle) by sim_id"""
     return PATH_PICKLES + sim_id + ".pickle"
 
 
 def _create_plot_path_disk(sim_id: str, query_param: str) -> str:
+    """Creates disk path to plots of simulation results (png) by sim_id"""
     return PATH_PLOTS + sim_id + "_" + query_param + ".png"

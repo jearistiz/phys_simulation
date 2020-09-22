@@ -1,5 +1,3 @@
-
-
 from typing import Optional, List, Dict
 from enum import Enum
 from datetime import datetime
@@ -9,11 +7,11 @@ from scipy.integrate._ivp.ivp import OdeResult
 from numpy import pi, linspace
 
 
-
 ###############################################################################
 ################### Schemas needed in main.py and tasks.py ####################
 ###############################################################################
 
+# NOTE: Needs update each time a new simulation is added
 class SimSystem(str, Enum):
     """List of available systems for simulation.
     
@@ -23,8 +21,8 @@ class SimSystem(str, Enum):
     defined in __init__.py in the module simulations, otherwise the system
     won't be simulated by the backend.
     """
-    Harmonic_Oscillator = "Harmonic-Oscillator"
-    Quantum_Harmonic_Oscillator = "Quantum-Harmonic-Oscillator"
+    HO = "Harmonic-Oscillator"
+    QHO = "Quantum-Harmonic-Oscillator"
 
 
 class IntegrationMethods(str, Enum):
@@ -33,10 +31,38 @@ class IntegrationMethods(str, Enum):
     RK23 = "RK23"
 
 
+# NOTE Needs update each time a new system is added. Create a new class similar
+# NOTE to this one, but with relevant parameters for that specific simulation.
 class HOParams(BaseModel):
     """List of parameters of the Harmonic Oscillator system"""
     m: float    # Mass
     k: float    # Force constant
+
+
+# NOTE Needs update each time a new simulation is added. Need to create a new
+# NOTE pydantic class similar to HOSimForm. Then add the class to the dict 
+# NOTE `SimFormDict` defined somewhere below.
+class SimForm(BaseModel):
+    """Base of schema used to Request a Simulation in Frontend"""
+    username: Optional[str] = "Pepito"
+    t0: Optional[float] = 0.0
+    tf: Optional[float] = 2 * pi
+    dt: Optional[float] = pi / 10
+    method: Optional[IntegrationMethods] = "RK45"
+
+
+class HOSimForm(SimForm):
+    """Schema used to Request Harmonic Osc. Simulation in Frontend via form"""
+    sim_sys: SimSystem = SimSystem.HO.value
+    ini0: Optional[float] = 1.0
+    ini1: Optional[float] = 0.0
+    param0: Optional[float] = 1.0
+    param1: Optional[float] = 1.0
+
+
+class QHOSimForm(SimForm):
+    """Schema used to Request Q. Harmonic Osc. Simulation in Frontend via form"""
+    pass
 
 
 class SimRequest(BaseModel):
@@ -46,7 +72,7 @@ class SimRequest(BaseModel):
     `HarmonicOsc1D.__init__` method. See `HarmonicOsc1D` documentation
     in simulation.py to understand them. 
     """
-    system: SimSystem = SimSystem.Harmonic_Oscillator
+    system: SimSystem = SimSystem.HO
     t_span: Optional[List[float]] = [0, 2 * pi]
     t_eval: Optional[List[float]] = list(linspace(0, 2 * pi, 20))
     ini_cndtn: Optional[List[float]] = [1, 0]
@@ -66,7 +92,7 @@ class SimIdResponse(BaseModel):
     sim_id : str
     user_id : int
     username : str
-    sim_system : SimSystem
+    sim_sys : SimSystem
     sim_status_path : str
     sim_pickle_path : str
     message : Optional[str]
@@ -229,3 +255,50 @@ class ParameterDBSchCreate(ParameterDBSchBase):
     sim_id: str
     param_type: ParamType
     value: float
+
+
+###############################################################################
+################################ Some Messages ################################
+###############################################################################
+
+na_message = "Simulation of the system you requested is not available."
+sim_id_not_found_message = "The simulation ID (sim_id) you provided is not " \
+                           "in our database."
+sim_status_finished_message = "Finished. You can request via GET: download " \
+                              "simulation results (pickle) in route given " \
+                              "in 'route_pickle', or; download plots of " \
+                              "simulation in route 'route_plots' using " \
+                              "query params the ones given in " \
+                              "'plot_query_values', or; see results online " \
+                              "in route 'route_results'."
+# NOTE TODO Add relevant methods supported by scipy.integrate.ivp that do NOT
+# NOTE TODO need more parameters than we ask for in SimRequest
+integration_methods = {
+    "RK45": "Runge-Kutta 5(4)",
+    "RK23": "Runge-Kutta 3(2)"
+}
+
+###############################################################################
+## NOTE: The following dicts need update each time a new simulation is added ##
+###############################################################################
+
+# Maps systems to pydantic schemas used in route "/simulate/{sim_system}"
+SimFormDict = {
+    SimSystem.HO.value: HOSimForm,
+    SimSystem.QHO.value: QHOSimForm,
+}
+
+# This dicts map different conventions for simulation parameter names 
+# {param_name_frontend: param_name_backend}
+params_mapping_HO = {
+    "param0": "m",
+    "param1": "k",
+}
+params_mapping_QHO = {}
+
+# This dict maps each system to its parameter change-of-convention
+# dictionary defined above
+system_to_params_dict = {
+    SimSystem.HO.value: params_mapping_HO,
+    SimSystem.QHO.value: params_mapping_QHO,
+}
