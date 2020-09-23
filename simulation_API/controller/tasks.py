@@ -136,8 +136,8 @@ def _run_simulation(sim_params: SimRequest) -> None:
     # Remember "system" will be instance of SimSystem defined in schemas.py
     system = sim_params.pop("system")
     sim_id = sim_params.pop("sim_id")
-    username = sim_params.pop("username")
     user_id = sim_params.pop("user_id")
+    sim_params.pop("username")
 
     try:
         if (system in SimSystem) and (system != SimSystem.QHO):
@@ -343,7 +343,7 @@ def _sim_form_to_sim_request(form: Dict[str, str]) -> Optional[SimRequest]:
         return None
 
     dt = float(form["dt"])
-    t_eval = list(arange(t0, tf, dt))
+    t_eval = list(arange(t0, tf + dt, dt))
 
     # Initial conditions
     ini_cndtn_keys = [key for key in form.keys() if key[:3]=="ini"]
@@ -382,6 +382,6 @@ def _create_pickle_path_disk(sim_id: str) -> str:
     return PATH_PICKLES + sim_id + ".pickle"
 
 
-def _create_plot_path_disk(sim_id: str, query_param: str) -> str:
+def _create_plot_path_disk(sim_id: str, query_param: PlotQueryValues) -> str:
     """Creates disk path to plots of simulation results (png) by sim_id"""
     return PATH_PLOTS + sim_id + "_" + query_param + ".png"

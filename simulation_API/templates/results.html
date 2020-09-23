@@ -5,5 +5,28 @@
 {% endblock %}
 
 {% block main %}
-    <h2>These are your results</h2>
+    <h2>These are the available results</h2>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">User ID</th>
+                <th scope="col">Simulation ID</th>
+                <th scope="col">System</th>
+                <th scope="col">Simulation Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for simulation in simulations %}
+            <tr>
+                <th>TODO</th>
+                <th>TODO</th>
+                <th>TODO</th>
+                <th>TODO</th>
+                <th>TODO</th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

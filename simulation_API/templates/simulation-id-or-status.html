@@ -38,6 +38,11 @@
         {% if status %}
             <!-- adfa -->
             <tr>
+                <td >Success</td>
+                {% set color = '#2e944b'if success else '#ea433b'%}
+                <td style="color: {{color}}"><b>{{"True" if success else "False"}}</b></td>
+            </tr>
+            <tr>
                 <td >System</td>
                 <td >{{system}}</td>
             </tr>
@@ -78,13 +83,8 @@
                 {% endfor %}
             {% endif %}
             <tr>
-                <td >Success</td>
-                {% set color = '#2e944b'if success else '#ea433b'%}
-                <td style="color: {{color}}"><b>{{"True" if success else "False"}}</b></td>
-            </tr>
-            <tr>
                 <td >Results Summary</td>
-                <td >TODO TODO TODO <button class="btn btn-primary">See Online</button></td>
+                <td ><a class="btn btn-primary" href="/results/{{system}}/{{sim_id}}">See Online</a></td>
             </tr>
         {% endif %}
         </tbody>

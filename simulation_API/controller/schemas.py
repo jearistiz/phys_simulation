@@ -1,4 +1,4 @@
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Union
 from enum import Enum
 from datetime import datetime
 
@@ -11,13 +11,15 @@ from numpy import pi, linspace
 ################### Schemas needed in main.py and tasks.py ####################
 ###############################################################################
 
+###################### Available systems for simulation #######################
+
 # NOTE: Needs update each time a new simulation is added
 class SimSystem(str, Enum):
     """List of available systems for simulation.
     
     Notes
     -----
-    CAUTION: This list must coincide with the dictionary list `Simulations`
+    NOTE: This list must coincide with the dictionary list `Simulations`
     defined in __init__.py in the module simulations, otherwise the system
     won't be simulated by the backend.
     """
@@ -25,23 +27,32 @@ class SimSystem(str, Enum):
     QHO = "Quantum-Harmonic-Oscillator"
 
 
+
+######################## Available Integration Methods ########################
+
 class IntegrationMethods(str, Enum):
     """List of available integration methods"""
     RK45 = "RK45"
     RK23 = "RK23"
 
 
-# NOTE Needs update each time a new system is added. Create a new class similar
-# NOTE to this one, but with relevant parameters for that specific simulation.
+
+
+############################ Simulation Parameters ############################
+
+# NOTE Needs update each time a new system is added.
 class HOParams(BaseModel):
     """List of parameters of the Harmonic Oscillator system"""
     m: float    # Mass
     k: float    # Force constant
 
 
-# NOTE Needs update each time a new simulation is added. Need to create a new
-# NOTE pydantic class similar to HOSimForm. Then add the class to the dict 
-# NOTE `SimFormDict` defined somewhere below.
+
+###################### Frontend Simulation Form schemas #######################
+
+# NOTE Needs update each time a new simulation is added. 
+# NOTE      1) create a new pydantic class similar to HOSimForm. 
+# NOTE      2) add the class to the dict `SimFormDict` defined somewhere below.
 class SimForm(BaseModel):
     """Base of schema used to Request a Simulation in Frontend"""
     username: Optional[str] = "Pepito"
@@ -65,6 +76,9 @@ class QHOSimForm(SimForm):
     pass
 
 
+
+########################## Simulation Request schema ##########################
+
 class SimRequest(BaseModel):
     """Schema needed to request harmonic oscillator simulations
     
@@ -85,6 +99,9 @@ class SimRequest(BaseModel):
     username: str = "Pepito Perez"
 
 
+
+### Simulation ID response schema when simulation is requested in frontend. ###
+
 class SimIdResponse(BaseModel):
     """Schema for the response of a simulation request via POST to route
     "/api/simulate/{sim_sys}"
@@ -98,10 +115,36 @@ class SimIdResponse(BaseModel):
     message : Optional[str]
 
 
+
+###### Plot Query values needed to download the plots of each simulation ######
+
+# NOTE Add new class similar to next one each time a new simulation is added
+class PlotQueryValues_HO(str, Enum):
+    """List of plot query values needed to download the plots via get in route
+    '/api/results/{sim_id}/plot?value={plot_query_value}'
+    """
+    coord = "coord"
+    phase = "phase"
+
+
+class PlotQueryValues_QHO(str, Enum):
+    pass
+
+
+# NOTE This list needs uptade each time a new simulation is added
+PlotQueryValues = Union[PlotQueryValues_HO, PlotQueryValues_QHO]
+
+
+
+######################### Simulation Results Schemas ##########################
+
 class SimResults(BaseModel):
     """Results of simulation as returned by scipy.integrate.solve_ivp"""
     sim_results: OdeResult
 
+
+
+########################### Simulation Status Schema ##########################
 
 class SimStatus(BaseModel):
     """Schema of the status of simulations
@@ -149,10 +192,22 @@ class SimStatus(BaseModel):
     route_pickle: Optional[str]
     route_results: Optional[str]
     route_plots: Optional[str]
-    plot_query_values: Optional[List[str]]
+    plot_query_values: Optional[List[PlotQueryValues]] # FIXME Optional[List[str]]
     success : bool
     message : Optional[str]
 
+
+
+########## Plot Captions shown in forntend, depending on the system. ##########
+
+# NOTE Add a class similar to next one each time new simulation is added.
+class PlotCaptions_HO(str, Enum):
+    coord = "Canoniacl Coordinates"
+    phase = "Phase Space"
+
+
+class PlotCaptions_QHO(str, Enum):
+    pass
 
 
 
@@ -255,6 +310,8 @@ class ParameterDBSchCreate(ParameterDBSchBase):
     sim_id: str
     param_type: ParamType
     value: float
+
+
 
 
 ###############################################################################

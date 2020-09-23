@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}
+	Results: {{sim_sys}}
+{% endblock %}
+
+{% block main %}
+    <h2>These are your results</h2> 
+    <br>
+    <div style="float: center">
+    <div class="split left">
+        <div class="centered">
+            <img src="{{route_coord_plot}}" alt="Canonical Coordinates">
+            <h4>Canonial Coordinates</h4>
+            <a class="btn btn-primary" href="{{route_coord_plot}}">Download</a>
+        </div>
+    </div>
+    
+    <div class="split right">
+        <div class="centered">
+            <img src="{{route_phase_plot}}" alt="Phase Space">
+            <h4>Phase Space</h4>
+            <a class="btn btn-primary" href="{{route_phase_plot}}">Download</a>
+        </div>
+    </div>
+    </div>
+{% endblock %}

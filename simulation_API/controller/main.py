@@ -52,6 +52,7 @@ def get_db():
 @app.get("/")
 # La definición async es la que hace a FastAPI realmetn
 async def index(request: Request):
+    """Index"""
     session = {"user_id": 1}
     return templates.TemplateResponse(
         "index.html", {"request": request, "session": session}
@@ -117,7 +118,7 @@ async def simulate_post_form(request: Request, background_tasks: BackgroundTasks
     # Change format from form data to SimRequest schema.
     sim_request = _sim_form_to_sim_request(form.__dict__['_dict'])
     
-    # BUG? is the simulation request as done in the next lines of code OK?
+    # BUG? Is the simulation request as done in the next lines of code OK?
     # 
     # FIXME
     #  
@@ -126,10 +127,10 @@ async def simulate_post_form(request: Request, background_tasks: BackgroundTasks
     # I tried using the methods shown below: 
     # 
     # NOTE Method 1) using request.post()
-    request_simulation_url = app.url_path_for(
-        "api_request_sim",
-        sim_system=sim_request.system.value
-    )
+    # request_simulation_url = app.url_path_for(
+    #     "api_request_sim",
+    #     sim_system=sim_request.system.value
+    # )
     # req = requests.post("http://0.0.0.0:5700" + request_simulation_url, data=sim_request.json())
     #
     # NOTE Method 2) using RedirectResponse
@@ -142,13 +143,14 @@ async def simulate_post_form(request: Request, background_tasks: BackgroundTasks
     # Request simulation from backend and get sim_id_response
     sim_id_response = _api_simulation_request(sim_sys, sim_request,
                                               background_tasks, db)
-
     
+    # Redirect client to success page
+    # POST/REDIRECT/GET Strategy with code 303
+    # https://en.wikipedia.org/wiki/Post/Redirect/Get 
     simulation_id_url = app.url_path_for(
         "frontend_simulation_id",
         sim_id=sim_id_response.sim_id
     )
-
     req = RedirectResponse(simulation_id_url,
                            status_code=HTTP_303_SEE_OTHER)
     
@@ -216,18 +218,41 @@ async def simulate_status_sim_id(request: Request, sim_id: str,
 @app.get("/results")
 async def results(request: Request):
     """Get info of results and display them all rendering results.html"""
+    
+    # TODO TODO TODO 
+    # TODO TODO TODO 
+    # TODO TODO TODO 
+
     return templates.TemplateResponse("results.html", {"request": request})
 
 
 @app.get("/results/{sim_system}/{sim_id}")
-async def results_sim_system_sim_id(sim_system: SimSystem):
+async def results_sim_system_sim_id(request: Request, sim_system: SimSystem,
+                                    sim_id: str):
     """Show results of simulation in frontend"""
 
-    # TODO TODO TODO
-    # TODO TODO TODO
-    # TODO TODO TODO
+    # BUG BUG BUG Navigation bar does not work in frontend if we use the split screen css format
+    # FIXME FIXME FIXME Navigation bar does not work in frontend if we use the split screen css format
+    # BUG BUG BUG Navigation bar does not work in frontend if we use the split screen css format
 
-    return
+    # TODO Design a more general template that does not depend strongly on the simulation
+
+    plot_paths = app.url_path_for("api_download_plots", sim_id=sim_id)
+    plot_path_coord = plot_paths + "?value=coord"
+    plot_path_phase = plot_paths + "?value=phase"
+    results_info = {
+        "sim_sys": sim_system.value,
+        "route_coord_plot": plot_path_coord,
+        "route_phase_plot": plot_path_phase
+    }
+
+    return templates.TemplateResponse(
+        "results-show.html",
+        {
+            "request": request,
+            **results_info
+        }
+    )
 
 
 @app.post("/api/simulate/{sim_system}", name="api_request_sim")
