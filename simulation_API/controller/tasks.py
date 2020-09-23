@@ -1,23 +1,30 @@
 """This file will do background tasks e.g. the simulation
 """
-from datetime import datetime
 from typing import Optional, Any
+from datetime import datetime
+from uuid import uuid4
 
+# Needed to simulate in backgroung
+from fastapi import BackgroundTasks, HTTPException
+# Database-related
+from sqlalchemy.orm import Session
 # import matplotlib as mpl
 from matplotlib.figure import Figure
 # import matplotlib.pyplot as plt
 import pickle as pkl
 from numpy import arange
 
-# Import path to save plots
+from simulation_API import app
+# Import pydantic schemas
+from .schemas import *
+# Import paths to save plots and pickles
 from simulation_API.config import PATH_PLOTS, PATH_PICKLES
 # Import simulation module
 from simulation_API.model.simulation import Simulations
-# Import pydantic schemas
-from .schemas import *
-# Database related
+# Database-related
 from simulation_API.model.db.db_manager import SessionLocal
 from simulation_API.model.db import crud
+
 
 
 """Next line of code avoids a warning when generating matplotlib figures: 
@@ -40,6 +47,66 @@ Matplotlib in a web server is to completely avoid using pyplot.'
 Next line of code is only needed if using pyplot (which is not recommended)
 """
 # mpl.use('Agg')
+
+
+def _api_simulation_request(sim_system: SimSystem,
+                            sim_params: SimRequest,
+                            background_tasks: BackgroundTasks,
+                            db: Session) -> SimIdResponse:
+    # Create user in database (meanwhile)
+    # FIXME FIXME FIXME
+    # In production user can NOT be created here, login will be required.
+    user = UserDBSchCreate(username=sim_params.username)
+    user = crud._create_user(db, user)
+    # Get user_id from user and store it in sim params !
+    sim_params.user_id = user.user_id
+
+    # Create an id for the simulation store it in hex notation
+    sim_params.sim_id = uuid4().hex
+
+    # Check that the client is accessing the right path for the right simulation
+    # sim_system.value NEEDS to match the request given in JSON as
+    # sim_params.system
+
+    if not sim_system.value == sim_params.system.value:
+        raise HTTPException(
+            status_code=403,
+            detail=r"403 - Forbidden : URI's {sim_system} value must coincide "
+                   r"with 'system' key value in posted JSON file"
+        )
+
+    # Close ccurrent db connection, so that _run_simulation can update table
+    db.close()
+
+    # Simulate system in BACKGROUND
+    # TODO TODO TODO Por dentro _run_simulation puede abrir un socket para
+    # TODO TODO TODO indicar que la simulación ya se completó
+    background_tasks.add_task(_run_simulation, sim_params)
+
+    # Declare some variables needed as params to SimIdResponse
+    sim_status_path = app.url_path_for("api_simulate_status",
+                                       sim_id=sim_params.sim_id)
+    
+    sim_pickle_path = app.url_path_for("api_download_pickle",
+                                       sim_id=sim_params.sim_id)
+
+    message1 = "(When –and if– available) request via GET your simulation's" \
+               "status in route 'sim_status_path' or download your results" \
+               "(pickle fomat) via GET in route 'sim_pickle_path'"
+    message2 = na_message
+    message = message1 if sim_params.system == SimSystem.HO else message2
+
+    sim_id_response = SimIdResponse(
+        sim_id=sim_params.sim_id,
+        user_id=sim_params.user_id,
+        username=sim_params.username,
+        sim_sys=sim_params.system,
+        sim_status_path=sim_status_path,
+        sim_pickle_path=sim_pickle_path,
+        message=message
+    )
+
+    return sim_id_response
 
 
 def _run_simulation(sim_params: SimRequest) -> None: 
@@ -124,9 +191,9 @@ def _run_simulation(sim_params: SimRequest) -> None:
         date=simulation_instance.date,
         system=system.value,
         method=sim_params["method"],
-        route_pickle=_create_pickle_path(sim_id),
-        route_results=_create_sim_status_path(sim_id),
-        route_plots=_create_plots_path(sim_id),
+        route_pickle=app.url_path_for("api_download_pickle", sim_id=sim_id),
+        route_results=app.url_path_for("api_simulate_status", sim_id=sim_id),
+        route_plots= app.url_path_for("api_download_plots", sim_id=sim_id),
         success=True,
         message=sim_status_finished_message
     )
@@ -200,7 +267,7 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
     # plt.close()
 
     ###########################################################################
-    # NOT using pyplot (RECOMMENDED, read comments provided after imports here)
+    # NOT using pyplot (RECOMMENDED, read comments provided after imports)    #
     ###########################################################################
 
     # Phase space trajectory plot
@@ -286,7 +353,8 @@ def _sim_form_to_sim_request(form: Dict[str, str]) -> Optional[SimRequest]:
     # NOTE
     # We need to get the actual names of the parameters, bc the convention in
     # frontend form is `param0`, `param1`, ... but SimRequest receives the
-    # actual name of the parameters (e.g. for the HO `m` and `k`)
+    # actual name of the parameters (e.g. for the HO `m` and `k`).
+    # This change of convention is done by the dicts defined in `shcemas.py`
     param_convention = system_to_params_dict[form["sim_sys"]]
     param_keys = [key for key in form.keys() if key[:5]=="param"]
     params = {
@@ -308,21 +376,6 @@ def _sim_form_to_sim_request(form: Dict[str, str]) -> Optional[SimRequest]:
 
 
 ############################## Paths and routes ###############################
-
-def _create_sim_status_path(sim_id: str) -> str:
-    """Creates routes to access simulation status by sim_id"""
-    return f'/api/results/status/{sim_id}'
-
-
-def _create_pickle_path(sim_id: str) -> str:
-    """Creates routes to download simulation results (pickle) by sim_id"""
-    return f'/api/results/{sim_id}/pickle'
-
-
-def _create_plots_path(sim_id: str) -> str:
-    """Creates routes to download plots of simulation results (png) by sim_id"""
-    return f'/api/results/{sim_id}/plot'
-
 
 def _create_pickle_path_disk(sim_id: str) -> str:
     """Creates disk path to simulation results (pickle) by sim_id"""

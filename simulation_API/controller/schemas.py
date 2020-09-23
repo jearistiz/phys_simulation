@@ -297,7 +297,7 @@ params_mapping_HO = {
 params_mapping_QHO = {}
 
 # This dict maps each system to its parameter change-of-convention
-# dictionary defined above
+# dictionary defined above. inv_... maps to the inverse transformation
 system_to_params_dict = {
     SimSystem.HO.value: params_mapping_HO,
     SimSystem.QHO.value: params_mapping_QHO,

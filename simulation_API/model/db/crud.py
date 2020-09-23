@@ -24,6 +24,10 @@ def _create_user(db: Session, user: UserDBSchCreate) -> UserDB:
     return db_user
 
 
+def _get_username(db: Session, user_id: int):
+    return db.query(UserDB.username).filter(UserDB.user_id == user_id).first()
+
+
 def _create_simulation(db: Session,
                        simulation: SimulationDBSchCreate) -> SimulationDB:
     """Inserts simulation in simulations table"""
@@ -35,12 +39,12 @@ def _create_simulation(db: Session,
 
 
 def _get_simulation(db: Session, sim_id: str) -> SimulationDB:
-    """Get simulation from simulations table"""
+    """Get simulation id from simulations table"""
     return db.query(SimulationDB).filter(SimulationDB.sim_id == sim_id).first()
 
 
 def _create_plot_query_values(db: Session,
-                             plot_query_params: List[PlotDBSchCreate]) -> None:
+                              plot_query_params: List[PlotDBSchCreate]) -> None:
     """Insert row in plots table (contains plot query params)"""
     db_plot_query_params = [
         PlotDB(**plot_qp.dict()) for plot_qp in plot_query_params
@@ -69,7 +73,7 @@ def _create_parameters(db: Session,
     return
 
 def _get_parameters(db: Session, sim_id: str,
-                    param_type: str) -> Union[List[float], Dict[str, float]]:
+                    param_type: ParamType) -> Union[List[float], Dict[str, float]]:
     """Get parameters from parameters table"""
     query = db.query(ParameterDB) \
                 .filter((ParameterDB.param_type == param_type) & (ParameterDB.sim_id == sim_id)) \

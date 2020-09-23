@@ -34,6 +34,7 @@ class Simulation(object):
     results : Any or None
         Results of simulation.
     """
+    system = None
     def __init__(self,
                  t_span: Optional[List[float]] = None,
                  t_eval: Optional[list] = None,
@@ -70,7 +71,6 @@ class Simulation(object):
         self.method = method
         self.user_name = user_name
         self.results = None
-        self.system = None
         self.date = str(datetime.utcnow())
         
 
