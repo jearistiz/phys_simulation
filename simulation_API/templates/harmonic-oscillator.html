@@ -11,13 +11,9 @@
     <form action="/simulate/{{ sim_system }}" method="POST" id="sim_request">
         
         
-        <!-- {% if no_symb %}
-            <div style="color:red">Please provide a valid symbol</div><br>
-        {% elif not_enough_stocks %}
-            <div style="color:red">You don't have that ammount of shares</div><br>
-        {% elif negative_shares %}
-            <div style="color:red">Number of shares must be positive</div><br>
-        {% endif %} -->
+        {% if error_message %}
+            <div style="color:red">Error: {{error_message}}</div><br>
+        {% endif %}
 
 
 

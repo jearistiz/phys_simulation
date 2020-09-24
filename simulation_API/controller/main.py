@@ -4,9 +4,11 @@ TODO|FIXME|BUG|HACK|NOTE|
 from os.path import isfile
 
 from fastapi import Request, BackgroundTasks, HTTPException, Depends, Form
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.responses import FileResponse, RedirectResponse
-from starlette.status import HTTP_303_SEE_OTHER
+from starlette.status import HTTP_303_SEE_OTHER, HTTP_404_NOT_FOUND
 from sqlalchemy.orm import Session
+
 
 
 # App instance and templates
@@ -76,13 +78,17 @@ async def simulate(request: Request):
 
 # Depending on the system the user decides to simulate, there are different
 # routes, bc we need different parameters
-@app.get("/simulate/{sim_system}")
+@app.get("/simulate/{sim_system}", name="frontend_request_simulation")
 async def simulate_sim_system(request: Request, 
-                              sim_system: SimSystem):
+                              sim_system: SimSystem,
+                              error_message: Optional[str] = ''):
     """Returns a form the user will fill up to request simulation of specific
     system."""
 
-    sim_form = SimFormDict[sim_system.value]()
+    # Get Simulation form schema depending on system and instantiate it. This
+    # schema contains the default values for initial conditions and parameters
+    SysSimForm = SimFormDict[sim_system.value]
+    sim_form = SysSimForm()
 
     return templates.TemplateResponse(
         f"{sim_system.value.lower()}.html",
@@ -90,6 +96,7 @@ async def simulate_sim_system(request: Request,
             "sim_system": str(sim_system.value),
             "request": request,
             "integration_methods": integration_methods,
+            "error_message": error_message, 
             **sim_form.dict(),
         }
     )
@@ -114,9 +121,39 @@ async def simulate_post_form(request: Request, background_tasks: BackgroundTasks
     # NOTE This method does NOT provide pydantic type checking. However, type
     # checking is more or less provided in the frontend by the form itself.
     form = await request.form()
+    form = form.__dict__['_dict']
+    
+    # Change all parameters and initial conditions to float
+    # keys_ini_condition = [key for key in form if key[:3]=="ini"]
+    # ini_cndtns = {
+    #     f"ini{i}": float(form[f"ini{i}"]) 
+    #         for i in range(len(keys_ini_condition))
+    # }
+    # keys_params = [key for key in form if key[:5]=="param"]
+    # params = {
+    #     f"ini{i}": float(form[f"ini{i}"]) 
+    #         for i in range(len(keys_params))
+    # }
+    
+    # form = {**form, **params, **ini_cndtns}
+
+
+    # Check t_0 < t_f
+    # TODO TODO TODO FIXME Render form again with error message if t0 > tf
+    t_0 = form["t0"]
+    t_f = form["tf"]
+    if not t_0 < t_f:
+        url_frontend_sim_request = app.url_path_for(
+            "frontend_request_simulation",
+            sim_system=form["sim_sys"],
+        )
+        req = RedirectResponse(
+            url_frontend_sim_request + "?message=t0%20<%20tf"
+        )
+        return req
 
     # Change format from form data to SimRequest schema.
-    sim_request = _sim_form_to_sim_request(form.__dict__['_dict'])
+    sim_request = _sim_form_to_sim_request(form)
     
     # BUG? Is the simulation request as done in the next lines of code OK?
     # 
@@ -216,14 +253,21 @@ async def simulate_status_sim_id(request: Request, sim_id: str,
 
 # Let the user see all the available results including his/her results
 @app.get("/results")
-async def results(request: Request):
+async def results(request: Request, db: Session = Depends(get_db)):
     """Get info of results and display them all rendering results.html"""
+    # Pull all simulations from database
+    simulations = crud._get_all_simulations(db)
+    simulations = [simulation.__dict__ for simulation in simulations]
+    sim_status_url = app.url_path_for("fronted_simulation_status", sim_id="0")
     
-    # TODO TODO TODO 
-    # TODO TODO TODO 
-    # TODO TODO TODO 
-
-    return templates.TemplateResponse("results.html", {"request": request})
+    return templates.TemplateResponse(
+        "results.html",
+        {
+            "request": request,
+            "simulations": simulations,
+            "sim_status_url": sim_status_url,
+        }
+    )
 
 
 @app.get("/results/{sim_system}/{sim_id}")
@@ -357,9 +401,20 @@ async def api_results_sim_id(sim_id: str, value: str):
     if not isfile(plot_path_disk):
         message = "The plot you requested is not in our database. " \
                   "If your smulation id (sim_id) and the query param " \
-                  "'value' are correct, there might be an internal server "\
+                  "'value' are correct, there might be an internal server " \
                   "error and the plot you requested is not available."
         raise HTTPException(404, detail=message)
 
     return FileResponse(plot_path_disk, media_type="image/png",
                         filename=sim_id + "_" + value + ".png")
+
+
+@app.exception_handler(StarletteHTTPException)
+async def custom_http_exception_handler(request: Request,
+                                        exc: StarletteHTTPException):
+    return templates.TemplateResponse(
+        "404.html",
+        {
+            "request": request,
+        }
+    )

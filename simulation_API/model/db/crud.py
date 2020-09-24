@@ -1,7 +1,7 @@
 """This program manages database querys.
 CRUD comes from: Create, Read, Update, and Delete.
 """
-from typing import Union
+from typing import Union, Tuple
 
 from sqlalchemy.orm import Session
 
@@ -39,8 +39,12 @@ def _create_simulation(db: Session,
 
 
 def _get_simulation(db: Session, sim_id: str) -> SimulationDB:
-    """Get simulation id from simulations table"""
+    """Get simulation with specific id from simulations table"""
     return db.query(SimulationDB).filter(SimulationDB.sim_id == sim_id).first()
+
+
+def _get_all_simulations(db: Session) -> Tuple[SimulationDB]:
+    return db.query(SimulationDB).order_by(SimulationDB.date.desc()).all()
 
 
 def _create_plot_query_values(db: Session,

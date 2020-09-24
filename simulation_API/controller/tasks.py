@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 from matplotlib.figure import Figure
 # import matplotlib.pyplot as plt
 import pickle as pkl
-from numpy import arange
+from numpy import arange, linspace
 
 from simulation_API import app
 # Import pydantic schemas
@@ -340,10 +340,14 @@ def _sim_form_to_sim_request(form: Dict[str, str]) -> Optional[SimRequest]:
     
     # Manually check that t0 < tf
     if not t0 < tf:
-        return None
+        return SimRequest(
+            username=form["username"],
+            system=form["sim_sys"],
+            sim_request=False
+        )
 
     dt = float(form["dt"])
-    t_eval = list(arange(t0, tf + dt, dt))
+    t_eval = list(linspace(t0, tf, int((tf - t0) / dt)))
 
     # Initial conditions
     ini_cndtn_keys = [key for key in form.keys() if key[:3]=="ini"]
@@ -370,6 +374,7 @@ def _sim_form_to_sim_request(form: Dict[str, str]) -> Optional[SimRequest]:
         "params": params,
         "method": form["method"],
         "username": form["username"],
+        "sim_request": True
     }
 
     return SimRequest(**sim_request)

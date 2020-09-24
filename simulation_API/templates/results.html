@@ -20,11 +20,11 @@
         <tbody>
         {% for simulation in simulations %}
             <tr>
-                <th>TODO</th>
-                <th>TODO</th>
-                <th>TODO</th>
-                <th>TODO</th>
-                <th>TODO</th>
+                <th>{{simulation["date"][:-7]}}</th>
+                <th>{{simulation["user_id"]}}</th>
+                <th>{{simulation["sim_id"]}}</th>
+                <th>{{simulation["system"]}}</th>
+                <th><a class="btn btn-primary" href="{{sim_status_url[:-1]}}{{simulation['sim_id']}}">Check Online</a></th>
             </tr>
         {% endfor %}
         </tbody>
