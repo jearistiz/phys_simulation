@@ -282,12 +282,14 @@ async def results_sim_system_sim_id(request: Request, sim_system: SimSystem,
     # TODO Design a more general template that does not depend strongly on the simulation
 
     plot_paths = app.url_path_for("api_download_plots", sim_id=sim_id)
+    route_pickle = app.url_path_for("api_download_pickle", sim_id=sim_id)
     plot_path_coord = plot_paths + "?value=coord"
     plot_path_phase = plot_paths + "?value=phase"
     results_info = {
         "sim_sys": sim_system.value,
         "route_coord_plot": plot_path_coord,
-        "route_phase_plot": plot_path_phase
+        "route_phase_plot": plot_path_phase,
+        "route_pickle": route_pickle
     }
 
     return templates.TemplateResponse(
