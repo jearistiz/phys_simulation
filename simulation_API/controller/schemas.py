@@ -30,21 +30,26 @@ class SimSystem(str, Enum):
 
 ######################## Available Integration Methods ########################
 
+# Enum needed to verify correct values with API
+# NOTE: Needs update each time a new simulation is added
 class IntegrationMethods(str, Enum):
     """List of available integration methods"""
     RK45 = "RK45"
     RK23 = "RK23"
 
 
+# Needed to generate dict used to display available integration methods in frontend
+# NOTE: Needs update each time a new simulation is added. Needs to coincide
+# with Integration Methods
+class IntegrationMethodsFrontend(str, Enum):
+    RK45 = "Runge-Kutta 5(4)"
+    RK23 = "Runge-Kutta 3(2)"
 
-
-############################ Simulation Parameters ############################
-
-# NOTE Needs update each time a new system is added.
-class HOParams(BaseModel):
-    """List of parameters of the Harmonic Oscillator system"""
-    m: float    # Mass
-    k: float    # Force constant
+# Used in frontend and generated automatically from IntegrationMethodsFrontend
+integration_methods = {
+    member[0]: member[1].value
+        for member in IntegrationMethodsFrontend._member_map_.items()
+}
 
 
 
@@ -74,6 +79,39 @@ class HOSimForm(SimForm):
 class QHOSimForm(SimForm):
     """Schema used to Request Q. Harmonic Osc. Simulation in Frontend via form"""
     pass
+
+
+
+############################ Simulation Parameters ############################
+
+# NOTE Needs update each time a new system is added (add a new class).
+class HOParams(BaseModel):
+    """List of parameters of the Harmonic Oscillator system"""
+    m: float    # Mass
+    k: float    # Force constant
+
+# Maps systems to pydantic schemas used in route "/simulate/{sim_system}"
+# NOTE Needs update each time a new system is added (add new entry in dict).
+SimFormDict = {
+    SimSystem.HO.value: HOSimForm,
+    SimSystem.QHO.value: QHOSimForm,
+}
+
+# This dicts map different conventions for simulation parameter names 
+# {param_name_frontend: param_name_backend}
+# NOTE Needs update each time a new system is added (add new dict with params).
+params_mapping_HO = {
+    "param0": "m",
+    "param1": "k",
+}
+params_mapping_QHO = {}
+
+# This dict maps each system to its parameter change-of-convention
+# dictionary defined above. inv_... maps to the inverse transformation
+system_to_params_dict = {
+    SimSystem.HO.value: params_mapping_HO,
+    SimSystem.QHO.value: params_mapping_QHO,
+}
 
 
 
@@ -118,7 +156,7 @@ class SimIdResponse(BaseModel):
 
 ###### Plot Query values needed to download the plots of each simulation ######
 
-# NOTE Add new class similar to next one each time a new simulation is added
+# NOTE Needs update each time a new system is added (add a new class).
 class PlotQueryValues_HO(str, Enum):
     """List of plot query values needed to download the plots via get in route
     '/api/results/{sim_id}/plot?value={plot_query_value}'
@@ -131,7 +169,8 @@ class PlotQueryValues_QHO(str, Enum):
     pass
 
 
-# NOTE This list needs uptade each time a new simulation is added
+# NOTE This list needs uptade each time a new simulation is added 
+# NOTE (add new entry with name of new class)
 PlotQueryValues = Union[PlotQueryValues_HO, PlotQueryValues_QHO]
 
 
@@ -192,7 +231,9 @@ class SimStatus(BaseModel):
     route_pickle: Optional[str]
     route_results: Optional[str]
     route_plots: Optional[str]
-    plot_query_values: Optional[List[PlotQueryValues]] # FIXME Optional[List[str]]
+    plot_query_values: Optional[List[PlotQueryValues]]
+    plot_query_receipe: Optional[str] = \
+        "'route_plots' + '?value=' + 'plot_query_value'"
     success : bool
     message : Optional[str]
 
@@ -200,7 +241,7 @@ class SimStatus(BaseModel):
 
 ########## Plot Captions shown in forntend, depending on the system. ##########
 
-# NOTE Add a class similar to next one each time new simulation is added.
+# NOTE Needs update each time a new system is added (add a new class).
 class PlotCaptions_HO(str, Enum):
     coord = "Canoniacl Coordinates"
     phase = "Phase Space"
@@ -328,34 +369,3 @@ sim_status_finished_message = "Finished. You can request via GET: download " \
                               "query params the ones given in " \
                               "'plot_query_values', or; see results online " \
                               "in route 'route_results'."
-# NOTE TODO Add relevant methods supported by scipy.integrate.ivp that do NOT
-# NOTE TODO need more parameters than we ask for in SimRequest
-integration_methods = {
-    "RK45": "Runge-Kutta 5(4)",
-    "RK23": "Runge-Kutta 3(2)"
-}
-
-###############################################################################
-## NOTE: The following dicts need update each time a new simulation is added ##
-###############################################################################
-
-# Maps systems to pydantic schemas used in route "/simulate/{sim_system}"
-SimFormDict = {
-    SimSystem.HO.value: HOSimForm,
-    SimSystem.QHO.value: QHOSimForm,
-}
-
-# This dicts map different conventions for simulation parameter names 
-# {param_name_frontend: param_name_backend}
-params_mapping_HO = {
-    "param0": "m",
-    "param1": "k",
-}
-params_mapping_QHO = {}
-
-# This dict maps each system to its parameter change-of-convention
-# dictionary defined above. inv_... maps to the inverse transformation
-system_to_params_dict = {
-    SimSystem.HO.value: params_mapping_HO,
-    SimSystem.QHO.value: params_mapping_QHO,
-}

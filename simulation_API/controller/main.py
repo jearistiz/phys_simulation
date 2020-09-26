@@ -55,14 +55,23 @@ def get_db():
 # La definición async es la que hace a FastAPI realmetn
 async def index(request: Request):
     """Index"""
-    session = {"user_id": 1}
+
+    route_simulate = app.url_path_for("frontend_simulate")
+    route_results = app.url_path_for("frontend_results")
+    print(route_results)
+
     return templates.TemplateResponse(
-        "index.html", {"request": request, "session": session}
+        "index.html", 
+        {
+            "request": request, 
+            "route_simulate": route_simulate,
+            "route_results": route_results
+        }
     )
 
 
 # Let the user input the parameters of the simulation
-@app.get("/simulate")
+@app.get("/simulate", name="frontend_simulate")
 async def simulate(request: Request):
     """Renders a template that asks for type of simulation"""
     # Available simulations
@@ -252,7 +261,7 @@ async def simulate_status_sim_id(request: Request, sim_id: str,
 
 
 # Let the user see all the available results including his/her results
-@app.get("/results")
+@app.get("/results", name="frontend_results")
 async def results(request: Request, db: Session = Depends(get_db)):
     """Get info of results and display them all rendering results.html"""
     # Pull all simulations from database
@@ -275,10 +284,7 @@ async def results_sim_system_sim_id(request: Request, sim_system: SimSystem,
                                     sim_id: str):
     """Show results of simulation in frontend"""
 
-    # BUG BUG BUG Navigation bar does not work in frontend if we use the split screen css format
-    # FIXME FIXME FIXME Navigation bar does not work in frontend if we use the split screen css format
-    # BUG BUG BUG Navigation bar does not work in frontend if we use the split screen css format
-
+    # TODO TODO TODO
     # TODO Design a more general template that does not depend strongly on the simulation
 
     plot_paths = app.url_path_for("api_download_plots", sim_id=sim_id)
@@ -341,9 +347,8 @@ async def api_results_sim_id(sim_id: str,
     # Simulation status
     sim_status = crud._get_simulation(db, sim_id)
     # Plot query params possible values
-    plot_query_values = [
-        "?value=" + value for value in crud._get_plot_query_values(db, sim_id)
-    ]
+    plot_query_values = crud._get_plot_query_values(db, sim_id)
+
     # Parameters
     params = crud._get_parameters(db, sim_id, ParamType.param)
     # Initial conditions
@@ -366,6 +371,9 @@ async def api_results_sim_id(sim_id: str,
         "plot_query_values": plot_query_values,
         **sim_status,
     }
+
+    print(plot_query_values)
+    print(sim_status_complete)
 
     return SimStatus(**sim_status_complete)
 

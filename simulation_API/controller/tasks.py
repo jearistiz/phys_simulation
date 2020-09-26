@@ -8,11 +8,11 @@ from uuid import uuid4
 from fastapi import BackgroundTasks, HTTPException
 # Database-related
 from sqlalchemy.orm import Session
-# import matplotlib as mpl
+import matplotlib as mpl
 from matplotlib.figure import Figure
 # import matplotlib.pyplot as plt
 import pickle as pkl
-from numpy import arange, linspace
+from numpy import arange, linspace, abs
 
 from simulation_API import app
 # Import pydantic schemas
@@ -231,6 +231,8 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
     """Plot solutions. Right now only support Harmonic Oscillator plots"""
     # Get simulation results as OdeResult instance
     
+    mpl.rcParams.update({'font.size': 17})
+
     sim_results = sim_results.sim_results
     plot_query_values = []
     
@@ -274,13 +276,23 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
     plot_query_value = 'phase'
     plot_query_values.append(plot_query_value)
 
+    xlim = max(abs(sim_results.y[0]))
+    ylim = max(abs(sim_results.y[1]))
+    ax_lim = max([xlim, ylim]) * 1.05
+    dashed_line = [[-ax_lim, ax_lim], [0, 0]]
+
     fig = Figure()
     ax = fig.add_subplot(111)
     ax.plot(sim_results.y[0], sim_results.y[1])
+    ax.plot(dashed_line[0], dashed_line[1], 'k--')
+    ax.plot(dashed_line[1], dashed_line[0], 'k--')
     ax.set_aspect('equal', adjustable='box')
     ax.set_xlabel('q')
     ax.set_ylabel('p')
-    ax.set_title('Phase space')
+    # ax.set_title('Phase space')
+    ax.set_xlim(-ax_lim, ax_lim)
+    ax.set_ylim(-ax_lim, ax_lim)
+    fig.tight_layout()
     fig.savefig(PATH_PLOTS + plot_basename + "_" + plot_query_value + ".png")
     
 
@@ -294,8 +306,9 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
     ax.plot(sim_results.t, sim_results.y[1], label='p(t)')
     ax.set_xlabel('t')
     ax.set_ylabel('Canonical coordinate')
-    ax.set_title('Canonical coordinates evolution')
+    # ax.set_title('Canonical coordinates evolution')
     ax.legend()
+    fig.tight_layout()
     fig.savefig(PATH_PLOTS + plot_basename + "_" + plot_query_value + ".png")
     
     return plot_query_values

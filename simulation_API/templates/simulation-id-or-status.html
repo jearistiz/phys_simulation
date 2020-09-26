@@ -39,7 +39,7 @@
             <!-- adfa -->
             <tr>
                 <td >Success</td>
-                {% set color = '#2e944b'if success else '#ea433b'%}
+                {% set color = '#2e944b' if success else '#ea433b'%}
                 <!-- FIXME FIXME FIXME Next line -->
                 <td style="color: {{color}}"><b>{{"True" if success else "False"}}</b></td>
             </tr>
@@ -49,7 +49,7 @@
             </tr>
             <tr>
                 <td >Date of request</td>
-                <td >{{date}}</td>
+                <td >{{date[:-7]}}</td>
             </tr>
             <tr>
                 <td >Username</td>
