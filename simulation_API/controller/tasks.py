@@ -10,9 +10,10 @@ from fastapi import BackgroundTasks, HTTPException
 from sqlalchemy.orm import Session
 import matplotlib as mpl
 from matplotlib.figure import Figure
+from mpl_toolkits.mplot3d import Axes3D
 # import matplotlib.pyplot as plt
 import pickle as pkl
-from numpy import arange, linspace, abs
+from numpy import linspace, abs
 
 from simulation_API import app
 # Import pydantic schemas
@@ -53,6 +54,19 @@ def _api_simulation_request(sim_system: SimSystem,
                             sim_params: SimRequest,
                             background_tasks: BackgroundTasks,
                             db: Session) -> SimIdResponse:
+    # Check that the simulation parameters are the ones needed for the
+    # requested simulation. This is not checked by the pydantic model.
+    try:
+        ParamsModel = SimSystem_to_SimParams[sim_system.value]
+        ParamsModel(**sim_params.params)
+    except:
+        sim_id_response = SimIdResponse(
+            username=sim_params.username,
+            message="Error: you provided the wrong set of parameters. "
+                    "Your simulation was not requested"
+        )
+        return sim_id_response
+    
     # Create user in database (meanwhile)
     # FIXME FIXME FIXME
     # In production user can NOT be created here, login will be required.
@@ -64,10 +78,12 @@ def _api_simulation_request(sim_system: SimSystem,
     # Create an id for the simulation store it in hex notation
     sim_params.sim_id = uuid4().hex
 
+    # Close ccurrent db connection, so that _run_simulation can update table
+    db.close()
+
     # Check that the client is accessing the right path for the right simulation
     # sim_system.value NEEDS to match the request given in JSON as
     # sim_params.system
-
     if not sim_system.value == sim_params.system.value:
         raise HTTPException(
             status_code=403,
@@ -75,11 +91,8 @@ def _api_simulation_request(sim_system: SimSystem,
                    r"with 'system' key value in posted JSON file"
         )
 
-    # Close ccurrent db connection, so that _run_simulation can update table
-    db.close()
-
     # Simulate system in BACKGROUND
-    # TODO TODO TODO Por dentro _run_simulation puede abrir un socket para
+    # TODO TODO TODO Por dentro _run_simulation puede abrir un websocket para
     # TODO TODO TODO indicar que la simulación ya se completó
     background_tasks.add_task(_run_simulation, sim_params)
 
@@ -94,7 +107,7 @@ def _api_simulation_request(sim_system: SimSystem,
                "status in route 'sim_status_path' or download your results" \
                "(pickle fomat) via GET in route 'sim_pickle_path'"
     message2 = na_message
-    message = message1 if sim_params.system == SimSystem.HO else message2
+    message = message1 if (sim_params.system in SimSystem and sim_params.system != SimSystem.QHO) else message2
 
     sim_id_response = SimIdResponse(
         sim_id=sim_params.sim_id,
@@ -128,16 +141,30 @@ def _run_simulation(sim_params: SimRequest) -> None:
     # Start session in dbase
     db = SessionLocal()
 
-    # Convert the request type to dict (allows us to provide them as kwargs to HarmonicOsc1D)
-    sim_params = sim_params.dict()    
+    # If t_steps is provided in sim_params, generate t_eval
+    if sim_params.t_steps:
+        sim_params.t_eval = linspace(
+            sim_params.t_span[0], sim_params.t_span[1], sim_params.t_steps
+        )
 
-    # Pop "system", "sim_id" and "user_id" from sim_params, bc we do
-    # not need to pass them to Simulation class.
+    # Convert the request type to dict (allows us to provide them as kwargs to HarmonicOsc1D)
+    sim_params = sim_params.dict()
+
+    # Pop "system", "sim_id" and "user_id" from sim_params, bc we can NOT
+    # pass them to Simulation class.
     # Remember "system" will be instance of SimSystem defined in schemas.py
     system = sim_params.pop("system")
     sim_id = sim_params.pop("sim_id")
     user_id = sim_params.pop("user_id")
+    sim_params.pop("t_steps")
     sim_params.pop("username")
+
+    basic_info = {
+        "sim_id": sim_id,
+        "user_id": user_id,
+        "date": str(datetime.utcnow()),
+        "system": system.value,
+    }
 
     try:
         if (system in SimSystem) and (system != SimSystem.QHO):
@@ -147,12 +174,9 @@ def _run_simulation(sim_params: SimRequest) -> None:
             simulation = simulation_instance.simulate()
         else:
             create_simulation_status_db = SimulationDBSchCreate(
-                sim_id=sim_id,
-                user_id=user_id,
-                date=str(datetime.utcnow()),
-                system=system.value,
                 success=False,
-                message=na_message
+                message=na_message,
+                **basic_info
             )
             # Save simulation status in database
             crud._create_simulation(db, create_simulation_status_db)
@@ -163,18 +187,13 @@ def _run_simulation(sim_params: SimRequest) -> None:
             return
     
     except Exception as e:
-        
         create_simulation_status_db = SimulationDBSchCreate(
-            sim_id=sim_id,
-            user_id=user_id,
-            date=str(datetime.utcnow()),
-            system=system.value,
             success=False,
-            message=str(e)
+            message="Internal Simulation Error: " + str(e),
+            **basic_info
         )
         crud._create_simulation(db, create_simulation_status_db)
         db.close()
-        
         return
 
     # Store simulation result in pickle
@@ -186,16 +205,13 @@ def _run_simulation(sim_params: SimRequest) -> None:
 
     # Save simulation status in database
     create_simulation_status_db = SimulationDBSchCreate(
-        sim_id=sim_id,
-        user_id=user_id,
-        date=simulation_instance.date,
-        system=system.value,
         method=sim_params["method"],
         route_pickle=app.url_path_for("api_download_pickle", sim_id=sim_id),
         route_results=app.url_path_for("api_simulate_status", sim_id=sim_id),
         route_plots= app.url_path_for("api_download_plots", sim_id=sim_id),
         success=True,
-        message=sim_status_finished_message
+        message=sim_status_finished_message,
+        **basic_info
     )
     crud._create_simulation(db, create_simulation_status_db)
 
@@ -235,81 +251,112 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
 
     sim_results = sim_results.sim_results
     plot_query_values = []
+
+    if system == SimSystem.HO:    
+        ################################
+        # Using pyplot (not recommended)
+        ################################
+        # # Phase space trajectory plot
+        # plot_id = 'phase'
+        # plot_ids.append(plot_id)
+
+        # fig = plt.figure()
+        # ax = fig.add_subplot(111)
+        # plt.plot(sim_results.y[0], sim_results.y[1])
+        # ax.set_aspect('equal', adjustable='box')
+        # plt.xlabel('q')
+        # plt.ylabel('p')
+        # plt.title('Phase space')
+        # plt.savefig(PATH_PLOTS + plot_basename + "_" + plot_id + ".png")
+        # plt.close()
+
+        # # Canonical coordinates evolution plot
+        # plot_id = 'coord'
+        # plot_ids.append(plot_id)
+
+        # fig = plt.figure()
+        # ax = fig.add_subplot(111)
+        # plt.plot(sim_results.t, sim_results.y[0], label='q(t)')
+        # plt.plot(sim_results.t, sim_results.y[1], label='p(t)')
+        # plt.xlabel('t')
+        # plt.ylabel('Canonical coordinate')
+        # plt.title('Canonical coordinates evolution')
+        # plt.legend()
+        # plt.savefig(PATH_PLOTS + plot_basename + "_" + plot_id + ".png")
+        # plt.close()
+
+        ###########################################################################
+        # NOT using pyplot (RECOMMENDED, read comments provided after imports)    #
+        ###########################################################################
+
+        ##################### Phase space trajectory plot #####################
+        plot_query_value = PlotQueryValues_HO.phase.value
+        plot_query_values.append(plot_query_value)
+
+        xlim = max(abs(sim_results.y[0]))
+        ylim = max(abs(sim_results.y[1]))
+        ax_lim = max([xlim, ylim]) * 1.05
+        dashed_line = [[-ax_lim, ax_lim], [0, 0]]
+
+        fig = Figure()
+        ax = fig.add_subplot(111)
+        ax.plot(sim_results.y[0], sim_results.y[1])
+        ax.plot(dashed_line[0], dashed_line[1], 'k--')
+        ax.plot(dashed_line[1], dashed_line[0], 'k--')
+        ax.set_aspect('equal', adjustable='box')
+        ax.set_xlabel('q')
+        ax.set_ylabel('p')
+        # ax.set_title('Phase space')
+        ax.set_xlim(-ax_lim, ax_lim)
+        ax.set_ylim(-ax_lim, ax_lim)
+        fig.tight_layout()
+        fig.savefig(PATH_PLOTS + plot_basename + "_" + plot_query_value + ".png")
+        
+
+        ################ Canonical coordinates evolution plot #################
+        plot_query_value = PlotQueryValues_HO.coord.value
+        plot_query_values.append(plot_query_value)
+
+        fig = Figure()
+        ax = fig.add_subplot(111)
+        ax.plot(sim_results.t, sim_results.y[0], label='q(t)')
+        ax.plot(sim_results.t, sim_results.y[1], label='p(t)')
+        ax.set_xlabel('t')
+        ax.set_ylabel('Canonical coordinate')
+        # ax.set_title('Canonical coordinates evolution')
+        ax.legend()
+        fig.tight_layout()
+        fig.savefig(PATH_PLOTS + plot_basename + "_" + plot_query_value + ".png")
     
-    ################################
-    # Using pyplot (not recommended)
-    ################################
-    # # Phase space trajectory plot
-    # plot_id = 'phase'
-    # plot_ids.append(plot_id)
+    elif system == SimSystem.ChenLee:
+        
+        ########################## 3D Phase portrait ##########################
+        plot_query_value = PlotQueryValues_ChenLee.threeD.value
+        plot_query_values.append(plot_query_value)
+        
+        # Plot limits
+        limx = 1.05 * max(abs(sim_results.y[0]))
+        limy = 1.05 * max(abs(sim_results.y[1]))
+        limz = 1.05 * max(abs(sim_results.y[2]))
+        xlim = (-limx, limx)
+        ylim = (-limy, limy)
+        zlim = (0, limz)
 
-    # fig = plt.figure()
-    # ax = fig.add_subplot(111)
-    # plt.plot(sim_results.y[0], sim_results.y[1])
-    # ax.set_aspect('equal', adjustable='box')
-    # plt.xlabel('q')
-    # plt.ylabel('p')
-    # plt.title('Phase space')
-    # plt.savefig(PATH_PLOTS + plot_basename + "_" + plot_id + ".png")
-    # plt.close()
-
-    # # Canonical coordinates evolution plot
-    # plot_id = 'coord'
-    # plot_ids.append(plot_id)
-
-    # fig = plt.figure()
-    # ax = fig.add_subplot(111)
-    # plt.plot(sim_results.t, sim_results.y[0], label='q(t)')
-    # plt.plot(sim_results.t, sim_results.y[1], label='p(t)')
-    # plt.xlabel('t')
-    # plt.ylabel('Canonical coordinate')
-    # plt.title('Canonical coordinates evolution')
-    # plt.legend()
-    # plt.savefig(PATH_PLOTS + plot_basename + "_" + plot_id + ".png")
-    # plt.close()
-
-    ###########################################################################
-    # NOT using pyplot (RECOMMENDED, read comments provided after imports)    #
-    ###########################################################################
-
-    # Phase space trajectory plot
-    plot_query_value = 'phase'
-    plot_query_values.append(plot_query_value)
-
-    xlim = max(abs(sim_results.y[0]))
-    ylim = max(abs(sim_results.y[1]))
-    ax_lim = max([xlim, ylim]) * 1.05
-    dashed_line = [[-ax_lim, ax_lim], [0, 0]]
-
-    fig = Figure()
-    ax = fig.add_subplot(111)
-    ax.plot(sim_results.y[0], sim_results.y[1])
-    ax.plot(dashed_line[0], dashed_line[1], 'k--')
-    ax.plot(dashed_line[1], dashed_line[0], 'k--')
-    ax.set_aspect('equal', adjustable='box')
-    ax.set_xlabel('q')
-    ax.set_ylabel('p')
-    # ax.set_title('Phase space')
-    ax.set_xlim(-ax_lim, ax_lim)
-    ax.set_ylim(-ax_lim, ax_lim)
-    fig.tight_layout()
-    fig.savefig(PATH_PLOTS + plot_basename + "_" + plot_query_value + ".png")
-    
-
-    # Canonical coordinates evolution plot
-    plot_query_value = 'coord'
-    plot_query_values.append(plot_query_value)
-
-    fig = Figure()
-    ax = fig.add_subplot(111)
-    ax.plot(sim_results.t, sim_results.y[0], label='q(t)')
-    ax.plot(sim_results.t, sim_results.y[1], label='p(t)')
-    ax.set_xlabel('t')
-    ax.set_ylabel('Canonical coordinate')
-    # ax.set_title('Canonical coordinates evolution')
-    ax.legend()
-    fig.tight_layout()
-    fig.savefig(PATH_PLOTS + plot_basename + "_" + plot_query_value + ".png")
+        fig = Figure() # figsize=(12,10))
+        ax = fig.gca(projection='3d')    #Parametric 3D curve
+        ax.plot(
+            sim_results.y[0],
+            sim_results.y[1],
+            sim_results.y[2]
+        )
+        ax.set_xlabel('$\Omega_x$')
+        ax.set_ylabel('$\Omega_y$')
+        ax.set_zlabel('$\Omega_z$')
+        ax.set_zlim(*zlim)
+        ax.set_xlim(*xlim)
+        ax.set_ylim(*ylim)
+        fig.tight_layout()
+        fig.savefig(PATH_PLOTS + plot_basename + "_" + plot_query_value + ".png")
     
     return plot_query_values
 

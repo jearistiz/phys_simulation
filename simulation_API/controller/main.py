@@ -58,7 +58,6 @@ async def index(request: Request):
 
     route_simulate = app.url_path_for("frontend_simulate")
     route_results = app.url_path_for("frontend_results")
-    print(route_results)
 
     return templates.TemplateResponse(
         "index.html", 
@@ -100,12 +99,12 @@ async def simulate_sim_system(request: Request,
     sim_form = SysSimForm()
 
     return templates.TemplateResponse(
-        f"{sim_system.value.lower()}.html",
+        f"request-simulation.html",
         {
             "sim_system": str(sim_system.value),
             "request": request,
             "integration_methods": integration_methods,
-            "error_message": error_message, 
+            "error_message": error_message,
             **sim_form.dict(),
         }
     )
@@ -371,9 +370,6 @@ async def api_results_sim_id(sim_id: str,
         "plot_query_values": plot_query_values,
         **sim_status,
     }
-
-    print(plot_query_values)
-    print(sim_status_complete)
 
     return SimStatus(**sim_status_complete)
 

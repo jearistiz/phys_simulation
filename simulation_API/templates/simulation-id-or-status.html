@@ -44,6 +44,10 @@
                 <td style="color: {{color}}"><b>{{"True" if success else "False"}}</b></td>
             </tr>
             <tr>
+                <td>Message</td>
+                <td>{{message}}</td>
+            </tr>
+            <tr>
                 <td >System</td>
                 <td >{{system}}</td>
             </tr>
@@ -82,11 +86,11 @@
                     <td ><a class="btn btn-primary" href={{route_plot}}>Download</a></td>
                 </tr>
                 {% endfor %}
+                <tr>
+                    <td >Results Summary</td>
+                    <td ><a class="btn btn-primary" href="/results/{{system}}/{{sim_id}}">See Online</a></td>
+                </tr>
             {% endif %}
-            <tr>
-                <td >Results Summary</td>
-                <td ><a class="btn btn-primary" href="/results/{{system}}/{{sim_id}}">See Online</a></td>
-            </tr>
         {% endif %}
         </tbody>
     </table>

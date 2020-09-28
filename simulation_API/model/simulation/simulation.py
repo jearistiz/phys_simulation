@@ -216,3 +216,129 @@ class HarmonicOsc1D(Simulation):
         self.results = solve_ivp(self.h_eqns, self.t_span, self.ini_cndtn,
                                  self.method, self.t_eval)
         return self.results
+
+
+class ChenLeeAttractor(Simulation):
+    """Simulates Chen-Lee Attractor
+    
+    Notes
+    -----
+    Reference: https://doi.org/10.1016/j.chaos.2003.12.034
+    """
+    system = "Chen-Lee-Attractor"
+
+    def __init__(self,
+                 t_span: Optional[Tuple[float, float]] = [0, 400], 
+                 t_eval: Optional[tuple] = None,
+                 ini_cndtn: List[float] = [10., 10., 0.,],
+                 params: dict = {"a": 3., "b": - 5., "c": - 1.},
+                 method: str = 'RK45',
+                 user_name: Optional[str] = None) -> None:
+        """Extends __init__ from Simulation
+        
+        Adds `a`, `b` and `c` to Simulation's attributes.
+        
+        Parameters
+        ----------
+        t_span : 2-tuple of floats
+            Interval of integration (t0, tf). The solver starts with t=t0 and
+            integrates until it reaches t=tf.
+        t_eval : array_like or None, optional
+            Times at which to store the computed solution, must be sorted and
+            lie within t_span. If None (default), use points selected by the
+            solver.
+        a : float
+            Wx parameter.
+        b : float
+            Wy parameter.
+        c : float
+            Wz parameter.
+        ini_cndtn : array_like, shape (2,)
+            Initial condition of 1D Harmonic Oscillator. Convention: [q0, p0].
+            Default is [0., 1.]. A list of initial conditions can be used, in 
+            this case a list of solutions will be returned by `simulate` method.
+        params : dict, optional
+            Contains all the parameters of the simulation.
+            Default is  {"m": 1., "k": 1.}. Signature must match
+                `{
+                    "m": float,
+                    "k": float,
+                }`
+        method : str, optional
+            Method of integration, varies depending on simulation. See
+            avaliable methods on `scipy.integrate.solve_ivp` documentation.
+            Default is 'RK45'.
+        user_name : str, optional
+            Username that called the simulation.
+        """
+        super().__init__(t_span, t_eval, ini_cndtn, params, method, user_name)
+        self.a = params["a"]
+        self.b = params["b"]
+        self.c = params["c"]
+    
+    def dyn_sys_eqns(self, t: float, w: List[float]) -> List[float]:
+        """Chen-Lee Dynamical system definition
+        
+        Parameters
+        ----------
+        w : list
+            Vector of angular velocity.
+        t : float
+            Time.
+        
+        Returns
+        -------
+        dwdt : List[Float]
+            Dynamical system equations of chen lee attractor for given
+            parameters and angular velocity.
+        """
+        wx, wy, wz = w
+        dwdt = [
+            - wy * wz + self.a * wx,
+            wz * wx + self.b * wy,
+            (wx * wy / 3.) + self.c * wz,
+        ]
+        return dwdt
+
+    def simulate(self) -> OdeResult:
+        """Simulates 1d harmonic oscillator using `scipy.integrate.solve_ivp`
+        
+        Returns
+        -------
+        self.results : OdeResult
+            Bunch object with the following fields defined:
+                t : ndarray, shape (n_points,)
+                    Time points.
+                y : ndarray, shape (n, n_points)
+                    Values of the solution at t.
+                sol : OdeSolution or None
+                    Found solution as OdeSolution instance; None if 
+                    dense_output was set to False.
+                t_events : list of ndarray or None
+                    Contains for each event type a list of arrays at which an
+                    event of that type event was detected. None if events was
+                    None.
+                y_events : list of ndarray or None
+                    For each value of t_events, the corresponding value of the
+                    solution. None if events was None.
+                nfev : int
+                    Number of evaluations of the right-hand side.
+                njev : int
+                    Number of evaluations of the Jacobian.
+                nlu : int
+                    Number of LU decompositions.
+                status : int
+                    Reason for algorithm termination:
+                        -1: Integration step failed.
+                        0: The solver successfully reached the end of tspan.
+                        1: A termination event occurred.
+                message : string
+                    Human-readable description of the termination reason.
+                success : bool
+                    True if the solver reached the interval end or a
+                    termination event occurred (status >= 0).
+        """
+        # Update self.results with simulation results
+        self.results = solve_ivp(self.dyn_sys_eqns, self.t_span, self.ini_cndtn,
+                                 self.method, self.t_eval)
+        return self.results

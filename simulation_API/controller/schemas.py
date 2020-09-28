@@ -6,6 +6,18 @@ from pydantic import BaseModel
 from scipy.integrate._ivp.ivp import OdeResult
 from numpy import pi, linspace
 
+"""How to add a new system to this API?
+
+    1)  Add Simulation in simulations module and test it. 
+    2)  Add the relevant simulation to Simulations dict located in __init__
+        in simulations module.
+    3)  Add relevant schemas and models to schemas.py
+    4)  Add relevant form entries in frontend.
+    4)  Add relevant plots to _plot_solution in tasks.py –do not forget to add.
+        plot_query_value for each plot.
+    5)  Add frontend results HTML template to show plots.
+"""
+
 
 ###############################################################################
 ################### Schemas needed in main.py and tasks.py ####################
@@ -25,13 +37,14 @@ class SimSystem(str, Enum):
     """
     HO = "Harmonic-Oscillator"
     QHO = "Quantum-Harmonic-Oscillator"
+    ChenLee = "Chen-Lee-Attractor"
 
 
 
 ######################## Available Integration Methods ########################
 
 # Enum needed to verify correct values with API
-# NOTE: Needs update each time a new simulation is added
+# NOTE: Update this with relevant parameters
 class IntegrationMethods(str, Enum):
     """List of available integration methods"""
     RK45 = "RK45"
@@ -81,6 +94,16 @@ class QHOSimForm(SimForm):
     pass
 
 
+class ChenLeeSimForm(SimForm):
+    sim_sys: SimSystem = SimSystem.ChenLee.value
+    ini0: Optional[float] = 10.0
+    ini1: Optional[float] = 10.0
+    ini2: Optional[float] = 0.0
+    param0: Optional[float] = 3.0
+    param1: Optional[float] = - 5.0
+    param2: Optional[float] = - 1.0
+
+
 
 ############################ Simulation Parameters ############################
 
@@ -90,11 +113,31 @@ class HOParams(BaseModel):
     m: float    # Mass
     k: float    # Force constant
 
+
+class QHOParams(BaseModel):
+    pass
+
+
+class ChenLeeParams(BaseModel):
+    a: float
+    b: float
+    c: float
+
+
+# Maps each system to its parameters (used in backend)
+# NOTE Needs update each time a new system is added
+SimSystem_to_SimParams = {
+    SimSystem.HO.value: HOParams,
+    SimSystem.QHO.value: QHOParams,
+    SimSystem.ChenLee.value: ChenLeeParams,
+}
+
 # Maps systems to pydantic schemas used in route "/simulate/{sim_system}"
 # NOTE Needs update each time a new system is added (add new entry in dict).
 SimFormDict = {
     SimSystem.HO.value: HOSimForm,
     SimSystem.QHO.value: QHOSimForm,
+    SimSystem.ChenLee.value: ChenLeeSimForm
 }
 
 # This dicts map different conventions for simulation parameter names 
@@ -105,12 +148,18 @@ params_mapping_HO = {
     "param1": "k",
 }
 params_mapping_QHO = {}
+params_mapping_ChenLee = {
+    "param0": "a",
+    "param1": "b",
+    "param2": "c",
+}
 
 # This dict maps each system to its parameter change-of-convention
-# dictionary defined above. inv_... maps to the inverse transformation
+# dictionary defined above (used in frontend simulation request)
 system_to_params_dict = {
     SimSystem.HO.value: params_mapping_HO,
     SimSystem.QHO.value: params_mapping_QHO,
+    SimSystem.ChenLee.value: params_mapping_ChenLee,
 }
 
 
@@ -125,15 +174,16 @@ class SimRequest(BaseModel):
     in simulation.py to understand them. 
     """
     system: SimSystem = SimSystem.HO
-    t_span: Optional[List[float]] = [0, 2 * pi]
-    t_eval: Optional[List[float]] = list(linspace(0, 2 * pi, 20))
-    ini_cndtn: Optional[List[float]] = [1, 0]
-    params: Optional[HOParams] = HOParams(m=1, k=1)
+    t_span: List[float] = []
+    t_eval: Optional[List[float]] = []
+    t_steps: Optional[int] = 0
+    ini_cndtn: List[float] = []
+    params: Dict[str, float]
     method: Optional[IntegrationMethods] = 'RK45'
     # The backend will assign a sim_id, so it is not necessary to provide one.
     sim_id: Optional[str] = None
     # If we implement logging, user_id will be handled by backend
-    user_id: Optional[int]
+    user_id: Optional[int] = 0
     username: str = "Pepito Perez"
 
 
@@ -144,12 +194,12 @@ class SimIdResponse(BaseModel):
     """Schema for the response of a simulation request via POST to route
     "/api/simulate/{sim_sys}"
     """
-    sim_id : str
-    user_id : int
-    username : str
-    sim_sys : SimSystem
-    sim_status_path : str
-    sim_pickle_path : str
+    sim_id : Optional[str]
+    user_id : Optional[int]
+    username : Optional[str]
+    sim_sys : Optional[SimSystem]
+    sim_status_path : Optional[str]
+    sim_pickle_path : Optional[str]
     message : Optional[str]
 
 
@@ -169,9 +219,17 @@ class PlotQueryValues_QHO(str, Enum):
     pass
 
 
-# NOTE This list needs uptade each time a new simulation is added 
-# NOTE (add new entry with name of new class)
-PlotQueryValues = Union[PlotQueryValues_HO, PlotQueryValues_QHO]
+class PlotQueryValues_ChenLee(str, Enum):
+    threeD = "threeD"
+    pass
+
+
+# NOTE Needs update each time a new system is added (new entry w/ name of new class)
+PlotQueryValues = Union[
+    PlotQueryValues_HO,
+    PlotQueryValues_QHO,
+    PlotQueryValues_ChenLee
+]
 
 
 
@@ -249,6 +307,10 @@ class PlotCaptions_HO(str, Enum):
 
 class PlotCaptions_QHO(str, Enum):
     pass
+
+
+class PlotCaptions_ChenLee(str, Enum):
+    threeD = "3D Phase Space Plot"
 
 
 
@@ -361,7 +423,9 @@ class ParameterDBSchCreate(ParameterDBSchBase):
 
 na_message = "Simulation of the system you requested is not available."
 sim_id_not_found_message = "The simulation ID (sim_id) you provided is not " \
-                           "in our database."
+                           "in our database. If you are sure about the " \
+                           "sim_id you provided, there was an internal " \
+                           "server error, please request your simulation again."
 sim_status_finished_message = "Finished. You can request via GET: download " \
                               "simulation results (pickle) in route given " \
                               "in 'route_pickle', or; download plots of " \
