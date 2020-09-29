@@ -342,3 +342,6 @@ class ChenLeeAttractor(Simulation):
         self.results = solve_ivp(self.dyn_sys_eqns, self.t_span, self.ini_cndtn,
                                  self.method, self.t_eval)
         return self.results
+    
+if __name__ == "__main__":
+    pass

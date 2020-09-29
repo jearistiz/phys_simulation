@@ -36,7 +36,6 @@ class SimSystem(str, Enum):
     won't be simulated by the backend.
     """
     HO = "Harmonic-Oscillator"
-    QHO = "Quantum-Harmonic-Oscillator"
     ChenLee = "Chen-Lee-Attractor"
 
 
@@ -89,11 +88,6 @@ class HOSimForm(SimForm):
     param1: Optional[float] = 1.0
 
 
-class QHOSimForm(SimForm):
-    """Schema used to Request Q. Harmonic Osc. Simulation in Frontend via form"""
-    pass
-
-
 class ChenLeeSimForm(SimForm):
     sim_sys: SimSystem = SimSystem.ChenLee.value
     ini0: Optional[float] = 10.0
@@ -114,10 +108,6 @@ class HOParams(BaseModel):
     k: float    # Force constant
 
 
-class QHOParams(BaseModel):
-    pass
-
-
 class ChenLeeParams(BaseModel):
     a: float
     b: float
@@ -128,7 +118,6 @@ class ChenLeeParams(BaseModel):
 # NOTE Needs update each time a new system is added
 SimSystem_to_SimParams = {
     SimSystem.HO.value: HOParams,
-    SimSystem.QHO.value: QHOParams,
     SimSystem.ChenLee.value: ChenLeeParams,
 }
 
@@ -136,7 +125,6 @@ SimSystem_to_SimParams = {
 # NOTE Needs update each time a new system is added (add new entry in dict).
 SimFormDict = {
     SimSystem.HO.value: HOSimForm,
-    SimSystem.QHO.value: QHOSimForm,
     SimSystem.ChenLee.value: ChenLeeSimForm
 }
 
@@ -147,7 +135,6 @@ params_mapping_HO = {
     "param0": "m",
     "param1": "k",
 }
-params_mapping_QHO = {}
 params_mapping_ChenLee = {
     "param0": "a",
     "param1": "b",
@@ -158,7 +145,6 @@ params_mapping_ChenLee = {
 # dictionary defined above (used in frontend simulation request)
 system_to_params_dict = {
     SimSystem.HO.value: params_mapping_HO,
-    SimSystem.QHO.value: params_mapping_QHO,
     SimSystem.ChenLee.value: params_mapping_ChenLee,
 }
 
@@ -215,20 +201,15 @@ class PlotQueryValues_HO(str, Enum):
     phase = "phase"
 
 
-class PlotQueryValues_QHO(str, Enum):
-    pass
-
-
 class PlotQueryValues_ChenLee(str, Enum):
     threeD = "threeD"
-    pass
+    project = "project"
 
 
 # NOTE Needs update each time a new system is added (new entry w/ name of new class)
 PlotQueryValues = Union[
     PlotQueryValues_HO,
-    PlotQueryValues_QHO,
-    PlotQueryValues_ChenLee
+    PlotQueryValues_ChenLee,
 ]
 
 
@@ -250,7 +231,7 @@ class SimStatus(BaseModel):
     algong with some metadata. This is what the API returns when someone
     requests a simulation via /api/simulate/{system}/ with method=post.
     
-    Atributes
+    Attributes
     ---------
     sim_id : int
         ID number of simulation.
@@ -280,7 +261,7 @@ class SimStatus(BaseModel):
     date: datetime
 
     # Simulation-related attributes
-    system: SimSystem
+    system: Optional[SimSystem]
     ini_cndtn: Optional[List[float]]
     params: Optional[Dict[str, float]]
     method: Optional[IntegrationMethods]
@@ -292,25 +273,9 @@ class SimStatus(BaseModel):
     plot_query_values: Optional[List[PlotQueryValues]]
     plot_query_receipe: Optional[str] = \
         "'route_plots' + '?value=' + 'plot_query_value'"
-    success : bool
+    success : Optional[bool]
     message : Optional[str]
 
-
-
-########## Plot Captions shown in forntend, depending on the system. ##########
-
-# NOTE Needs update each time a new system is added (add a new class).
-class PlotCaptions_HO(str, Enum):
-    coord = "Canoniacl Coordinates"
-    phase = "Phase Space"
-
-
-class PlotCaptions_QHO(str, Enum):
-    pass
-
-
-class PlotCaptions_ChenLee(str, Enum):
-    threeD = "3D Phase Space Plot"
 
 
 
@@ -423,9 +388,10 @@ class ParameterDBSchCreate(ParameterDBSchBase):
 
 na_message = "Simulation of the system you requested is not available."
 sim_id_not_found_message = "The simulation ID (sim_id) you provided is not " \
-                           "in our database. If you are sure about the " \
-                           "sim_id you provided, there was an internal " \
-                           "server error, please request your simulation again."
+                           "yet in our database. If you are sure about the " \
+                           "sim_id you provided, either your simulation has " \
+                           "not finished or there was an internal server " \
+                           "error. Please come back latter and check."
 sim_status_finished_message = "Finished. You can request via GET: download " \
                               "simulation results (pickle) in route given " \
                               "in 'route_pickle', or; download plots of " \

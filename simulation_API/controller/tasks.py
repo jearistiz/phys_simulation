@@ -46,8 +46,10 @@ And also: 'In general, the simplest solution when using
 Matplotlib in a web server is to completely avoid using pyplot.'
 
 Next line of code is only needed if using pyplot (which is not recommended)
-"""
+
 # mpl.use('Agg')
+
+"""
 
 
 def _api_simulation_request(sim_system: SimSystem,
@@ -107,7 +109,7 @@ def _api_simulation_request(sim_system: SimSystem,
                "status in route 'sim_status_path' or download your results" \
                "(pickle fomat) via GET in route 'sim_pickle_path'"
     message2 = na_message
-    message = message1 if (sim_params.system in SimSystem and sim_params.system != SimSystem.QHO) else message2
+    message = message1 if sim_params.system in SimSystem else message2
 
     sim_id_response = SimIdResponse(
         sim_id=sim_params.sim_id,
@@ -167,7 +169,7 @@ def _run_simulation(sim_params: SimRequest) -> None:
     }
 
     try:
-        if (system in SimSystem) and (system != SimSystem.QHO):
+        if system in SimSystem:
             # Run simulation and get results as returned by scipy.integrate.solve_ivp
             LocalSimulation = Simulations[system.value]
             simulation_instance = LocalSimulation(**sim_params)
@@ -201,7 +203,7 @@ def _run_simulation(sim_params: SimRequest) -> None:
     
     # Create and save plots
     plot_query_values = _plot_solution(SimResults(sim_results=simulation),
-                                       system, PATH_PLOTS, sim_id)
+                                       system, sim_id)
 
     # Save simulation status in database
     create_simulation_status_db = SimulationDBSchCreate(
@@ -243,7 +245,7 @@ def _run_simulation(sim_params: SimRequest) -> None:
 
 
 def _plot_solution(sim_results: SimResults, system: SimSystem,
-                   path: str = '', plot_basename: str = "00000") -> list:
+                   plot_basename: str = "00000") -> list:
     """Plot solutions. Right now only support Harmonic Oscillator plots"""
     # Get simulation results as OdeResult instance
     
@@ -318,6 +320,7 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
         plot_query_values.append(plot_query_value)
 
         fig = Figure()
+
         ax = fig.add_subplot(111)
         ax.plot(sim_results.t, sim_results.y[0], label='q(t)')
         ax.plot(sim_results.t, sim_results.y[1], label='p(t)')
@@ -325,6 +328,7 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
         ax.set_ylabel('Canonical coordinate')
         # ax.set_title('Canonical coordinates evolution')
         ax.legend()
+
         fig.tight_layout()
         fig.savefig(PATH_PLOTS + plot_basename + "_" + plot_query_value + ".png")
     
@@ -347,7 +351,8 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
         ax.plot(
             sim_results.y[0],
             sim_results.y[1],
-            sim_results.y[2]
+            sim_results.y[2],
+            c='navy'
         )
         ax.set_xlabel('$\Omega_x$')
         ax.set_ylabel('$\Omega_y$')
@@ -357,6 +362,61 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
         ax.set_ylim(*ylim)
         fig.tight_layout()
         fig.savefig(PATH_PLOTS + plot_basename + "_" + plot_query_value + ".png")
+
+        ##################### Phase portrait projections ######################
+        mpl.rcParams.update({'font.size': 25})
+
+        plot_query_value = PlotQueryValues_ChenLee.project.value
+        plot_query_values.append(plot_query_value)
+
+        nrows = 1
+        ncols = 3
+
+        fig = Figure(figsize=(20,10))
+        
+        ax = fig.add_subplot(nrows, ncols, 1)
+        ax.plot(
+            sim_results.y[0],
+            sim_results.y[1],
+            label='Phase portrait $\Omega_x\Omega_y$',
+            c='indianred'
+        )
+        ax.legend(loc='best')
+        ax.set_xlabel('$\Omega_x$')
+        ax.set_ylabel('$\Omega_y$')
+        ax.set_xlim(*xlim)
+        ax.set_ylim(*ylim)
+        
+        ax = fig.add_subplot(nrows, ncols, 2)
+        ax.plot(
+            sim_results.y[1],
+            sim_results.y[2],
+            label='Phase portrait $\Omega_y\Omega_z$',
+            c='navy'
+        )
+        ax.legend(loc='best')
+        ax.set_xlabel('$\Omega_y$')
+        ax.set_ylabel('$\Omega_z$')
+        ax.set_xlim(*ylim)
+        ax.set_ylim(*zlim)
+        
+        ax = fig.add_subplot(nrows, ncols, 3)
+        ax.plot(
+            sim_results.y[0],
+            sim_results.y[2],
+            label='Phase portrait $\Omega_x\Omega_z$',
+            c='olive'
+        )
+        ax.legend(loc='best')
+        ax.set_xlabel('$\Omega_x$')
+        ax.set_ylabel('$\Omega_z$')
+        ax.set_xlim(*xlim)
+        ax.set_ylim(*zlim)
+        
+        fig.tight_layout()
+        fig.savefig(PATH_PLOTS + plot_basename + "_" + plot_query_value + ".png")
+
+        mpl.rcParams.update({'font.size': 17})
     
     return plot_query_values
 
