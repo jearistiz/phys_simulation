@@ -13,7 +13,6 @@ documentation
 .vscode/
 *.pickle
 *.png
-docs
 
 # User-specific files
 *.rsuser

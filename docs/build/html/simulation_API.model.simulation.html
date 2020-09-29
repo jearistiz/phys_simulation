@@ -1,0 +1,462 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>simulation_API.model.simulation package &#8212; Simulation FastAPI 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="simulation_API.model.db package" href="simulation_API.model.db.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="simulation_API.model.db.html" title="simulation_API.model.db package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Simulation FastAPI 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >simulation_API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="simulation_API.html" >simulation_API package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="simulation_API.model.html" accesskey="U">simulation_API.model package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">simulation_API.model.simulation package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="simulation-api-model-simulation-package">
+<h1>simulation_API.model.simulation package<a class="headerlink" href="#simulation-api-model-simulation-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="simulation-api-model-simulation-demo-run-simulation-module">
+<h2>simulation_API.model.simulation.demo_run_simulation module<a class="headerlink" href="#simulation-api-model-simulation-demo-run-simulation-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-simulation_API.model.simulation.simulation">
+<span id="simulation-api-model-simulation-simulation-module"></span><h2>simulation_API.model.simulation.simulation module<a class="headerlink" href="#module-simulation_API.model.simulation.simulation" title="Permalink to this headline">¶</a></h2>
+<p>This module simulates mechanical systems</p>
+<dl class="py class">
+<dt id="simulation_API.model.simulation.simulation.ChenLeeAttractor">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.simulation.simulation.</code><code class="sig-name descname">ChenLeeAttractor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t_span</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Tuple<span class="p">[</span>float<span class="p">, </span>float<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[0, 400]</span></em>, <em class="sig-param"><span class="n">t_eval</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>tuple<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ini_cndtn</span><span class="p">:</span> <span class="n">List<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[10.0, 10.0, 0.0]</span></em>, <em class="sig-param"><span class="n">params</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">{'a': 3.0, 'b': - 5.0, 'c': - 1.0}</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'RK45'</span></em>, <em class="sig-param"><span class="n">user_name</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.simulation.simulation.ChenLeeAttractor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulation_API.model.simulation.simulation.Simulation" title="simulation_API.model.simulation.simulation.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulation_API.model.simulation.simulation.Simulation</span></code></a></p>
+<p>Simulates Chen-Lee Attractor</p>
+<p class="rubric">Notes</p>
+<p>Reference: <a class="reference external" href="https://doi.org/10.1016/j.chaos.2003.12.034">https://doi.org/10.1016/j.chaos.2003.12.034</a></p>
+<dl class="py method">
+<dt id="simulation_API.model.simulation.simulation.ChenLeeAttractor.dyn_sys_eqns">
+<code class="sig-name descname">dyn_sys_eqns</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">w</span><span class="p">:</span> <span class="n">List<span class="p">[</span>float<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>float<span class="p">]</span><a class="headerlink" href="#simulation_API.model.simulation.simulation.ChenLeeAttractor.dyn_sys_eqns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Chen-Lee Dynamical system definition</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>w</strong> (<em>list</em>) – Vector of angular velocity.</p></li>
+<li><p><strong>t</strong> (<em>float</em>) – Time.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dwdt</strong> – Dynamical system equations of chen lee attractor for given
+parameters and angular velocity.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="simulation_API.model.simulation.simulation.ChenLeeAttractor.simulate">
+<code class="sig-name descname">simulate</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; scipy.integrate._ivp.ivp.OdeResult<a class="headerlink" href="#simulation_API.model.simulation.simulation.ChenLeeAttractor.simulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulates 1d harmonic oscillator using <cite>scipy.integrate.solve_ivp</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><p><strong>self.results</strong> –</p>
+<dl class="simple">
+<dt>Bunch object with the following fields defined:</dt><dd><dl class="simple">
+<dt>t<span class="classifier">ndarray, shape (n_points,)</span></dt><dd><p>Time points.</p>
+</dd>
+<dt>y<span class="classifier">ndarray, shape (n, n_points)</span></dt><dd><p>Values of the solution at t.</p>
+</dd>
+<dt>sol<span class="classifier">OdeSolution or None</span></dt><dd><p>Found solution as OdeSolution instance; None if
+dense_output was set to False.</p>
+</dd>
+<dt>t_events<span class="classifier">list of ndarray or None</span></dt><dd><p>Contains for each event type a list of arrays at which an
+event of that type event was detected. None if events was
+None.</p>
+</dd>
+<dt>y_events<span class="classifier">list of ndarray or None</span></dt><dd><p>For each value of t_events, the corresponding value of the
+solution. None if events was None.</p>
+</dd>
+<dt>nfev<span class="classifier">int</span></dt><dd><p>Number of evaluations of the right-hand side.</p>
+</dd>
+<dt>njev<span class="classifier">int</span></dt><dd><p>Number of evaluations of the Jacobian.</p>
+</dd>
+<dt>nlu<span class="classifier">int</span></dt><dd><p>Number of LU decompositions.</p>
+</dd>
+<dt>status<span class="classifier">int</span></dt><dd><dl class="simple">
+<dt>Reason for algorithm termination:</dt><dd><p>-1: Integration step failed.
+0: The solver successfully reached the end of tspan.
+1: A termination event occurred.</p>
+</dd>
+</dl>
+</dd>
+<dt>message<span class="classifier">string</span></dt><dd><p>Human-readable description of the termination reason.</p>
+</dd>
+<dt>success<span class="classifier">bool</span></dt><dd><p>True if the solver reached the interval end or a
+termination event occurred (status &gt;= 0).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>OdeResult</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.simulation.simulation.ChenLeeAttractor.system">
+<code class="sig-name descname">system</code><em class="property"> = 'Chen-Lee-Attractor'</em><a class="headerlink" href="#simulation_API.model.simulation.simulation.ChenLeeAttractor.system" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.model.simulation.simulation.HarmonicOsc1D">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.simulation.simulation.</code><code class="sig-name descname">HarmonicOsc1D</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t_span</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Tuple<span class="p">[</span>float<span class="p">, </span>float<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[0, 6.283185307179586]</span></em>, <em class="sig-param"><span class="n">t_eval</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>tuple<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ini_cndtn</span><span class="p">:</span> <span class="n">List<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[0.0, 1.0]</span></em>, <em class="sig-param"><span class="n">params</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">{'k': 1.0, 'm': 1.0}</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'RK45'</span></em>, <em class="sig-param"><span class="n">user_name</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.simulation.simulation.HarmonicOsc1D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulation_API.model.simulation.simulation.Simulation" title="simulation_API.model.simulation.simulation.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulation_API.model.simulation.simulation.Simulation</span></code></a></p>
+<p>1-D Harmonic Oscillator simulation</p>
+<dl class="py attribute">
+<dt>
+<code class="sig-name descname">In addition to Simulation's attributes</code></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.simulation.simulation.HarmonicOsc1D.m">
+<code class="sig-name descname">m</code><a class="headerlink" href="#simulation_API.model.simulation.simulation.HarmonicOsc1D.m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mass of object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.simulation.simulation.HarmonicOsc1D.k">
+<code class="sig-name descname">k</code><a class="headerlink" href="#simulation_API.model.simulation.simulation.HarmonicOsc1D.k" title="Permalink to this definition">¶</a></dt>
+<dd><p>Force constant of harmonic oscilltor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">h_eqns(self, t, y):</code></dt>
+<dd><p>Calculates hamilton’s equations for 1D-Harmonic Oscillator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="simulation_API.model.simulation.simulation.HarmonicOsc1D.simulate">
+<code class="sig-name descname">simulate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.simulation.simulation.HarmonicOsc1D.simulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulates 1d harmonic oscillator using <cite>scipy.integrate.solve_ivp</cite>.</p>
+</dd></dl>
+
+<p class="rubric">Notes</p>
+<p>The hamiltonian describing the harmonic oscillator is written as</p>
+<div class="math notranslate nohighlight">
+\[H = \sqrt{1}{2}p^2 + \sqrt{1}{2}k q^2\]</div>
+<dl class="py method">
+<dt id="simulation_API.model.simulation.simulation.HarmonicOsc1D.h_eqns">
+<code class="sig-name descname">h_eqns</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">y</span><span class="p">:</span> <span class="n">List<span class="p">[</span>float<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>float<span class="p">]</span><a class="headerlink" href="#simulation_API.model.simulation.simulation.HarmonicOsc1D.h_eqns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hamilton’s equations for 1D-Harmonic Oscillator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>float</em>) – Time of evaluation of Hamilton’s equations.</p></li>
+<li><p><strong>y</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><em>2</em><em>,</em><em>)</em>) – Canonical coordinates. Convention: [q, p].</p></li>
+<li><p><strong>m</strong> (<em>float</em>) – Mass of object. Default is <cite>self.m</cite>.</p></li>
+<li><p><strong>k</strong> (<em>float</em><em>, </em><em>optional</em>) – Force constant of harmonic oscilltor. Default is <cite>self.k</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dydt</strong> – Hamilton’s equations for 1d Harmonic Oscillator.
+dydt = [dqdt, dpdt] = [dHdp, - dHdq]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="id0">
+<code class="sig-name descname">simulate</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; scipy.integrate._ivp.ivp.OdeResult<a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulates 1d harmonic oscillator using <cite>scipy.integrate.solve_ivp</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><p><strong>self.results</strong> –</p>
+<dl class="simple">
+<dt>Bunch object with the following fields defined:</dt><dd><dl class="simple">
+<dt>t<span class="classifier">ndarray, shape (n_points,)</span></dt><dd><p>Time points.</p>
+</dd>
+<dt>y<span class="classifier">ndarray, shape (n, n_points)</span></dt><dd><p>Values of the solution at t.</p>
+</dd>
+<dt>sol<span class="classifier">OdeSolution or None</span></dt><dd><p>Found solution as OdeSolution instance; None if
+dense_output was set to False.</p>
+</dd>
+<dt>t_events<span class="classifier">list of ndarray or None</span></dt><dd><p>Contains for each event type a list of arrays at which an
+event of that type event was detected. None if events was
+None.</p>
+</dd>
+<dt>y_events<span class="classifier">list of ndarray or None</span></dt><dd><p>For each value of t_events, the corresponding value of the
+solution. None if events was None.</p>
+</dd>
+<dt>nfev<span class="classifier">int</span></dt><dd><p>Number of evaluations of the right-hand side.</p>
+</dd>
+<dt>njev<span class="classifier">int</span></dt><dd><p>Number of evaluations of the Jacobian.</p>
+</dd>
+<dt>nlu<span class="classifier">int</span></dt><dd><p>Number of LU decompositions.</p>
+</dd>
+<dt>status<span class="classifier">int</span></dt><dd><dl class="simple">
+<dt>Reason for algorithm termination:</dt><dd><p>-1: Integration step failed.
+0: The solver successfully reached the end of tspan.
+1: A termination event occurred.</p>
+</dd>
+</dl>
+</dd>
+<dt>message<span class="classifier">string</span></dt><dd><p>Human-readable description of the termination reason.</p>
+</dd>
+<dt>success<span class="classifier">bool</span></dt><dd><p>True if the solver reached the interval end or a
+termination event occurred (status &gt;= 0).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>OdeResult</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.simulation.simulation.HarmonicOsc1D.system">
+<code class="sig-name descname">system</code><em class="property"> = 'Harmonic-Oscillator'</em><a class="headerlink" href="#simulation_API.model.simulation.simulation.HarmonicOsc1D.system" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.model.simulation.simulation.Simulation">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.simulation.simulation.</code><code class="sig-name descname">Simulation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t_span</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>float<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">t_eval</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>list<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ini_cndtn</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>list<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">params</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>dict<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">user_name</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.simulation.simulation.Simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Simulation of a conservative mechanical system</p>
+<dl class="py attribute">
+<dt id="simulation_API.model.simulation.simulation.Simulation.t_span">
+<code class="sig-name descname">t_span</code><a class="headerlink" href="#simulation_API.model.simulation.simulation.Simulation.t_span" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interval of integration (t0, tf).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list of floats shape (2,) or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.simulation.simulation.Simulation.t_eval">
+<code class="sig-name descname">t_eval</code><a class="headerlink" href="#simulation_API.model.simulation.simulation.Simulation.t_eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Times at which to store the computed solution, must be sorted and
+lie within t_span.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array_like or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.simulation.simulation.Simulation.ini_cndtn">
+<code class="sig-name descname">ini_cndtn</code><a class="headerlink" href="#simulation_API.model.simulation.simulation.Simulation.ini_cndtn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial condition of simulation, its specification depends on
+the system being simulated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array_like or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.simulation.simulation.Simulation.params">
+<code class="sig-name descname">params</code><a class="headerlink" href="#simulation_API.model.simulation.simulation.Simulation.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains all the parameters of the simulation (e.g. for the harmonic
+oscillator <cite>self.params = {“m”: 1., “k”: 1.}</cite>)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.simulation.simulation.Simulation.method">
+<code class="sig-name descname">method</code><a class="headerlink" href="#simulation_API.model.simulation.simulation.Simulation.method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method of integration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.simulation.simulation.Simulation.user_name">
+<code class="sig-name descname">user_name</code><a class="headerlink" href="#simulation_API.model.simulation.simulation.Simulation.user_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Username that called the simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.simulation.simulation.Simulation.system">
+<code class="sig-name descname">system</code><a class="headerlink" href="#simulation_API.model.simulation.simulation.Simulation.system" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description of simulated system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>string or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.simulation.simulation.Simulation.date">
+<code class="sig-name descname">date</code><a class="headerlink" href="#simulation_API.model.simulation.simulation.Simulation.date" title="Permalink to this definition">¶</a></dt>
+<dd><p>UTC date and time of instantiation of object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>datetime.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.simulation.simulation.Simulation.results">
+<code class="sig-name descname">results</code><a class="headerlink" href="#simulation_API.model.simulation.simulation.Simulation.results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Results of simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Any or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="id1">
+<code class="sig-name descname">system</code><em class="property"> = None</em><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulation_API.model.simulation">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulation_API.model.simulation" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">simulation_API.model.simulation package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#simulation-api-model-simulation-demo-run-simulation-module">simulation_API.model.simulation.demo_run_simulation module</a></li>
+<li><a class="reference internal" href="#module-simulation_API.model.simulation.simulation">simulation_API.model.simulation.simulation module</a></li>
+<li><a class="reference internal" href="#module-simulation_API.model.simulation">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="simulation_API.model.db.html"
+                        title="previous chapter">simulation_API.model.db package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/simulation_API.model.simulation.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="simulation_API.model.db.html" title="simulation_API.model.db package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Simulation FastAPI 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >simulation_API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="simulation_API.html" >simulation_API package</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="simulation_API.model.html" >simulation_API.model package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">simulation_API.model.simulation package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Juan E. Aristizabal.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

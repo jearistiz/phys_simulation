@@ -1,0 +1,1290 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>simulation_API.controller package &#8212; Simulation FastAPI 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="simulation_API.model package" href="simulation_API.model.html" />
+    <link rel="prev" title="simulation_API package" href="simulation_API.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="simulation_API.model.html" title="simulation_API.model package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="simulation_API.html" title="simulation_API package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Simulation FastAPI 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >simulation_API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="simulation_API.html" accesskey="U">simulation_API package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">simulation_API.controller package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="simulation-api-controller-package">
+<h1>simulation_API.controller package<a class="headerlink" href="#simulation-api-controller-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-simulation_API.controller.main">
+<span id="simulation-api-controller-main-module"></span><h2>simulation_API.controller.main module<a class="headerlink" href="#module-simulation_API.controller.main" title="Permalink to this headline">¶</a></h2>
+<p>This file manages all requests that are made to our app
+TODO|FIXME|BUG|HACK|NOTE|</p>
+<dl class="py function">
+<dt id="simulation_API.controller.main.api_results_sim_id">
+<em class="property">async </em><code class="sig-prename descclassname">simulation_API.controller.main.</code><code class="sig-name descname">api_results_sim_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference internal" href="#simulation_API.controller.schemas.PlotQueryValues_HO" title="simulation_API.controller.schemas.PlotQueryValues_HO">simulation_API.controller.schemas.PlotQueryValues_HO</a><span class="p">, </span><a class="reference internal" href="#simulation_API.controller.schemas.PlotQueryValues_ChenLee" title="simulation_API.controller.schemas.PlotQueryValues_ChenLee">simulation_API.controller.schemas.PlotQueryValues_ChenLee</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.main.api_results_sim_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download plot of previously requested simulation. Note one query param
+is required here. Here we use FileResponse from starlette.responses</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sim_id</strong> (<em>str</em>) – ID of the simulation.</p></li>
+<li><p><strong>value</strong> (<em>PlotQueryValues</em>) – Query values. Must be a member of one of the Enum classes given in
+PlotQueryValues.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>FileResponse</strong> – FileResponse from starlette.responses containing the requested plot.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>FileResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.controller.main.api_simulate_sim_system">
+<em class="property">async </em><code class="sig-prename descclassname">simulation_API.controller.main.</code><code class="sig-name descname">api_simulate_sim_system</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sim_system</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem">simulation_API.controller.schemas.SimSystem</a></span></em>, <em class="sig-param"><span class="n">sim_params</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.SimRequest" title="simulation_API.controller.schemas.SimRequest">simulation_API.controller.schemas.SimRequest</a></span></em>, <em class="sig-param"><span class="n">background_tasks</span><span class="p">:</span> <span class="n">starlette.background.BackgroundTasks</span></em>, <em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span> <span class="o">=</span> <span class="default_value">Depends(get_db)</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#simulation_API.controller.schemas.SimIdResponse" title="simulation_API.controller.schemas.SimIdResponse">simulation_API.controller.schemas.SimIdResponse</a><a class="headerlink" href="#simulation_API.controller.main.api_simulate_sim_system" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulate Harmonic Oscillator Using BackgroundTasks</p>
+<p>When client requests a simulation via ‘/api/simulate/{sim_system}’, he/she
+obtains relevant information on how to get the results of the simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sim_system</strong> (<a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem"><em>SimSystem</em></a>) – System to be simulated. Must be one of the members of SimSystem.</p></li>
+<li><p><strong>sim_params</strong> (<a class="reference internal" href="#simulation_API.controller.schemas.SimRequest" title="simulation_API.controller.schemas.SimRequest"><em>SimRequest</em></a>) – Simulation request information with schema given by SimRequest and
+decalared in schemas.py.</p></li>
+<li><p><strong>background_tasks</strong> (<em>BackgroundTasks</em>) – Background task FastAPI manager (Class). This is handled internally.</p></li>
+<li><p><strong>db</strong> (<em>Session</em>) – Database Session, needed to interact with database. This is handled
+internally.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>sim_id_response</strong> – JSON containing relevant info about the simulation and how to get the
+results.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#simulation_API.controller.schemas.SimIdResponse" title="simulation_API.controller.schemas.SimIdResponse">SimIdResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.controller.main.custom_http_exception_handler">
+<em class="property">async </em><code class="sig-prename descclassname">simulation_API.controller.main.</code><code class="sig-name descname">custom_http_exception_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n">starlette.requests.Request</span></em>, <em class="sig-param"><span class="n">exc</span><span class="p">:</span> <span class="n">starlette.exceptions.HTTPException</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.main.custom_http_exception_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles 404 exceptions by rendering a template.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.controller.main.get_db">
+<code class="sig-prename descclassname">simulation_API.controller.main.</code><code class="sig-name descname">get_db</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.main.get_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts and ends session in each route that needs database access</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.controller.main.index">
+<em class="property">async </em><code class="sig-prename descclassname">simulation_API.controller.main.</code><code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n">starlette.requests.Request</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.main.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Index web page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>Request</em>) – HTTP request, used internally by FastAPI.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>TemplateResponse</strong> – Renders greeting template and hyperlinks to simulation rquests and
+results.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>TemplateResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.controller.main.results">
+<em class="property">async </em><code class="sig-prename descclassname">simulation_API.controller.main.</code><code class="sig-name descname">results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n">starlette.requests.Request</span></em>, <em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span> <span class="o">=</span> <span class="default_value">Depends(get_db)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.main.results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows a list of all the available simulation results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>Request</em>) – HTTP request, used internally by FastAPI.</p></li>
+<li><p><strong>db</strong> (<em>Session</em>) – Database Session, needed to interact with database. This is handled
+internally.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>TemplateResponse</strong> – Renders template displaying all the available simulation results.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>TemplateResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.controller.main.results_sim_system_sim_id">
+<em class="property">async </em><code class="sig-prename descclassname">simulation_API.controller.main.</code><code class="sig-name descname">results_sim_system_sim_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n">starlette.requests.Request</span></em>, <em class="sig-param"><span class="n">sim_system</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem">simulation_API.controller.schemas.SimSystem</a></span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.main.results_sim_system_sim_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show graphic results of simulation in frontend for given sim_id</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>Request</em>) – HTTP request, used internally by FastAPI.</p></li>
+<li><p><strong>sim_system</strong> (<a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem"><em>SimSystem</em></a>) – System to be simulated. Must be one of the members of SimSystem.</p></li>
+<li><p><strong>sim_id</strong> (<em>str</em>) – ID of the simulation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>TemplateResponse</strong> – Renders a template displaying all the generated plots for a given
+simulation.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>TemplateResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.controller.main.simulate">
+<em class="property">async </em><code class="sig-prename descclassname">simulation_API.controller.main.</code><code class="sig-name descname">simulate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n">starlette.requests.Request</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.main.simulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulate web page.</p>
+<p>Here the users can select between the available systems to simulate the one
+they choose.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>request</strong> (<em>Request</em>) – HTTP request, used internally by FastAPI.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>TemplateResponse</strong> – Renders template displaying the available systems to be simulated.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>TemplateResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.controller.main.simulate_id_sim_id">
+<em class="property">async </em><code class="sig-prename descclassname">simulation_API.controller.main.</code><code class="sig-name descname">simulate_id_sim_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n">starlette.requests.Request</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.main.simulate_id_sim_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows simulation id after asking for simulation in frontend form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>Request</em>) – HTTP request, used internally by FastAPI.</p></li>
+<li><p><strong>sim_id</strong> (<em>str</em>) – ID of the simulation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>TemplateResponse</strong> – Renders template displaying the simulation ID and a hyperlink to
+further information about the simulation.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>TemplateResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.controller.main.simulate_post_form">
+<em class="property">async </em><code class="sig-prename descclassname">simulation_API.controller.main.</code><code class="sig-name descname">simulate_post_form</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n">starlette.requests.Request</span></em>, <em class="sig-param"><span class="n">sim_system</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem">simulation_API.controller.schemas.SimSystem</a></span></em>, <em class="sig-param"><span class="n">background_tasks</span><span class="p">:</span> <span class="n">starlette.background.BackgroundTasks</span></em>, <em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span> <span class="o">=</span> <span class="default_value">Depends(get_db)</span></em>, <em class="sig-param"><span class="n">sim_sys</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem">simulation_API.controller.schemas.SimSystem</a></span> <span class="o">=</span> <span class="default_value">Form(Ellipsis)</span></em>, <em class="sig-param"><span class="n">username</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">Form(Ellipsis)</span></em>, <em class="sig-param"><span class="n">t0</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">Form(Ellipsis)</span></em>, <em class="sig-param"><span class="n">tf</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">Form(Ellipsis)</span></em>, <em class="sig-param"><span class="n">dt</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">Form(Ellipsis)</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.IntegrationMethods" title="simulation_API.controller.schemas.IntegrationMethods">simulation_API.controller.schemas.IntegrationMethods</a></span> <span class="o">=</span> <span class="default_value">Form(Ellipsis)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.main.simulate_post_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receives the simulation request information from the frontend form and
+requests the simulation to the backend.</p>
+<p>This route receives the form requesting a simulation (and filled in
+frontend via GET in route “/simulate/{sim_system}”). The simulation is
+internally requested using the function <cite>_api_simulation_request</cite>.
+Finally the client is redirected to the “Simulation ID” frontend web
+page, where further information about the simulation is displayed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>Request</em>) – HTTP request, used internally by FastAPI.</p></li>
+<li><p><strong>sim_system</strong> (<a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem"><em>SimSystem</em></a>) – System to be simulated. Must be one of the members of SimSystem.</p></li>
+<li><p><strong>background_tasks</strong> (<em>BackgroundTasks</em>) – Needed to request simulation to the backend (in background). Handled
+internally by the API.</p></li>
+<li><p><strong>db</strong> (<em>Session</em>) – Database Session, needed to interact with database. This is handled
+internally.</p></li>
+<li><p><strong>sim_sys</strong> (<a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem"><em>SimSystem</em></a>) – Form entry: system to be simulated. Must be one of the members of
+SimSystem.</p></li>
+<li><p><strong>username</strong> (<em>str</em>) – Form entry: name of the user requesting the simulation.</p></li>
+<li><p><strong>t0</strong> (<em>float</em>) – Form entry: initial time of simulation.</p></li>
+<li><p><strong>tf</strong> (<em>float</em>) – Form entry: final time of simulation.</p></li>
+<li><p><strong>dt</strong> (<em>float</em>) – Form entry: timestep of simulation.</p></li>
+<li><p><strong>method</strong> (<a class="reference internal" href="#simulation_API.controller.schemas.IntegrationMethods" title="simulation_API.controller.schemas.IntegrationMethods"><em>IntegrationMethods</em></a>) – Form entry: method of integration. Must be a member of
+IntegrationMethods.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Redirects the user either to “Simulation ID” frontend web page or –if
+the user made a mistake filling the form– to the form again.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>TemplateResponse or RedirectResponse</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The parameters of the form accessed by FastAPI’s Form class are only
+declared as parameters so that pydantic checks the types, but they are not
+used directly to request the simulation. Here, we access the form directly
+by using the request.form() method as can be seen in the first lines. This
+allows us a better control over the data and also to handle different type
+of forms –which depend on the simulation because parameters and initial
+conditions are intrinsically different for different systems.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.controller.main.simulate_sim_system">
+<em class="property">async </em><code class="sig-prename descclassname">simulation_API.controller.main.</code><code class="sig-name descname">simulate_sim_system</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n">starlette.requests.Request</span></em>, <em class="sig-param"><span class="n">sim_system</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem">simulation_API.controller.schemas.SimSystem</a></span></em>, <em class="sig-param"><span class="n">error_message</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.main.simulate_sim_system" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulation’s form web page.</p>
+<p>The users input the desired parameters for the simulation of their
+choosing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>Request</em>) – HTTP request, used internally by FastAPI.</p></li>
+<li><p><strong>sim_request</strong> (<a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem"><em>SimSystem</em></a>) – System to be simulated. This has to be one of the available systems
+defined in SimSystem in schemas.py</p></li>
+<li><p><strong>error_message</strong> (<em>str</em>) – Internally used by the backend to display error messages in forntend
+form.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>TemplateResponse</strong> – Renders template displaying the form.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>TemplateResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.controller.main.simulate_status_sim_id">
+<em class="property">async </em><code class="sig-prename descclassname">simulation_API.controller.main.</code><code class="sig-name descname">simulate_status_sim_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">request</span><span class="p">:</span> <span class="n">starlette.requests.Request</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span> <span class="o">=</span> <span class="default_value">Depends(get_db)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.main.simulate_status_sim_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows simulation status for a given simulation via its <cite>sim_id</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> (<em>Request</em>) – HTTP request, used internally by FastAPI.</p></li>
+<li><p><strong>sim_id</strong> (<em>str</em>) – ID of the simulation.</p></li>
+<li><p><strong>db</strong> (<em>Session</em>) – Database Session, needed to interact with database. This is handled
+internally.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>TemplateResponse</strong> – Renders a template displaying the simulation status and a hyperlinks to
+simulation results in several formats. If simulation id is not
+available, renders a message about the situation.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>TemplateResponse</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulation_API.controller.schemas">
+<span id="simulation-api-controller-schemas-module"></span><h2>simulation_API.controller.schemas module<a class="headerlink" href="#module-simulation_API.controller.schemas" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.ChenLeeParams">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">ChenLeeParams</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">a</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">b</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">c</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.ChenLeeParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ChenLeeParams.a">
+<code class="sig-name descname">a</code><em class="property">: float</em><a class="headerlink" href="#simulation_API.controller.schemas.ChenLeeParams.a" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ChenLeeParams.b">
+<code class="sig-name descname">b</code><em class="property">: float</em><a class="headerlink" href="#simulation_API.controller.schemas.ChenLeeParams.b" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ChenLeeParams.c">
+<code class="sig-name descname">c</code><em class="property">: float</em><a class="headerlink" href="#simulation_API.controller.schemas.ChenLeeParams.c" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.ChenLeeSimForm">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">ChenLeeSimForm</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">username</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Pepito'</span></em>, <em class="sig-param"><span class="n">t0</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">tf</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">6.283185307179586</span></em>, <em class="sig-param"><span class="n">dt</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3141592653589793</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.IntegrationMethods" title="simulation_API.controller.schemas.IntegrationMethods">simulation_API.controller.schemas.IntegrationMethods</a></span> <span class="o">=</span> <span class="default_value">'RK45'</span></em>, <em class="sig-param"><span class="n">sim_sys</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem">simulation_API.controller.schemas.SimSystem</a></span> <span class="o">=</span> <span class="default_value">'Chen-Lee-Attractor'</span></em>, <em class="sig-param"><span class="n">ini0</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">10.0</span></em>, <em class="sig-param"><span class="n">ini1</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">10.0</span></em>, <em class="sig-param"><span class="n">ini2</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">param0</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">3.0</span></em>, <em class="sig-param"><span class="n">param1</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">- 5.0</span></em>, <em class="sig-param"><span class="n">param2</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">- 1.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.ChenLeeSimForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulation_API.controller.schemas.SimForm" title="simulation_API.controller.schemas.SimForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulation_API.controller.schemas.SimForm</span></code></a></p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ChenLeeSimForm.ini0">
+<code class="sig-name descname">ini0</code><em class="property">: Optional<span class="p">[</span>float<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.ChenLeeSimForm.ini0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ChenLeeSimForm.ini1">
+<code class="sig-name descname">ini1</code><em class="property">: Optional<span class="p">[</span>float<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.ChenLeeSimForm.ini1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ChenLeeSimForm.ini2">
+<code class="sig-name descname">ini2</code><em class="property">: Optional<span class="p">[</span>float<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.ChenLeeSimForm.ini2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ChenLeeSimForm.param0">
+<code class="sig-name descname">param0</code><em class="property">: Optional<span class="p">[</span>float<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.ChenLeeSimForm.param0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ChenLeeSimForm.param1">
+<code class="sig-name descname">param1</code><em class="property">: Optional<span class="p">[</span>float<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.ChenLeeSimForm.param1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ChenLeeSimForm.param2">
+<code class="sig-name descname">param2</code><em class="property">: Optional<span class="p">[</span>float<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.ChenLeeSimForm.param2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ChenLeeSimForm.sim_sys">
+<code class="sig-name descname">sim_sys</code><em class="property">: <a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem">simulation_API.controller.schemas.SimSystem</a></em><a class="headerlink" href="#simulation_API.controller.schemas.ChenLeeSimForm.sim_sys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.HOParams">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">HOParams</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">m</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">k</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.HOParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<p>List of parameters of the Harmonic Oscillator system</p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.HOParams.k">
+<code class="sig-name descname">k</code><em class="property">: float</em><a class="headerlink" href="#simulation_API.controller.schemas.HOParams.k" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.HOParams.m">
+<code class="sig-name descname">m</code><em class="property">: float</em><a class="headerlink" href="#simulation_API.controller.schemas.HOParams.m" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.HOSimForm">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">HOSimForm</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">username</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Pepito'</span></em>, <em class="sig-param"><span class="n">t0</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">tf</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">6.283185307179586</span></em>, <em class="sig-param"><span class="n">dt</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3141592653589793</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.IntegrationMethods" title="simulation_API.controller.schemas.IntegrationMethods">simulation_API.controller.schemas.IntegrationMethods</a></span> <span class="o">=</span> <span class="default_value">'RK45'</span></em>, <em class="sig-param"><span class="n">sim_sys</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem">simulation_API.controller.schemas.SimSystem</a></span> <span class="o">=</span> <span class="default_value">'Harmonic-Oscillator'</span></em>, <em class="sig-param"><span class="n">ini0</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">ini1</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">param0</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">param1</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.HOSimForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulation_API.controller.schemas.SimForm" title="simulation_API.controller.schemas.SimForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulation_API.controller.schemas.SimForm</span></code></a></p>
+<p>Schema used to Request Harmonic Osc. Simulation in Frontend via form</p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.HOSimForm.ini0">
+<code class="sig-name descname">ini0</code><em class="property">: Optional<span class="p">[</span>float<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.HOSimForm.ini0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.HOSimForm.ini1">
+<code class="sig-name descname">ini1</code><em class="property">: Optional<span class="p">[</span>float<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.HOSimForm.ini1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.HOSimForm.param0">
+<code class="sig-name descname">param0</code><em class="property">: Optional<span class="p">[</span>float<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.HOSimForm.param0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.HOSimForm.param1">
+<code class="sig-name descname">param1</code><em class="property">: Optional<span class="p">[</span>float<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.HOSimForm.param1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.HOSimForm.sim_sys">
+<code class="sig-name descname">sim_sys</code><em class="property">: <a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem">simulation_API.controller.schemas.SimSystem</a></em><a class="headerlink" href="#simulation_API.controller.schemas.HOSimForm.sim_sys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.IntegrationMethods">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">IntegrationMethods</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.IntegrationMethods" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>List of available integration methods</p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.IntegrationMethods.RK23">
+<code class="sig-name descname">RK23</code><em class="property"> = 'RK23'</em><a class="headerlink" href="#simulation_API.controller.schemas.IntegrationMethods.RK23" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.IntegrationMethods.RK45">
+<code class="sig-name descname">RK45</code><em class="property"> = 'RK45'</em><a class="headerlink" href="#simulation_API.controller.schemas.IntegrationMethods.RK45" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.IntegrationMethodsFrontend">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">IntegrationMethodsFrontend</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.IntegrationMethodsFrontend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.IntegrationMethodsFrontend.RK23">
+<code class="sig-name descname">RK23</code><em class="property"> = 'Runge-Kutta 3(2)'</em><a class="headerlink" href="#simulation_API.controller.schemas.IntegrationMethodsFrontend.RK23" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.IntegrationMethodsFrontend.RK45">
+<code class="sig-name descname">RK45</code><em class="property"> = 'Runge-Kutta 5(4)'</em><a class="headerlink" href="#simulation_API.controller.schemas.IntegrationMethodsFrontend.RK45" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.ParamType">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">ParamType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.ParamType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ParamType.ini_cndtn">
+<code class="sig-name descname">ini_cndtn</code><em class="property"> = 'initial condition'</em><a class="headerlink" href="#simulation_API.controller.schemas.ParamType.ini_cndtn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ParamType.param">
+<code class="sig-name descname">param</code><em class="property"> = 'parameter'</em><a class="headerlink" href="#simulation_API.controller.schemas.ParamType.param" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.ParameterDBSch">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">ParameterDBSch</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">param_type</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.ParamType" title="simulation_API.controller.schemas.ParamType">simulation_API.controller.schemas.ParamType</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">param_key</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ini_cndtn_id</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">param_id</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.ParameterDBSch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulation_API.controller.schemas.ParameterDBSchBase" title="simulation_API.controller.schemas.ParameterDBSchBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulation_API.controller.schemas.ParameterDBSchBase</span></code></a></p>
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.ParameterDBSch.Config">
+<em class="property">class </em><code class="sig-name descname">Config</code><a class="headerlink" href="#simulation_API.controller.schemas.ParameterDBSch.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ParameterDBSch.Config.orm_model">
+<code class="sig-name descname">orm_model</code><em class="property"> = True</em><a class="headerlink" href="#simulation_API.controller.schemas.ParameterDBSch.Config.orm_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ParameterDBSch.param_id">
+<code class="sig-name descname">param_id</code><em class="property">: Optional<span class="p">[</span>int<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.ParameterDBSch.param_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.ParameterDBSchBase">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">ParameterDBSchBase</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">param_type</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.ParamType" title="simulation_API.controller.schemas.ParamType">simulation_API.controller.schemas.ParamType</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">param_key</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ini_cndtn_id</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.ParameterDBSchBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ParameterDBSchBase.ini_cndtn_id">
+<code class="sig-name descname">ini_cndtn_id</code><em class="property">: Optional<span class="p">[</span>int<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.ParameterDBSchBase.ini_cndtn_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ParameterDBSchBase.param_key">
+<code class="sig-name descname">param_key</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.ParameterDBSchBase.param_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ParameterDBSchBase.param_type">
+<code class="sig-name descname">param_type</code><em class="property">: Optional<span class="p">[</span><a class="reference internal" href="#simulation_API.controller.schemas.ParamType" title="simulation_API.controller.schemas.ParamType">simulation_API.controller.schemas.ParamType</a><span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.ParameterDBSchBase.param_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ParameterDBSchBase.sim_id">
+<code class="sig-name descname">sim_id</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.ParameterDBSchBase.sim_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ParameterDBSchBase.value">
+<code class="sig-name descname">value</code><em class="property">: Optional<span class="p">[</span>float<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.ParameterDBSchBase.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.ParameterDBSchCreate">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">ParameterDBSchCreate</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">param_type</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.ParamType" title="simulation_API.controller.schemas.ParamType">simulation_API.controller.schemas.ParamType</a></span></em>, <em class="sig-param"><span class="n">param_key</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ini_cndtn_id</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.ParameterDBSchCreate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulation_API.controller.schemas.ParameterDBSchBase" title="simulation_API.controller.schemas.ParameterDBSchBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulation_API.controller.schemas.ParameterDBSchBase</span></code></a></p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ParameterDBSchCreate.param_type">
+<code class="sig-name descname">param_type</code><em class="property">: <a class="reference internal" href="#simulation_API.controller.schemas.ParamType" title="simulation_API.controller.schemas.ParamType">simulation_API.controller.schemas.ParamType</a></em><a class="headerlink" href="#simulation_API.controller.schemas.ParameterDBSchCreate.param_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ParameterDBSchCreate.sim_id">
+<code class="sig-name descname">sim_id</code><em class="property">: str</em><a class="headerlink" href="#simulation_API.controller.schemas.ParameterDBSchCreate.sim_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.ParameterDBSchCreate.value">
+<code class="sig-name descname">value</code><em class="property">: float</em><a class="headerlink" href="#simulation_API.controller.schemas.ParameterDBSchCreate.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.PlotDBSch">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">PlotDBSch</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plot_query_value</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plot_id</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.PlotDBSch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulation_API.controller.schemas.PlotDBSchBase" title="simulation_API.controller.schemas.PlotDBSchBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulation_API.controller.schemas.PlotDBSchBase</span></code></a></p>
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.PlotDBSch.Config">
+<em class="property">class </em><code class="sig-name descname">Config</code><a class="headerlink" href="#simulation_API.controller.schemas.PlotDBSch.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.PlotDBSch.Config.orm_model">
+<code class="sig-name descname">orm_model</code><em class="property"> = True</em><a class="headerlink" href="#simulation_API.controller.schemas.PlotDBSch.Config.orm_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.PlotDBSch.plot_id">
+<code class="sig-name descname">plot_id</code><em class="property">: Optional<span class="p">[</span>int<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.PlotDBSch.plot_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.PlotDBSchBase">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">PlotDBSchBase</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plot_query_value</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.PlotDBSchBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.PlotDBSchBase.plot_query_value">
+<code class="sig-name descname">plot_query_value</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.PlotDBSchBase.plot_query_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.PlotDBSchBase.sim_id">
+<code class="sig-name descname">sim_id</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.PlotDBSchBase.sim_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.PlotDBSchCreate">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">PlotDBSchCreate</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">plot_query_value</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.PlotDBSchCreate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulation_API.controller.schemas.PlotDBSchBase" title="simulation_API.controller.schemas.PlotDBSchBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulation_API.controller.schemas.PlotDBSchBase</span></code></a></p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.PlotDBSchCreate.plot_query_value">
+<code class="sig-name descname">plot_query_value</code><em class="property">: str</em><a class="headerlink" href="#simulation_API.controller.schemas.PlotDBSchCreate.plot_query_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.PlotDBSchCreate.sim_id">
+<code class="sig-name descname">sim_id</code><em class="property">: str</em><a class="headerlink" href="#simulation_API.controller.schemas.PlotDBSchCreate.sim_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.PlotQueryValues_ChenLee">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">PlotQueryValues_ChenLee</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.PlotQueryValues_ChenLee" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.PlotQueryValues_ChenLee.project">
+<code class="sig-name descname">project</code><em class="property"> = 'project'</em><a class="headerlink" href="#simulation_API.controller.schemas.PlotQueryValues_ChenLee.project" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.PlotQueryValues_ChenLee.threeD">
+<code class="sig-name descname">threeD</code><em class="property"> = 'threeD'</em><a class="headerlink" href="#simulation_API.controller.schemas.PlotQueryValues_ChenLee.threeD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.PlotQueryValues_HO">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">PlotQueryValues_HO</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.PlotQueryValues_HO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>List of plot query values needed to download the plots via get in route
+‘/api/results/{sim_id}/plot?value={plot_query_value}’</p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.PlotQueryValues_HO.coord">
+<code class="sig-name descname">coord</code><em class="property"> = 'coord'</em><a class="headerlink" href="#simulation_API.controller.schemas.PlotQueryValues_HO.coord" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.PlotQueryValues_HO.phase">
+<code class="sig-name descname">phase</code><em class="property"> = 'phase'</em><a class="headerlink" href="#simulation_API.controller.schemas.PlotQueryValues_HO.phase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.SimForm">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">SimForm</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">username</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Pepito'</span></em>, <em class="sig-param"><span class="n">t0</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">tf</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">6.283185307179586</span></em>, <em class="sig-param"><span class="n">dt</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.3141592653589793</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.IntegrationMethods" title="simulation_API.controller.schemas.IntegrationMethods">simulation_API.controller.schemas.IntegrationMethods</a></span> <span class="o">=</span> <span class="default_value">'RK45'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.SimForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<p>Base of schema used to Request a Simulation in Frontend</p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimForm.dt">
+<code class="sig-name descname">dt</code><em class="property">: Optional<span class="p">[</span>float<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimForm.dt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimForm.method">
+<code class="sig-name descname">method</code><em class="property">: Optional<span class="p">[</span><a class="reference internal" href="#simulation_API.controller.schemas.IntegrationMethods" title="simulation_API.controller.schemas.IntegrationMethods">simulation_API.controller.schemas.IntegrationMethods</a><span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimForm.method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimForm.t0">
+<code class="sig-name descname">t0</code><em class="property">: Optional<span class="p">[</span>float<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimForm.t0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimForm.tf">
+<code class="sig-name descname">tf</code><em class="property">: Optional<span class="p">[</span>float<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimForm.tf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimForm.username">
+<code class="sig-name descname">username</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimForm.username" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.SimIdResponse">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">SimIdResponse</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">user_id</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">username</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sim_sys</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem">simulation_API.controller.schemas.SimSystem</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sim_status_path</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sim_pickle_path</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.SimIdResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<p>Schema for the response of a simulation request via POST to route
+“/api/simulate/{sim_sys}”</p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimIdResponse.message">
+<code class="sig-name descname">message</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimIdResponse.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimIdResponse.sim_id">
+<code class="sig-name descname">sim_id</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimIdResponse.sim_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimIdResponse.sim_pickle_path">
+<code class="sig-name descname">sim_pickle_path</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimIdResponse.sim_pickle_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimIdResponse.sim_status_path">
+<code class="sig-name descname">sim_status_path</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimIdResponse.sim_status_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimIdResponse.sim_sys">
+<code class="sig-name descname">sim_sys</code><em class="property">: Optional<span class="p">[</span><a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem">simulation_API.controller.schemas.SimSystem</a><span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimIdResponse.sim_sys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimIdResponse.user_id">
+<code class="sig-name descname">user_id</code><em class="property">: Optional<span class="p">[</span>int<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimIdResponse.user_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimIdResponse.username">
+<code class="sig-name descname">username</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimIdResponse.username" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.SimRequest">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">SimRequest</code><span class="sig-paren">(</span><em class="sig-param">*, system: simulation_API.controller.schemas.SimSystem = &lt;SimSystem.HO: 'Harmonic-Oscillator'&gt;, t_span: List[float] = [], t_eval: List[float] = [], t_steps: int = 0, ini_cndtn: List[float] = [], params: Dict[str, float], method: simulation_API.controller.schemas.IntegrationMethods = 'RK45', sim_id: str = None, user_id: int = 0, username: str = 'Pepito Perez'</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.SimRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<p>Schema needed to request harmonic oscillator simulations</p>
+<p>Most of the attributes in this pydantic class are arguments of the
+<cite>HarmonicOsc1D.__init__</cite> method. See <cite>HarmonicOsc1D</cite> documentation
+in simulation.py to understand them.</p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimRequest.ini_cndtn">
+<code class="sig-name descname">ini_cndtn</code><em class="property">: List<span class="p">[</span>float<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimRequest.ini_cndtn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimRequest.method">
+<code class="sig-name descname">method</code><em class="property">: Optional<span class="p">[</span><a class="reference internal" href="#simulation_API.controller.schemas.IntegrationMethods" title="simulation_API.controller.schemas.IntegrationMethods">simulation_API.controller.schemas.IntegrationMethods</a><span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimRequest.method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimRequest.params">
+<code class="sig-name descname">params</code><em class="property">: Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimRequest.params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimRequest.sim_id">
+<code class="sig-name descname">sim_id</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimRequest.sim_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimRequest.system">
+<code class="sig-name descname">system</code><em class="property">: <a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem">simulation_API.controller.schemas.SimSystem</a></em><a class="headerlink" href="#simulation_API.controller.schemas.SimRequest.system" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimRequest.t_eval">
+<code class="sig-name descname">t_eval</code><em class="property">: Optional<span class="p">[</span>List<span class="p">[</span>float<span class="p">]</span><span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimRequest.t_eval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimRequest.t_span">
+<code class="sig-name descname">t_span</code><em class="property">: List<span class="p">[</span>float<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimRequest.t_span" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimRequest.t_steps">
+<code class="sig-name descname">t_steps</code><em class="property">: Optional<span class="p">[</span>int<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimRequest.t_steps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimRequest.user_id">
+<code class="sig-name descname">user_id</code><em class="property">: Optional<span class="p">[</span>int<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimRequest.user_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimRequest.username">
+<code class="sig-name descname">username</code><em class="property">: str</em><a class="headerlink" href="#simulation_API.controller.schemas.SimRequest.username" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.SimResults">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">SimResults</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">sim_results</span><span class="p">:</span> <span class="n">scipy.integrate._ivp.ivp.OdeResult</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.SimResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<p>Results of simulation as returned by scipy.integrate.solve_ivp</p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimResults.sim_results">
+<code class="sig-name descname">sim_results</code><em class="property">: scipy.integrate._ivp.ivp.OdeResult</em><a class="headerlink" href="#simulation_API.controller.schemas.SimResults.sim_results" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.SimStatus">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">SimStatus</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">user_id</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">datetime.datetime</span></em>, <em class="sig-param"><span class="n">system</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem">simulation_API.controller.schemas.SimSystem</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ini_cndtn</span><span class="p">:</span> <span class="n">List<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">params</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#simulation_API.controller.schemas.IntegrationMethods" title="simulation_API.controller.schemas.IntegrationMethods">simulation_API.controller.schemas.IntegrationMethods</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">route_pickle</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">route_results</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">route_plots</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plot_query_values</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Union<span class="p">[</span><a class="reference internal" href="#simulation_API.controller.schemas.PlotQueryValues_HO" title="simulation_API.controller.schemas.PlotQueryValues_HO">simulation_API.controller.schemas.PlotQueryValues_HO</a><span class="p">, </span><a class="reference internal" href="#simulation_API.controller.schemas.PlotQueryValues_ChenLee" title="simulation_API.controller.schemas.PlotQueryValues_ChenLee">simulation_API.controller.schemas.PlotQueryValues_ChenLee</a><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plot_query_receipe</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">&quot;'route_plots' + '?value=' + 'plot_query_value'&quot;</span></em>, <em class="sig-param"><span class="n">success</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.SimStatus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<p>Schema of the status of simulations</p>
+<p>This pydantic model is intended to store paths of results of the simulations
+algong with some metadata. This is what the API returns when someone
+requests a simulation via /api/simulate/{system}/ with method=post.</p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimStatus.sim_id">
+<code class="sig-name descname">sim_id</code><a class="headerlink" href="#simulation_API.controller.schemas.SimStatus.sim_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>ID number of simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimStatus.user_id">
+<code class="sig-name descname">user_id</code><a class="headerlink" href="#simulation_API.controller.schemas.SimStatus.user_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>User id number stored in database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimStatus.date">
+<code class="sig-name descname">date</code><a class="headerlink" href="#simulation_API.controller.schemas.SimStatus.date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Late of request of simulation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>datetime</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimStatus.system">
+<code class="sig-name descname">system</code><a class="headerlink" href="#simulation_API.controller.schemas.SimStatus.system" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulated system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem">SimSystem</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimStatus.route_pickle">
+<code class="sig-name descname">route_pickle</code><a class="headerlink" href="#simulation_API.controller.schemas.SimStatus.route_pickle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Route of pickle file generated by the simulation backend.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimStatus.route_results">
+<code class="sig-name descname">route_results</code><a class="headerlink" href="#simulation_API.controller.schemas.SimStatus.route_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Route of frontend showing results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimStatus.route_plot">
+<code class="sig-name descname">route_plot</code><a class="headerlink" href="#simulation_API.controller.schemas.SimStatus.route_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Route of plots generated by the simulation backend.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimStatus.plot_query_values">
+<code class="sig-name descname">plot_query_values</code><a class="headerlink" href="#simulation_API.controller.schemas.SimStatus.plot_query_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query params values of different automatically generated plots.
+These values are needed to download the plots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list of strings</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimStatus.success">
+<code class="sig-name descname">success</code><a class="headerlink" href="#simulation_API.controller.schemas.SimStatus.success" title="Permalink to this definition">¶</a></dt>
+<dd><p>Success status of simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimStatus.message">
+<code class="sig-name descname">message</code><a class="headerlink" href="#simulation_API.controller.schemas.SimStatus.message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Additional information on status of simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="id0">
+<code class="sig-name descname">date</code><em class="property">: datetime.datetime</em><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimStatus.ini_cndtn">
+<code class="sig-name descname">ini_cndtn</code><em class="property">: Optional<span class="p">[</span>List<span class="p">[</span>float<span class="p">]</span><span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimStatus.ini_cndtn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id1">
+<code class="sig-name descname">message</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimStatus.method">
+<code class="sig-name descname">method</code><em class="property">: Optional<span class="p">[</span><a class="reference internal" href="#simulation_API.controller.schemas.IntegrationMethods" title="simulation_API.controller.schemas.IntegrationMethods">simulation_API.controller.schemas.IntegrationMethods</a><span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimStatus.method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimStatus.params">
+<code class="sig-name descname">params</code><em class="property">: Optional<span class="p">[</span>Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimStatus.params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimStatus.plot_query_receipe">
+<code class="sig-name descname">plot_query_receipe</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimStatus.plot_query_receipe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id2">
+<code class="sig-name descname">plot_query_values</code><em class="property">: Optional<span class="p">[</span>List<span class="p">[</span>Union<span class="p">[</span><a class="reference internal" href="#simulation_API.controller.schemas.PlotQueryValues_HO" title="simulation_API.controller.schemas.PlotQueryValues_HO">simulation_API.controller.schemas.PlotQueryValues_HO</a><span class="p">, </span><a class="reference internal" href="#simulation_API.controller.schemas.PlotQueryValues_ChenLee" title="simulation_API.controller.schemas.PlotQueryValues_ChenLee">simulation_API.controller.schemas.PlotQueryValues_ChenLee</a><span class="p">]</span><span class="p">]</span><span class="p">]</span></em><a class="headerlink" href="#id2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id3">
+<code class="sig-name descname">route_pickle</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#id3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimStatus.route_plots">
+<code class="sig-name descname">route_plots</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimStatus.route_plots" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id4">
+<code class="sig-name descname">route_results</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#id4" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id5">
+<code class="sig-name descname">sim_id</code><em class="property">: str</em><a class="headerlink" href="#id5" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id6">
+<code class="sig-name descname">success</code><em class="property">: Optional<span class="p">[</span>bool<span class="p">]</span></em><a class="headerlink" href="#id6" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id7">
+<code class="sig-name descname">system</code><em class="property">: Optional<span class="p">[</span><a class="reference internal" href="#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem">simulation_API.controller.schemas.SimSystem</a><span class="p">]</span></em><a class="headerlink" href="#id7" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="id8">
+<code class="sig-name descname">user_id</code><em class="property">: int</em><a class="headerlink" href="#id8" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.SimSystem">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">SimSystem</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.SimSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>List of available systems for simulation.</p>
+<p class="rubric">Notes</p>
+<p>NOTE: This list must coincide with the dictionary list <cite>Simulations</cite>
+defined in __init__.py in the module simulations, otherwise the system
+won’t be simulated by the backend.</p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimSystem.ChenLee">
+<code class="sig-name descname">ChenLee</code><em class="property"> = 'Chen-Lee-Attractor'</em><a class="headerlink" href="#simulation_API.controller.schemas.SimSystem.ChenLee" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimSystem.HO">
+<code class="sig-name descname">HO</code><em class="property"> = 'Harmonic-Oscillator'</em><a class="headerlink" href="#simulation_API.controller.schemas.SimSystem.HO" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.SimulationDBSch">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">SimulationDBSch</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">user_id</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">system</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">route_pickle</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">route_results</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">route_plots</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">success</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulation_API.controller.schemas.SimulationDBSchBase" title="simulation_API.controller.schemas.SimulationDBSchBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulation_API.controller.schemas.SimulationDBSchBase</span></code></a></p>
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.SimulationDBSch.Config">
+<em class="property">class </em><code class="sig-name descname">Config</code><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSch.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSch.Config.orm_model">
+<code class="sig-name descname">orm_model</code><em class="property"> = True</em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSch.Config.orm_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSch.date">
+<code class="sig-name descname">date</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSch.date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSch.message">
+<code class="sig-name descname">message</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSch.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSch.method">
+<code class="sig-name descname">method</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSch.method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSch.route_pickle">
+<code class="sig-name descname">route_pickle</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSch.route_pickle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSch.route_plots">
+<code class="sig-name descname">route_plots</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSch.route_plots" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSch.route_results">
+<code class="sig-name descname">route_results</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSch.route_results" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSch.sim_id">
+<code class="sig-name descname">sim_id</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSch.sim_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSch.success">
+<code class="sig-name descname">success</code><em class="property">: Optional<span class="p">[</span>bool<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSch.success" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSch.system">
+<code class="sig-name descname">system</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSch.system" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSch.user_id">
+<code class="sig-name descname">user_id</code><em class="property">: Optional<span class="p">[</span>int<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSch.user_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.SimulationDBSchBase">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">SimulationDBSchBase</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">user_id</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">system</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">route_pickle</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">route_results</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">route_plots</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">success</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSchBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSchBase.date">
+<code class="sig-name descname">date</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSchBase.date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSchBase.message">
+<code class="sig-name descname">message</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSchBase.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSchBase.method">
+<code class="sig-name descname">method</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSchBase.method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSchBase.route_pickle">
+<code class="sig-name descname">route_pickle</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSchBase.route_pickle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSchBase.route_plots">
+<code class="sig-name descname">route_plots</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSchBase.route_plots" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSchBase.route_results">
+<code class="sig-name descname">route_results</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSchBase.route_results" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSchBase.sim_id">
+<code class="sig-name descname">sim_id</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSchBase.sim_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSchBase.success">
+<code class="sig-name descname">success</code><em class="property">: Optional<span class="p">[</span>bool<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSchBase.success" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSchBase.system">
+<code class="sig-name descname">system</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSchBase.system" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSchBase.user_id">
+<code class="sig-name descname">user_id</code><em class="property">: Optional<span class="p">[</span>int<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSchBase.user_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.SimulationDBSchCreate">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">SimulationDBSchCreate</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">user_id</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">date</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">system</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">route_pickle</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">route_results</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">route_plots</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">success</span><span class="p">:</span> <span class="n">bool</span></em>, <em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSchCreate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulation_API.controller.schemas.SimulationDBSchBase" title="simulation_API.controller.schemas.SimulationDBSchBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulation_API.controller.schemas.SimulationDBSchBase</span></code></a></p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSchCreate.date">
+<code class="sig-name descname">date</code><em class="property">: str</em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSchCreate.date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSchCreate.sim_id">
+<code class="sig-name descname">sim_id</code><em class="property">: str</em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSchCreate.sim_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSchCreate.success">
+<code class="sig-name descname">success</code><em class="property">: bool</em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSchCreate.success" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSchCreate.system">
+<code class="sig-name descname">system</code><em class="property">: str</em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSchCreate.system" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.SimulationDBSchCreate.user_id">
+<code class="sig-name descname">user_id</code><em class="property">: int</em><a class="headerlink" href="#simulation_API.controller.schemas.SimulationDBSchCreate.user_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.UserDBSch">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">UserDBSch</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">username</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">user_id</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.UserDBSch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulation_API.controller.schemas.UserDBSchBase" title="simulation_API.controller.schemas.UserDBSchBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulation_API.controller.schemas.UserDBSchBase</span></code></a></p>
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.UserDBSch.Config">
+<em class="property">class </em><code class="sig-name descname">Config</code><a class="headerlink" href="#simulation_API.controller.schemas.UserDBSch.Config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.UserDBSch.Config.orm_model">
+<code class="sig-name descname">orm_model</code><em class="property"> = True</em><a class="headerlink" href="#simulation_API.controller.schemas.UserDBSch.Config.orm_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.UserDBSch.user_id">
+<code class="sig-name descname">user_id</code><em class="property">: Optional<span class="p">[</span>int<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.UserDBSch.user_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.UserDBSchBase">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">UserDBSchBase</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">username</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.UserDBSchBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.UserDBSchBase.username">
+<code class="sig-name descname">username</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.UserDBSchBase.username" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.controller.schemas.UserDBSchCreate">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.controller.schemas.</code><code class="sig-name descname">UserDBSchCreate</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">username</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">hash_value</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.controller.schemas.UserDBSchCreate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pydantic.main.BaseModel</span></code></p>
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.UserDBSchCreate.hash_value">
+<code class="sig-name descname">hash_value</code><em class="property">: Optional<span class="p">[</span>str<span class="p">]</span></em><a class="headerlink" href="#simulation_API.controller.schemas.UserDBSchCreate.hash_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.controller.schemas.UserDBSchCreate.username">
+<code class="sig-name descname">username</code><em class="property">: str</em><a class="headerlink" href="#simulation_API.controller.schemas.UserDBSchCreate.username" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulation_API.controller.tasks">
+<span id="simulation-api-controller-tasks-module"></span><h2>simulation_API.controller.tasks module<a class="headerlink" href="#module-simulation_API.controller.tasks" title="Permalink to this headline">¶</a></h2>
+<p>This file will do background tasks e.g. the simulation</p>
+</div>
+<div class="section" id="module-simulation_API.controller">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulation_API.controller" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">simulation_API.controller package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-simulation_API.controller.main">simulation_API.controller.main module</a></li>
+<li><a class="reference internal" href="#module-simulation_API.controller.schemas">simulation_API.controller.schemas module</a></li>
+<li><a class="reference internal" href="#module-simulation_API.controller.tasks">simulation_API.controller.tasks module</a></li>
+<li><a class="reference internal" href="#module-simulation_API.controller">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="simulation_API.html"
+                        title="previous chapter">simulation_API package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="simulation_API.model.html"
+                        title="next chapter">simulation_API.model package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/simulation_API.controller.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="simulation_API.model.html" title="simulation_API.model package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="simulation_API.html" title="simulation_API package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Simulation FastAPI 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >simulation_API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="simulation_API.html" >simulation_API package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">simulation_API.controller package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Juan E. Aristizabal.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>
