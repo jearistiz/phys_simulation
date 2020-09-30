@@ -1,5 +1,4 @@
-"""This file initializes our application
-"""
+"""This module initializes our application."""
 import os
 
 from fastapi import FastAPI
@@ -7,7 +6,11 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates 
 
 # Initialize application
-app = FastAPI()
+app = FastAPI(
+    title="PHYS Simulation",
+    description="An API to request (mainly physics) simulations!",
+    version="0.0.1"
+)
 
 # Tell FastAPI where to find static files
 this_dir = os.path.dirname(__file__)

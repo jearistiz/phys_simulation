@@ -1,5 +1,4 @@
-"""This file will do background tasks e.g. the simulation
-"""
+"""This file will do background tasks e.g. the simulation"""
 from typing import Optional, Any
 from datetime import datetime
 from uuid import uuid4
@@ -21,41 +20,53 @@ from .schemas import *
 # Import paths to save plots and pickles
 from simulation_API.config import PATH_PLOTS, PATH_PICKLES
 # Import simulation module
-from simulation_API.model.simulation import Simulations
+from simulation_API.model.simulation.simulations import Simulations
 # Database-related
 from simulation_API.model.db.db_manager import SessionLocal
 from simulation_API.model.db import crud
 
+# Next line of code avoids a warning when generating matplotlib figures: 
+# `UserWarning: Starting a Matplotlib GUI outside of the main thread will likely
+# fail.`
 
+# Found the solution in this post: 
+# https://stackoverflow.com/questions/50157759/runtimeerror-main-thread-is-not-in-main-loop-using-matplotlib-with-django
+# The latter cites this matplotlib documentation:
+# https://matplotlib.org/faq/howto_faq.html#matplotlib-in-a-web-application-server
 
-"""Next line of code avoids a warning when generating matplotlib figures: 
-`UserWarning: Starting a Matplotlib GUI outside of the main thread will likely
-fail.`
+# From last link: 'You may be able to work on separate figures from separate
+# threads. However, you must in that case use a non-interactive backend
+# (typically Agg), because most GUI backends require being run from the main
+# thread as well.'
 
-Found the solution in this post: 
-https://stackoverflow.com/questions/50157759/runtimeerror-main-thread-is-not-in-main-loop-using-matplotlib-with-django
-The latter cites this matplotlib documentation:
-https://matplotlib.org/faq/howto_faq.html#matplotlib-in-a-web-application-server
+# And also: 'In general, the simplest solution when using
+# Matplotlib in a web server is to completely avoid using pyplot.'
 
-From last link: 'You may be able to work on separate figures from separate
-threads. However, you must in that case use a non-interactive backend
-(typically Agg), because most GUI backends require being run from the main
-thread as well.'
-
-And also: 'In general, the simplest solution when using
-Matplotlib in a web server is to completely avoid using pyplot.'
-
-Next line of code is only needed if using pyplot (which is not recommended)
+# Next line of code is only needed if using pyplot (which is not recommended)
 
 # mpl.use('Agg')
-
-"""
-
 
 def _api_simulation_request(sim_system: SimSystem,
                             sim_params: SimRequest,
                             background_tasks: BackgroundTasks,
                             db: Session) -> SimIdResponse:
+    """Requests simulation in background.
+
+    Parameters
+    ----------
+    sim_system : :class:`~simulation_API.controller.schemas.SimSystem`
+        System to be simulated.
+    sim_params : :class:`~simulation_API.controller.schemas.SimRequest`
+        Contains all the information about the simulation request.
+    background_tasks : ``fastapi.BackgroundTasks``
+        Object needed to request simulation in the background.
+    db : ``sqlalchemy.orm.Session``
+        Needed for interaction with database.
+    
+    Returns
+    -------
+    sim_id_response : :class:`~simulation_API.controller.schemas.SimIdResponse`
+    """
     # Check that the simulation parameters are the ones needed for the
     # requested simulation. This is not checked by the pydantic model.
     try:
@@ -246,7 +257,7 @@ def _run_simulation(sim_params: SimRequest) -> None:
 
 def _plot_solution(sim_results: SimResults, system: SimSystem,
                    plot_basename: str = "00000") -> list:
-    """Plot solutions. Right now only support Harmonic Oscillator plots"""
+    """Plot solutions."""
     # Get simulation results as OdeResult instance
     
     mpl.rcParams.update({'font.size': 17})

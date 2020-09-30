@@ -1,10 +1,13 @@
+"""This module defines all the models/schemas needed in our application, except
+the database models required for sqlalchemy ORM.
+"""
 from typing import Optional, List, Dict, Union
 from enum import Enum
 from datetime import datetime
 
 from pydantic import BaseModel
 from scipy.integrate._ivp.ivp import OdeResult
-from numpy import pi, linspace
+from numpy import pi
 
 """How to add a new system to this API?
 
@@ -29,9 +32,15 @@ from numpy import pi, linspace
 class SimSystem(str, Enum):
     """List of available systems for simulation.
     
+    \f
+    Attributes
+    ----------
+    HO : str
+    ChenLee : str
+
     Notes
     -----
-    NOTE: This list must coincide with the dictionary list `Simulations`
+    This list must coincide with the dictionary list `Simulations`
     defined in __init__.py in the module simulations, otherwise the system
     won't be simulated by the backend.
     """
@@ -45,7 +54,14 @@ class SimSystem(str, Enum):
 # Enum needed to verify correct values with API
 # NOTE: Update this with relevant parameters
 class IntegrationMethods(str, Enum):
-    """List of available integration methods"""
+    """List of available integration methods
+    
+    \f
+    Attributes
+    ----------
+    RK45 : str
+    RK23 : str
+    """
     RK45 = "RK45"
     RK23 = "RK23"
 
@@ -54,6 +70,15 @@ class IntegrationMethods(str, Enum):
 # NOTE: Needs update each time a new simulation is added. Needs to coincide
 # with Integration Methods
 class IntegrationMethodsFrontend(str, Enum):
+    """List of captions of available integration methods. These are shown in
+    frontend.
+    
+    \f
+    Attributes
+    ----------
+    RK45 : str
+    RK23 : str
+    """
     RK45 = "Runge-Kutta 5(4)"
     RK23 = "Runge-Kutta 3(2)"
 
@@ -71,7 +96,7 @@ integration_methods = {
 # NOTE      1) create a new pydantic class similar to HOSimForm. 
 # NOTE      2) add the class to the dict `SimFormDict` defined somewhere below.
 class SimForm(BaseModel):
-    """Base of schema used to Request a Simulation in Frontend"""
+    """Base of schema used to Request a Simulation in Frontend."""
     username: Optional[str] = "Pepito"
     t0: Optional[float] = 0.0
     tf: Optional[float] = 2 * pi
@@ -80,7 +105,7 @@ class SimForm(BaseModel):
 
 
 class HOSimForm(SimForm):
-    """Schema used to Request Harmonic Osc. Simulation in Frontend via form"""
+    """Schema used to Request Harmonic Osc. Simulation in Frontend via form."""
     sim_sys: SimSystem = SimSystem.HO.value
     ini0: Optional[float] = 1.0
     ini1: Optional[float] = 0.0
@@ -89,6 +114,7 @@ class HOSimForm(SimForm):
 
 
 class ChenLeeSimForm(SimForm):
+    """Schema used to Request Chen Lee Simulation in Frontend via form."""
     sim_sys: SimSystem = SimSystem.ChenLee.value
     ini0: Optional[float] = 10.0
     ini1: Optional[float] = 10.0
@@ -103,12 +129,13 @@ class ChenLeeSimForm(SimForm):
 
 # NOTE Needs update each time a new system is added (add a new class).
 class HOParams(BaseModel):
-    """List of parameters of the Harmonic Oscillator system"""
+    """List of parameters of the Harmonic Oscillator system."""
     m: float    # Mass
     k: float    # Force constant
 
 
 class ChenLeeParams(BaseModel):
+    """List of parameters of the Chen-Lee Attractor system."""
     a: float
     b: float
     c: float
@@ -153,11 +180,13 @@ system_to_params_dict = {
 ########################## Simulation Request schema ##########################
 
 class SimRequest(BaseModel):
-    """Schema needed to request harmonic oscillator simulations
+    """Schema needed to request simulations of specific systems declared in
+    :class:`simulation_API.controller.schemas.SimSystem`.
     
     Most of the attributes in this pydantic class are arguments of the
-    `HarmonicOsc1D.__init__` method. See `HarmonicOsc1D` documentation
-    in simulation.py to understand them. 
+    :meth:`simulation_API.model.simulation.simulation.HarmonicOsc1D.__init__`
+    method.
+    See :class:`simulation_API.model.simulation.simulation.HarmonicOsc1D`.
     """
     system: SimSystem = SimSystem.HO
     t_span: List[float] = []

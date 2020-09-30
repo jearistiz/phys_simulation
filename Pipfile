@@ -20,6 +20,7 @@ async-generator = "*"
 python-multipart = "*"
 requests = "*"
 sphinx = "*"
+sphinx-rtd-theme = "*"
 
 [requires]
 python_version = "3.6"

@@ -5,10 +5,13 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from time import time
 
-from simulation import ChenLeeAttractor, HarmonicOsc1D
+from .simulations import ChenLeeAttractor, HarmonicOsc1D
 
 HO = False
-ChenLee = True
+ChenLee = False
+
+if __name__ == "__main__":
+    ChenLee = True
 
 if HO:
     # Number of time steps for simulation

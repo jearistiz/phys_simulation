@@ -12,10 +12,10 @@ simulation\_API.model.simulation.demo\_run\_simulation module
    :undoc-members:
    :show-inheritance:
 
-simulation\_API.model.simulation.simulation module
---------------------------------------------------
+simulation\_API.model.simulation.simulations module
+---------------------------------------------------
 
-.. automodule:: simulation_API.model.simulation.simulation
+.. automodule:: simulation_API.model.simulation.simulations
    :members:
    :undoc-members:
    :show-inheritance:

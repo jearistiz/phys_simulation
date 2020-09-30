@@ -59,10 +59,10 @@ def get_db():
 async def index(request: Request):
     """Index web page
     
+    \f
     Parameters
     ----------
     request : Request
-
         HTTP request, used internally by FastAPI.
 
     Returns
@@ -90,13 +90,13 @@ async def index(request: Request):
 async def simulate(request: Request):
     """Simulate web page.
     
-    Here the users can select between the available systems to simulate the one
-    they choose.
+    Here the clients can select between the available systems to simulate the
+    one they choose.
 
+    \f
     Parameters
     ----------
     request : Request
-
         HTTP request, used internally by FastAPI.
 
     Returns
@@ -123,22 +123,17 @@ async def simulate_sim_system(request: Request,
                               error_message: Optional[str] = ''):
     """Simulation's form web page.
     
-    The users input the desired parameters for the simulation of their
+    The clients input the desired parameters for the simulation of their
     choosing.
 
+    \f
     Parameters
     ----------
     request : Request
-
         HTTP request, used internally by FastAPI.
-    
-    sim_request : SimSystem
-        
-        System to be simulated. This has to be one of the available systems
-        defined in SimSystem in schemas.py
-    
+    sim_system : SimSystem
+        System to be simulated.
     error_message : str
-        
         Internally used by the backend to display error messages in forntend
         form.
 
@@ -176,6 +171,7 @@ async def simulate_post_form(request: Request, sim_system: SimSystem,
     """Receives the simulation request information from the frontend form and
     requests the simulation to the backend.
     
+    \f
     This route receives the form requesting a simulation (and filled in
     frontend via GET in route "/simulate/{sim_system}"). The simulation is
     internally requested using the function `_api_simulation_request`.
@@ -185,54 +181,33 @@ async def simulate_post_form(request: Request, sim_system: SimSystem,
     Parameters
     ----------
     request : Request
-
         HTTP request, used internally by FastAPI.
-
     sim_system : SimSystem
-
-        System to be simulated. Must be one of the members of SimSystem.
-
+        System to be simulated.
     background_tasks : BackgroundTasks
-
         Needed to request simulation to the backend (in background). Handled
         internally by the API.
-
     db : Session
-
         Database Session, needed to interact with database. This is handled 
         internally.
-
     sim_sys : SimSystem
-
         Form entry: system to be simulated. Must be one of the members of
         SimSystem.
-
     username : str
-        
         Form entry: name of the user requesting the simulation.
-
     t0 : float
-        
         Form entry: initial time of simulation.
-
     tf : float
-        
         Form entry: final time of simulation.
-
     dt : float
-        
         Form entry: timestep of simulation.
-
     method : IntegrationMethods
-        
         Form entry: method of integration. Must be a member of
         IntegrationMethods.
 
     Returns
     -------
-    
     TemplateResponse or RedirectResponse
-        
         Redirects the user either to "Simulation ID" frontend web page or –if
         the user made a mistake filling the form– to the form again.
     
@@ -321,20 +296,16 @@ async def simulate_post_form(request: Request, sim_system: SimSystem,
 async def simulate_id_sim_id(request: Request, sim_id: str):
     """Shows simulation id after asking for simulation in frontend form.
 
+    \f
     Parameters
     ----------
     request : Request
-
         HTTP request, used internally by FastAPI.
-
     sim_id : str
-
         ID of the simulation.
-
     Returns
     -------
     TemplateResponse : TemplateResponse
-
         Renders template displaying the simulation ID and a hyperlink to
         further information about the simulation.
     """
@@ -359,27 +330,22 @@ async def simulate_id_sim_id(request: Request, sim_id: str):
 @app.get("/simulate/status/{sim_id}", name="fronted_simulation_status")
 async def simulate_status_sim_id(request: Request, sim_id: str,
                                  db: Session = Depends(get_db)):
-    """Shows simulation status for a given simulation via its `sim_id`
-
+    """Shows simulation status for a given simulation via its `sim_id`.
+    
+    \f
     Parameters
     ----------
     request : Request
-
         HTTP request, used internally by FastAPI.
-
     sim_id : str
-
         ID of the simulation.
-
     db : Session
-
         Database Session, needed to interact with database. This is handled 
         internally.
 
     Returns
     -------
     TemplateResponse : TemplateResponse
-
         Renders a template displaying the simulation status and a hyperlinks to
         simulation results in several formats. If simulation id is not
         available, renders a message about the situation.
@@ -430,21 +396,18 @@ async def simulate_status_sim_id(request: Request, sim_id: str,
 async def results(request: Request, db: Session = Depends(get_db)):
     """Shows a list of all the available simulation results.
     
+    \f
     Parameters
     ----------
     request : Request
-
         HTTP request, used internally by FastAPI.
-
     db : Session
-
         Database Session, needed to interact with database. This is handled 
         internally.
 
     Returns
     -------
     TemplateResponse : TemplateResponse
-
         Renders template displaying all the available simulation results.
     """
     # Pull all simulations from database
@@ -465,26 +428,21 @@ async def results(request: Request, db: Session = Depends(get_db)):
 @app.get("/results/{sim_system}/{sim_id}")
 async def results_sim_system_sim_id(request: Request, sim_system: SimSystem,
                                     sim_id: str):
-    """Show graphic results of simulation in frontend for given sim_id
+    """Shows graphic results of a simulation in frontend for a given `sim_id`
     
+    \f
     Parameters
     ----------
     request : Request
-
         HTTP request, used internally by FastAPI.
-
     sim_system : SimSystem
-
-        System to be simulated. Must be one of the members of SimSystem.
-
+        System to be simulated.
     sim_id : str
-
         ID of the simulation.
 
     Returns
     -------
     TemplateResponse : TemplateResponse
-
         Renders a template displaying all the generated plots for a given
         simulation.
     """
@@ -532,35 +490,31 @@ async def api_simulate_sim_system(sim_system: SimSystem,
                                   sim_params: SimRequest,
                                   background_tasks: BackgroundTasks,
                                   db: Session = Depends(get_db)) -> SimIdResponse:
-    """Simulate Harmonic Oscillator Using BackgroundTasks
+    """In this route the client can request a simulation.
 
-    When client requests a simulation via '/api/simulate/{sim_system}', he/she
-    obtains relevant information on how to get the results of the simulation.
-
+    When the client requests a simulation via ``/api/simulate/{sim_system}``,
+    he/she obtains relevant information on how to get the results of the
+    simulation.
+    
+    \f
+    Note here we use BackgroudTasks to make the simulation in the background.
+    
     Parameters
     ----------
     sim_system : SimSystem
-
-        System to be simulated. Must be one of the members of SimSystem.
-
+        System to be simulated.
     sim_params : SimRequest
-
         Simulation request information with schema given by SimRequest and
         decalared in schemas.py.
-
     background_tasks : BackgroundTasks
-
         Background task FastAPI manager (Class). This is handled internally.
-
     db : Session
-
         Database Session, needed to interact with database. This is handled 
         internally.
 
     Returns
     -------
     sim_id_response : SimIdResponse
-
         JSON containing relevant info about the simulation and how to get the
         results.
     """
@@ -574,23 +528,20 @@ async def api_simulate_sim_system(sim_system: SimSystem,
 @app.get("/api/simulate/status/{sim_id}", name="api_simulate_status")
 async def api_results_sim_id(sim_id: str,
                              db: Session = Depends(get_db)) -> SimStatus:
-    """Shows status of requested simulation
+    """Returns status of requested simulation.
 
+    \f
     Parameters
     ----------
     sim_id : str
-
         ID of the simulation.
-
     db : Session
-
         Database Session, needed to interact with database. This is handled 
         internally.
 
     Returns
     -------
     SimStatus : SimStatus
-
         JSON containing status of the simulation and how to get the results.
     """
 
@@ -629,16 +580,15 @@ async def api_results_sim_id(sim_id: str,
 async def api_results_sim_id(sim_id: str):
     """Download pickle of previously requested simulation. 
 
+    \f
     Parameters
     ----------
     sim_id : str
-
         ID of the simulation.
 
     Returns
     -------
     FileResponse : FileResponse
-
         FileResponse from starlette.responses containing the simulation results
         in pickle format.
     """
@@ -661,24 +611,23 @@ async def api_results_sim_id(sim_id: str):
 # given in simulation status via GET in route "/api/results/{sim_id}"
 @app.get("/api/results/{sim_id}/plot", name="api_download_plots")
 async def api_results_sim_id(sim_id: str, value: PlotQueryValues):
-    """Download plot of previously requested simulation. Note one query param
-    is required here. Here we use FileResponse from starlette.responses
+    """Download plot of previously requested simulation.
+    
+    Note one query param is required here.
+    \f
+    Here we use FileResponse from starlette.responses
     
     Parameters
     ----------
     sim_id : str
-
         ID of the simulation.
-
     value : PlotQueryValues
-
         Query values. Must be a member of one of the Enum classes given in
         PlotQueryValues.
 
     Returns
     -------
     FileResponse : FileResponse
-
         FileResponse from starlette.responses containing the requested plot.
     """
 
