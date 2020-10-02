@@ -1,6 +1,7 @@
 """This file manages all requests that are made to our app
-TODO|FIXME|BUG|HACK|NOTE|
 """
+# TODO|FIXME|BUG|HACK|NOTE| Some nice colored tags for comments.
+
 from os.path import isfile
 from uuid import UUID
 
@@ -18,8 +19,9 @@ from .schemas import *
 from .tasks import (_create_pickle_path_disk, _create_plot_path_disk, 
                     _sim_form_to_sim_request, _api_simulation_request)
 # Database-related
-from simulation_API.model.db import crud, models
-from simulation_API.model.db.db_manager import SessionLocal, engine
+from simulation_API.model import crud, models
+from simulation_API.model.db_manager import SessionLocal, engine
+from simulation_API.config import PLOTS_FORMAT
 
 # Creates all tables (defined in models) in database (simulations.db)
 models.Base.metadata.create_all(bind=engine)
@@ -631,7 +633,7 @@ async def api_results_sim_id(sim_id: str, value: PlotQueryValues):
         FileResponse from starlette.responses containing the requested plot.
     """
 
-    plot_path_disk = _create_plot_path_disk(sim_id, value.value)
+    plot_path_disk = _create_plot_path_disk(sim_id, value.value, PLOTS_FORMAT)
 
     if not isfile(plot_path_disk):
         message = "The plot you requested is not in our database. " \

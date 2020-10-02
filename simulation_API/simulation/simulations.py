@@ -70,7 +70,9 @@ class Simulation(object):
         Returns
         -------
         self.results : OdeResult
+            
             Bunch object with the following fields defined:
+                
                 t : ndarray, shape (n_points,)
                     Time points.
                 y : ndarray, shape (n, n_points)
@@ -92,10 +94,9 @@ class Simulation(object):
                 nlu : int
                     Number of LU decompositions.
                 status : int
-                    Reason for algorithm termination:
-                        -1: Integration step failed.
-                        0: The solver successfully reached the end of tspan.
-                        1: A termination event occurred.
+                    Reason for algorithm termination: -1, Integration step
+                    failed; 0, The solver successfully reached the end of
+                    tspan; 1, A termination event occurred.
                 message : string
                     Human-readable description of the termination reason.
                 success : bool

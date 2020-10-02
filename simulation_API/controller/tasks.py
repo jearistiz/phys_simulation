@@ -1,5 +1,5 @@
 """This file will do background tasks e.g. the simulation"""
-from typing import Optional, Any
+from typing import Optional, Any, List
 from datetime import datetime
 from uuid import uuid4
 
@@ -18,12 +18,12 @@ from simulation_API import app
 # Import pydantic schemas
 from .schemas import *
 # Import paths to save plots and pickles
-from simulation_API.config import PATH_PLOTS, PATH_PICKLES
+from simulation_API.config import PATH_PLOTS, PATH_PICKLES, PLOTS_FORMAT
 # Import simulation module
-from simulation_API.model.simulation.simulations import Simulations
+from simulation_API.simulation.simulations import Simulations
 # Database-related
-from simulation_API.model.db.db_manager import SessionLocal
-from simulation_API.model.db import crud
+from simulation_API.model.db_manager import SessionLocal
+from simulation_API.model import crud
 
 # Next line of code avoids a warning when generating matplotlib figures: 
 # `UserWarning: Starting a Matplotlib GUI outside of the main thread will likely
@@ -50,13 +50,13 @@ def _api_simulation_request(sim_system: SimSystem,
                             sim_params: SimRequest,
                             background_tasks: BackgroundTasks,
                             db: Session) -> SimIdResponse:
-    """Requests simulation in background.
+    """Requests simulation to BackgroundTasks.
 
     Parameters
     ----------
-    sim_system : :class:`~simulation_API.controller.schemas.SimSystem`
+    sim_system : SimSystem
         System to be simulated.
-    sim_params : :class:`~simulation_API.controller.schemas.SimRequest`
+    sim_params : SimRequest
         Contains all the information about the simulation request.
     background_tasks : ``fastapi.BackgroundTasks``
         Object needed to request simulation in the background.
@@ -65,7 +65,11 @@ def _api_simulation_request(sim_system: SimSystem,
     
     Returns
     -------
-    sim_id_response : :class:`~simulation_API.controller.schemas.SimIdResponse`
+    sim_id_response : SimIdResponse
+        Contains information about simulation request, such as simulation ID
+        and others. See
+        :class:`~simulation_API.controller.schemas.SimIdResponse` for more
+        information.
     """
     # Check that the simulation parameters are the ones needed for the
     # requested simulation. This is not checked by the pydantic model.
@@ -135,21 +139,23 @@ def _api_simulation_request(sim_system: SimSystem,
     return sim_id_response
 
 
+# NOTE Maybe this function is overloaded, we could split some of the tasks
+# maybe its ok, just consider it
 def _run_simulation(sim_params: SimRequest) -> None: 
-    """Run the requested simulation of Harmonic Oscillator
+    """Runs the requested simulation and stores the outcome in a database.
 
-    This function runs the simulation, stores the simulation parameters
-    (implicit in `ho_sim`) in a database, stores the simulation result in a
-    pickle, creates and saves plots of the simulation and returns
-    a dict with paths to download the reslts.
+    This function runs the simulation, stores the simulation parameters in a
+    database, stores the simulation result in a pickle and creates and saves
+    relevant plots of the simulation.
 
     Parameters
     ----------
-    ho_sim : HarmonicOscillator
-        pydantic model with all the information needed for the simulation
+    sim_params : SimRequest
+        Contains all the information needed for the simulation.
 
     Returns
     -------
+    None
     """
     # Start session in dbase
     db = SessionLocal()
@@ -160,12 +166,11 @@ def _run_simulation(sim_params: SimRequest) -> None:
             sim_params.t_span[0], sim_params.t_span[1], sim_params.t_steps
         )
 
-    # Convert the request type to dict (allows us to provide them as kwargs to HarmonicOsc1D)
+    # Convert the SimRequest instance to dict
     sim_params = sim_params.dict()
 
-    # Pop "system", "sim_id" and "user_id" from sim_params, bc we can NOT
-    # pass them to Simulation class.
-    # Remember "system" will be instance of SimSystem defined in schemas.py
+    # Pop some values Simulation __init__ method does not accept.
+    # Remember "system" will be a member of SimSystem defined in simulation_API.controll.schemas
     system = sim_params.pop("system")
     sim_id = sim_params.pop("sim_id")
     user_id = sim_params.pop("user_id")
@@ -179,26 +184,28 @@ def _run_simulation(sim_params: SimRequest) -> None:
         "system": system.value,
     }
 
-    try:
-        if system in SimSystem:
-            # Run simulation and get results as returned by scipy.integrate.solve_ivp
-            LocalSimulation = Simulations[system.value]
-            simulation_instance = LocalSimulation(**sim_params)
-            simulation = simulation_instance.simulate()
-        else:
-            create_simulation_status_db = SimulationDBSchCreate(
-                success=False,
-                message=na_message,
-                **basic_info
-            )
-            # Save simulation status in database
-            crud._create_simulation(db, create_simulation_status_db)
-            # Close db session
-            db.close()
+    # Check that "system" is in available simulation systems
+    # NOTE maybe this is not necessary since pydantic already checks this. In
+    # schema request SimRequest requires "system" to be a member of SimSystem.
+    if not system in SimSystem:
+        create_simulation_status_db = SimulationDBSchCreate(
+            success=False,
+            message=na_message,
+            **basic_info
+        )
+        # Save simulation status in database
+        crud._create_simulation(db, create_simulation_status_db)
+        # Close db session
+        db.close()
+        return
 
-            # Exit this function
-            return
-    
+    # Try to simulate the system. If there is an exception in simulation store
+    # it in database and exit this function
+    try:        
+        # Run simulation and get results as returned by scipy.integrate.solve_ivp
+        LocalSimulation = Simulations[system.value]
+        simulation_instance = LocalSimulation(**sim_params)
+        simulation = simulation_instance.simulate()
     except Exception as e:
         create_simulation_status_db = SimulationDBSchCreate(
             success=False,
@@ -207,6 +214,8 @@ def _run_simulation(sim_params: SimRequest) -> None:
         )
         crud._create_simulation(db, create_simulation_status_db)
         db.close()
+        
+        # FIXME FIXME FIXME is it better to raise an exception at this point?
         return
 
     # Store simulation result in pickle
@@ -256,22 +265,47 @@ def _run_simulation(sim_params: SimRequest) -> None:
 
 
 def _plot_solution(sim_results: SimResults, system: SimSystem,
-                   plot_basename: str = "00000") -> list:
-    """Plot solutions."""
-    # Get simulation results as OdeResult instance
+                   plots_basename: str = "00000") -> List[str]:
+    """Generates relevant simulation's plots and saves them.
     
-    mpl.rcParams.update({'font.size': 17})
+    Parameters
+    ----------
+    sim_results : SimResults
+        Simulation results as returned by
+        :meth:`~simulation_API.simulation.simulations.Simulation.simulate`.
+    system : SimSystem
+        System to be simulated.
+    plots_basename : str
+        Base name of the plots. Actual name of each plot will be
+        ``<plotbasename>_<plot_query_value>.png``, where ``<plot_query_value>``
+        is a special tag for each type of plot. In this API, baseplot will
+        always be the value of
+        :attr:`~simulation_API.controller.schemas.SimIdResponse.sim_id`.
 
+    Returns
+    -------
+    plot_query_values : List[str]
+        Names of each type of plot. These are very important since they are
+        needed to access the plots in the API route (these are the possible
+        values for the query param "value" in route
+        ``/api/results/{sim_id}/plot``).
+    """
+    
+    font_normal_size = 17
+    mpl.rcParams.update({'font.size': font_normal_size})
+
+    # Get simulation results as OdeResult instance
     sim_results = sim_results.sim_results
+    
     plot_query_values = []
 
     if system == SimSystem.HO:    
-        ################################
-        # Using pyplot (not recommended)
-        ################################
+        ##################################
+        # Using pyplot (not recommended) #
+        ##################################
         # # Phase space trajectory plot
-        # plot_id = 'phase'
-        # plot_ids.append(plot_id)
+        # plot_query_value = 'phase'
+        # plot_query_values.append(plot_query_value)
 
         # fig = plt.figure()
         # ax = fig.add_subplot(111)
@@ -280,12 +314,12 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
         # plt.xlabel('q')
         # plt.ylabel('p')
         # plt.title('Phase space')
-        # plt.savefig(PATH_PLOTS + plot_basename + "_" + plot_id + ".png")
+        # fig.savefig(_create_plot_path_disk(plots_basename, plot_query_value))
         # plt.close()
 
         # # Canonical coordinates evolution plot
-        # plot_id = 'coord'
-        # plot_ids.append(plot_id)
+        # plot_query_value = 'coord'
+        # plot_query_values.append(plot_query_value)
 
         # fig = plt.figure()
         # ax = fig.add_subplot(111)
@@ -295,12 +329,12 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
         # plt.ylabel('Canonical coordinate')
         # plt.title('Canonical coordinates evolution')
         # plt.legend()
-        # plt.savefig(PATH_PLOTS + plot_basename + "_" + plot_id + ".png")
+        # fig.savefig(_create_plot_path_disk(plots_basename, plot_query_value))
         # plt.close()
 
-        ###########################################################################
-        # NOT using pyplot (RECOMMENDED, read comments provided after imports)    #
-        ###########################################################################
+        #######################################################################
+        # NOT using pyplot (RECOMMENDED, read comments provided after imports)#
+        #######################################################################
 
         ##################### Phase space trajectory plot #####################
         plot_query_value = PlotQueryValues_HO.phase.value
@@ -323,7 +357,7 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
         ax.set_xlim(-ax_lim, ax_lim)
         ax.set_ylim(-ax_lim, ax_lim)
         fig.tight_layout()
-        fig.savefig(PATH_PLOTS + plot_basename + "_" + plot_query_value + ".png")
+        fig.savefig(_create_plot_path_disk(plots_basename, plot_query_value))
         
 
         ################ Canonical coordinates evolution plot #################
@@ -337,11 +371,10 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
         ax.plot(sim_results.t, sim_results.y[1], label='p(t)')
         ax.set_xlabel('t')
         ax.set_ylabel('Canonical coordinate')
-        # ax.set_title('Canonical coordinates evolution')
         ax.legend()
 
         fig.tight_layout()
-        fig.savefig(PATH_PLOTS + plot_basename + "_" + plot_query_value + ".png")
+        fig.savefig(_create_plot_path_disk(plots_basename, plot_query_value))
     
     elif system == SimSystem.ChenLee:
         
@@ -372,7 +405,7 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
         ax.set_xlim(*xlim)
         ax.set_ylim(*ylim)
         fig.tight_layout()
-        fig.savefig(PATH_PLOTS + plot_basename + "_" + plot_query_value + ".png")
+        fig.savefig(_create_plot_path_disk(plots_basename, plot_query_value))
 
         ##################### Phase portrait projections ######################
         mpl.rcParams.update({'font.size': 25})
@@ -425,32 +458,36 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
         ax.set_ylim(*zlim)
         
         fig.tight_layout()
-        fig.savefig(PATH_PLOTS + plot_basename + "_" + plot_query_value + ".png")
+        fig.savefig(_create_plot_path_disk(plots_basename, plot_query_value))
 
         mpl.rcParams.update({'font.size': 17})
     
     return plot_query_values
 
 
-def _pickle(
-    file_name: str, path: str = '', data: Optional[dict] = None
-) -> Any:
-    """Save data (dictionary format) to or read file from pickle.
+def _pickle(file_name: str, path: str = '',
+            data: Optional[dict] = None) -> Any:
+    """Saves ``data`` to pickle or reads Python object from pickle.
     
+    Saves ``data`` to pickle if ``data``. Otherwise it will try to read a
+    pickle from ``path + '/' + file_name`` and return the python object stored
+    in it.
+    
+
     Parameters
     ----------
     file_name : str
         Name of file to be read from or to write on.
     path : str
-        Path of directory in which file will be saved.
+        Path of directory in which the file will be saved or read from.
     data : dict or None, optional
         If you want to save data to a pickle, provide the data as dictionary.
         Default is None.
     
     Returns
     -------
-    loaded_object : any, optional
-        object loaded when no data is provided
+    loaded_object : Any or None
+        Object loaded when no data is provided.
 
     """
     # Set mode to read or write
@@ -465,18 +502,25 @@ def _pickle(
 
     return loaded_object
 
-def _sim_form_to_sim_request(form: Dict[str, str]) -> Optional[SimRequest]:
+
+def _sim_form_to_sim_request(form: Dict[str, str]) -> SimRequest:
+    """Translates simulation form –from frontend– to simulation request which
+    is understood by backend in
+    :func:`~simulation_API.controller.tasks._api_simulation_request`.
+
+    Parameters
+    ----------
+    form: Dict[str, str]
+        Simulation request information as obtained by frontend.
+
+    Returns
+    -------
+    SimRequest
+        Simulation request information in a format the backend understands.
+    """
+    # Generate t_eval
     t0 = float(form["t0"])
     tf = float(form["tf"])
-    
-    # Manually check that t0 < tf
-    if not t0 < tf:
-        return SimRequest(
-            username=form["username"],
-            system=form["sim_sys"],
-            sim_request=False
-        )
-
     dt = float(form["dt"])
     t_eval = list(linspace(t0, tf, int((tf - t0) / dt)))
 
@@ -486,8 +530,8 @@ def _sim_form_to_sim_request(form: Dict[str, str]) -> Optional[SimRequest]:
     
     # Parameters
     # NOTE
-    # We need to get the actual names of the parameters, bc the convention in
-    # frontend form is `param0`, `param1`, ... but SimRequest receives the
+    # We need to get the actual names of the parameters, because the convention
+    # in frontend form is `param0`, `param1`, ... but SimRequest receives the
     # actual name of the parameters (e.g. for the HO `m` and `k`).
     # This change of convention is done by the dicts defined in `shcemas.py`
     param_convention = system_to_params_dict[form["sim_sys"]]
@@ -507,17 +551,20 @@ def _sim_form_to_sim_request(form: Dict[str, str]) -> Optional[SimRequest]:
         "username": form["username"],
         "sim_request": True
     }
-
+    
     return SimRequest(**sim_request)
 
 
 ############################## Paths and routes ###############################
 
 def _create_pickle_path_disk(sim_id: str) -> str:
-    """Creates disk path to simulation results (pickle) by sim_id"""
+    """Creates disk path to simulation results (pickle) by
+    :attr:`~simulation_API.controller.schemas.SimIdResponse.sim_id`."""
     return PATH_PICKLES + sim_id + ".pickle"
 
 
-def _create_plot_path_disk(sim_id: str, query_param: PlotQueryValues) -> str:
-    """Creates disk path to plots of simulation results (png) by sim_id"""
-    return PATH_PLOTS + sim_id + "_" + query_param + ".png"
+def _create_plot_path_disk(sim_id: str, query_param: PlotQueryValues,
+                           plot_format: str = PLOTS_FORMAT) -> str:
+    """Creates disk path to plots of simulation results by
+    :attr:`~simulation_API.controller.schemas.SimIdResponse.sim_id`."""
+    return PATH_PLOTS + sim_id + "_" + query_param + plot_format

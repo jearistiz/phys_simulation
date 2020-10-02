@@ -8,7 +8,6 @@ https://docs.sqlalchemy.org/en/13/orm/tutorial.html or read the references
 in Personal CS Projects notebook"""
 from sqlalchemy.orm import sessionmaker
 
-
 from simulation_API.config import PATH_DB
 
 # Start sqlalchemy engine.

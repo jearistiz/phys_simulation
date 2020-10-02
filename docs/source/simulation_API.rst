@@ -9,6 +9,7 @@ Subpackages
 
    simulation_API.controller
    simulation_API.model
+   simulation_API.simulation
 
 Submodules
 ----------

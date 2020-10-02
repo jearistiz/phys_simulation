@@ -60,7 +60,13 @@ class IntegrationMethods(str, Enum):
     Attributes
     ----------
     RK45 : str
+        Explicit Runge-Kutta method of order 5(4).
     RK23 : str
+        Explicit Runge-Kutta method of order 3(2).
+    
+    Note
+    ----
+    For more information about these integration methods see `scipy.integrate.solve_ivp <https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html>`_.
     """
     RK45 = "RK45"
     RK23 = "RK23"
@@ -70,14 +76,8 @@ class IntegrationMethods(str, Enum):
 # NOTE: Needs update each time a new simulation is added. Needs to coincide
 # with Integration Methods
 class IntegrationMethodsFrontend(str, Enum):
-    """List of captions of available integration methods. These are shown in
-    frontend.
-    
-    \f
-    Attributes
-    ----------
-    RK45 : str
-    RK23 : str
+    """List of captions of available integration methods. These are displayed
+    in frontend simulation form.
     """
     RK45 = "Runge-Kutta 5(4)"
     RK23 = "Runge-Kutta 3(2)"
@@ -96,7 +96,20 @@ integration_methods = {
 # NOTE      1) create a new pydantic class similar to HOSimForm. 
 # NOTE      2) add the class to the dict `SimFormDict` defined somewhere below.
 class SimForm(BaseModel):
-    """Base of schema used to Request a Simulation in Frontend."""
+    """Basemodel of schema used to Request a Simulation in Frontend.
+    
+    Attributes
+    ----------
+    username: Optional[str]
+    t0 : float
+        Initial time of simulation.
+    tf : float
+        Final time of simulation.
+    dt : float
+        Time step size of simulation.
+    method : IntegrationMethods
+        Integration method used in simulation.
+    """
     username: Optional[str] = "Pepito"
     t0: Optional[float] = 0.0
     tf: Optional[float] = 2 * pi
@@ -105,7 +118,27 @@ class SimForm(BaseModel):
 
 
 class HOSimForm(SimForm):
-    """Schema used to Request Harmonic Osc. Simulation in Frontend via form."""
+    """Schema used to Request Harmonic Oscillator Simulation in Frontend via
+    form.
+    
+    Attributes
+    ----------
+    sim_system : SimSystem
+        System to be simulated.
+    ini0 : float
+        :math:`q` initial value.
+    ini1 : float
+        :math:`p` initial value.
+    param0 : float
+        Paramer of name :attr:`~simulation_API.controller.schemas.HOParams.m`.
+    param1 : float
+        Paramer of name :attr:`~simulation_API.controller.schemas.HOParams.k`.
+
+    Note
+    ----
+    For more information about Chen-Lee Attactor simulation see 
+    :class:`~simulation_API.simulation.simulations.HarmonicOsc1D`.
+    """
     sim_sys: SimSystem = SimSystem.HO.value
     ini0: Optional[float] = 1.0
     ini1: Optional[float] = 0.0
@@ -114,7 +147,30 @@ class HOSimForm(SimForm):
 
 
 class ChenLeeSimForm(SimForm):
-    """Schema used to Request Chen Lee Simulation in Frontend via form."""
+    """Schema used to Request Chen Lee Simulation in Frontend via form.
+    
+    Attributes
+    ----------
+    sim_system : SimSystem
+        System to be simulated.
+    ini0 : float
+        :math:`\omega_x` initial condition.
+    ini1 : float
+        :math:`\omega_y` initial condition.
+    ini2 : float
+        :math:`\omega_z` initial condition.
+    param0 : float
+        Paramer of name :attr:`~simulation_API.controller.schemas.ChenLeeParams.a`.
+    param1 : float
+        Paramer of name :attr:`~simulation_API.controller.schemas.ChenLeeParams.b`.
+    param2 : float
+        Paramer of name :attr:`~simulation_API.controller.schemas.ChenLeeParams.c`.
+
+    Note
+    ----
+    For more information about Chen-Lee Attactor simulation see 
+    :class:`~simulation_API.simulation.simulations.ChenLeeAttractor`.
+    """
     sim_sys: SimSystem = SimSystem.ChenLee.value
     ini0: Optional[float] = 10.0
     ini1: Optional[float] = 10.0
@@ -129,13 +185,41 @@ class ChenLeeSimForm(SimForm):
 
 # NOTE Needs update each time a new system is added (add a new class).
 class HOParams(BaseModel):
-    """List of parameters of the Harmonic Oscillator system."""
+    """List of parameters of the Harmonic Oscillator system.
+    
+    Attributes
+    ----------
+    m: float
+        Mass of object.
+    k: float
+        Force constant of object.
+
+    Note
+    ----
+    For more information about Harmonic Oscillator's parameters see 
+    :class:`~simulation_API.simulation.simulations.HarmonicOsc1D`.
+    """
     m: float    # Mass
     k: float    # Force constant
 
 
 class ChenLeeParams(BaseModel):
-    """List of parameters of the Chen-Lee Attractor system."""
+    """List of parameters of the Chen-Lee Attractor system.
+
+    Attributes
+    ----------
+    a : float
+        :math:`\omega_x parameter.`
+    b : float
+        :math:`\omega_y parameter.`
+    c : float
+        :math:`\omega_z parameter.`
+
+    Note
+    ----
+    For more information about Chen-Lee Attactor's parameters see 
+    :class:`~simulation_API.simulation.simulations.ChenLeeAttractor`.
+    """
     a: float
     b: float
     c: float
@@ -180,13 +264,21 @@ system_to_params_dict = {
 ########################## Simulation Request schema ##########################
 
 class SimRequest(BaseModel):
-    """Schema needed to request simulations of specific systems declared in
-    :class:`simulation_API.controller.schemas.SimSystem`.
+    """Schema needed to request simulations via POST in
+    ``/api/request/{sim_system}``.
     
-    Most of the attributes in this pydantic class are arguments of the
-    :meth:`simulation_API.model.simulation.simulation.HarmonicOsc1D.__init__`
-    method.
-    See :class:`simulation_API.model.simulation.simulation.HarmonicOsc1D`.
+    Attributes
+    ----------
+    # TODO TODO TODO
+    # TODO TODO TODO
+    # TODO TODO TODO
+    
+    Note
+    ----
+    Most of the attributes in this pydantic class are arguments of the 
+    ``__init__()`` methods of the Simulation subclasses defined in the module
+    :mod:`simulation_API.simulation.simulations`. For more information please
+    refer to the latter.
     """
     system: SimSystem = SimSystem.HO
     t_span: List[float] = []
@@ -206,16 +298,37 @@ class SimRequest(BaseModel):
 ### Simulation ID response schema when simulation is requested in frontend. ###
 
 class SimIdResponse(BaseModel):
-    """Schema for the response of a simulation request via POST to route
-    "/api/simulate/{sim_sys}"
+    """Schema for the response of a simulation request (requested via POST in
+    route ``/api/simulate/{sim_sys}``.)
+
+    Attributes
+    ----------
+    sim_id : int
+        ID number of simulation.
+    user_id : int
+        User id number stored in database.
+    username : str
+    sim_sys : SimSystem
+        Simulated system.
+    sim_status_path : str
+        Path to GET the status of the simulation.
+    sim_pickle_path : str
+        Path to GET(download) a pickle with the results of the simulation.
+    message : str
+        Explanatory message.
+
+    Note
+    ----
+    The request of the simulation must follow the model
+    :class:`~simulation_API.controller.schemas.SimRequest`.
     """
-    sim_id : Optional[str]
-    user_id : Optional[int]
-    username : Optional[str]
-    sim_sys : Optional[SimSystem]
-    sim_status_path : Optional[str]
-    sim_pickle_path : Optional[str]
-    message : Optional[str]
+    sim_id: Optional[str]
+    user_id: Optional[int]
+    username: Optional[str]
+    sim_sys: Optional[SimSystem]
+    sim_status_path: Optional[str]
+    sim_pickle_path: Optional[str]
+    message: Optional[str]
 
 
 
@@ -223,14 +336,27 @@ class SimIdResponse(BaseModel):
 
 # NOTE Needs update each time a new system is added (add a new class).
 class PlotQueryValues_HO(str, Enum):
-    """List of plot query values needed to download the plots via get in route
-    '/api/results/{sim_id}/plot?value={plot_query_value}'
+    """List of tags of each different plot generated automatically by the
+    backend when a Harmonic Oscillator simulation is requested.
+    
+    These tags are used as the possible values of the querry param ``value``
+    in route /api/results/{sim_id}/plot?value=<plot_query_value>.
+    :attr:`simualtion_API.controller.shcemas.SimIdResponse.sim_id` must be
+    related to the Harmonic Oscillator system.
     """
     coord = "coord"
     phase = "phase"
 
 
 class PlotQueryValues_ChenLee(str, Enum):
+    """List of tags of each different plot generated automatically by the
+    backend when a Chen-Lee simulation is requested.
+    
+    These tags are used as the possible values of the querry param ``value``
+    in route /api/results/{sim_id}/plot?value=<plot_query_value>.
+    :attr:`simualtion_API.controller.shcemas.SimIdResponse.sim_id` must be
+    related to the Chen Lee system.
+    """
     threeD = "threeD"
     project = "project"
 
@@ -364,11 +490,17 @@ class SimulationDBSchCreate(SimulationDBSchBase):
 
 ############################ Plots ############################
 class PlotDBSchBase(BaseModel):
+    """Basemodel for API type checking when querrying ``plots`` table in
+    ``simulations.db`` database.
+    """
     sim_id: Optional[str]
     plot_query_value: Optional[str]
 
 
 class PlotDBSch(PlotDBSchBase):
+    """Model for API type checking when reading plot information in ``plots``
+    table in ``simulations.db`` database.
+    """
     plot_id: Optional[int]
     # This is needed to include (when reading) database relations created by ORM in sqlalchemy  
     # Read more in FastAPI docs: https://fastapi.tiangolo.com/tutorial/sql-databases/#use-pydantics-orm_mode   
@@ -377,17 +509,26 @@ class PlotDBSch(PlotDBSchBase):
 
 
 class PlotDBSchCreate(PlotDBSchBase):
+    """Model for API type checking when creating a 'plot information' row in
+    ``plots`` table in ``simulations.db`` database.
+    """
     sim_id: str
     plot_query_value: str
 
 
 ############################ Parameters ############################
 class ParamType(str, Enum):
+    """These are the possible values of ``param_type`` column in ``parameters``
+    table in ``simulations.db`` database.
+    """
     ini_cndtn = "initial condition"
     param = "parameter"
 
 
 class ParameterDBSchBase(BaseModel):
+    """Basemodel for API type checking when querrying ``parameters`` table in
+    ``simulations.db`` database.
+    """
     sim_id: Optional[str]
     param_type: Optional[ParamType]
     param_key: Optional[str]
@@ -396,14 +537,22 @@ class ParameterDBSchBase(BaseModel):
 
 
 class ParameterDBSch(ParameterDBSchBase):
+    """Model for API type checking when reading initial conditions in
+    ``parameters`` table in ``simulations.db`` database.
+    """
     param_id: Optional[int]
     # This is needed to include (when reading) database relations created by ORM in sqlalchemy  
     # Read more in FastAPI docs: https://fastapi.tiangolo.com/tutorial/sql-databases/#use-pydantics-orm_mode   
     class Config:
+        """This class is needed for optimization in reading of database
+        (thanks to Object Relational Mapper –ORM.)"""
         orm_model = True
 
 
 class ParameterDBSchCreate(ParameterDBSchBase):
+    """Model for API type checking when creating initial conditions in
+    ``parameters`` table in ``simulations.db`` database.
+    """
     sim_id: str
     param_type: ParamType
     value: float

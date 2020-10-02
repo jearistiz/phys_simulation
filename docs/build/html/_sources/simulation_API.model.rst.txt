@@ -1,14 +1,32 @@
 simulation\_API.model package
 =============================
 
-Subpackages
------------
+Submodules
+----------
 
-.. toctree::
-   :maxdepth: 4
+simulation\_API.model.crud module
+---------------------------------
 
-   simulation_API.model.db
-   simulation_API.model.simulation
+.. automodule:: simulation_API.model.crud
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulation\_API.model.db\_manager module
+----------------------------------------
+
+.. automodule:: simulation_API.model.db_manager
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulation\_API.model.models module
+-----------------------------------
+
+.. automodule:: simulation_API.model.models
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Module contents
 ---------------

@@ -37,7 +37,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="simulation_API.model.db package" href="simulation_API.model.db.html" />
+    <link rel="next" title="simulation_API.simulation package" href="simulation_API.simulation.html" />
     <link rel="prev" title="simulation_API.controller package" href="simulation_API.controller.html" /> 
 </head>
 
@@ -90,6 +90,7 @@
 <li class="toctree-l3 current"><a class="reference internal" href="simulation_API.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="simulation_API.controller.html">simulation_API.controller package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">simulation_API.model package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulation_API.simulation.html">simulation_API.simulation package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="simulation_API.html#submodules">Submodules</a></li>
@@ -170,27 +171,234 @@
             
   <div class="section" id="simulation-api-model-package">
 <h1>simulation_API.model package<a class="headerlink" href="#simulation-api-model-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="simulation_API.model.db.html">simulation_API.model.db package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="simulation_API.model.db.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="simulation_API.model.db.html#module-simulation_API.model.db.crud">simulation_API.model.db.crud module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="simulation_API.model.db.html#module-simulation_API.model.db.db_manager">simulation_API.model.db.db_manager module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="simulation_API.model.db.html#module-simulation_API.model.db.models">simulation_API.model.db.models module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="simulation_API.model.db.html#module-simulation_API.model.db">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="simulation_API.model.simulation.html">simulation_API.model.simulation package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="simulation_API.model.simulation.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="simulation_API.model.simulation.html#module-simulation_API.model.simulation.demo_run_simulation">simulation_API.model.simulation.demo_run_simulation module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="simulation_API.model.simulation.html#module-simulation_API.model.simulation.simulations">simulation_API.model.simulation.simulations module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="simulation_API.model.simulation.html#module-simulation_API.model.simulation">Module contents</a></li>
-</ul>
-</li>
-</ul>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-simulation_API.model.crud">
+<span id="simulation-api-model-crud-module"></span><h2>simulation_API.model.crud module<a class="headerlink" href="#module-simulation_API.model.crud" title="Permalink to this headline">¶</a></h2>
+<p>This program manages database querys.
+CRUD comes from: Create, Read, Update, and Delete.</p>
+</div>
+<div class="section" id="module-simulation_API.model.db_manager">
+<span id="simulation-api-model-db-manager-module"></span><h2>simulation_API.model.db_manager module<a class="headerlink" href="#module-simulation_API.model.db_manager" title="Permalink to this headline">¶</a></h2>
+<p>This module handles all the database interactions with our API</p>
+</div>
+<div class="section" id="module-simulation_API.model.models">
+<span id="simulation-api-model-models-module"></span><h2>simulation_API.model.models module<a class="headerlink" href="#module-simulation_API.model.models" title="Permalink to this headline">¶</a></h2>
+<p>This program creates all the models and tables in the database</p>
+<dl class="py class">
+<dt id="simulation_API.model.models.ParameterDB">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.models.</code><code class="sig-name descname">ParameterDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.ParameterDB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<p>Stores parameters and initial conditions of simulations</p>
+<dl class="py method">
+<dt id="simulation_API.model.models.ParameterDB.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.ParameterDB.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple constructor that allows initialization from kwargs.</p>
+<p>Sets attributes on the constructed instance using the names and
+values in <code class="docutils literal notranslate"><span class="pre">kwargs</span></code>.</p>
+<p>Only keys that are present as
+attributes of the instance’s class are allowed. These could be,
+for example, any mapped columns or relationships.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.ParameterDB.ini_cndtn_id">
+<code class="sig-name descname">ini_cndtn_id</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.ini_cndtn_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.ParameterDB.param_id">
+<code class="sig-name descname">param_id</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.param_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.ParameterDB.param_key">
+<code class="sig-name descname">param_key</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.param_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.ParameterDB.param_type">
+<code class="sig-name descname">param_type</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.param_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.ParameterDB.sim_id">
+<code class="sig-name descname">sim_id</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.sim_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.ParameterDB.simulation">
+<code class="sig-name descname">simulation</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.simulation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.ParameterDB.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.model.models.PlotDB">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.models.</code><code class="sig-name descname">PlotDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.PlotDB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<p>Stores query parameter values of plots needed to access simulation
+results via GET in route /api/results/{sim_id}/plot?value={plot_query_value}</p>
+<dl class="py method">
+<dt id="simulation_API.model.models.PlotDB.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.PlotDB.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple constructor that allows initialization from kwargs.</p>
+<p>Sets attributes on the constructed instance using the names and
+values in <code class="docutils literal notranslate"><span class="pre">kwargs</span></code>.</p>
+<p>Only keys that are present as
+attributes of the instance’s class are allowed. These could be,
+for example, any mapped columns or relationships.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.PlotDB.plot_id">
+<code class="sig-name descname">plot_id</code><a class="headerlink" href="#simulation_API.model.models.PlotDB.plot_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.PlotDB.plot_query_value">
+<code class="sig-name descname">plot_query_value</code><a class="headerlink" href="#simulation_API.model.models.PlotDB.plot_query_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.PlotDB.sim_id">
+<code class="sig-name descname">sim_id</code><a class="headerlink" href="#simulation_API.model.models.PlotDB.sim_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.PlotDB.simulation">
+<code class="sig-name descname">simulation</code><a class="headerlink" href="#simulation_API.model.models.PlotDB.simulation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.model.models.SimulationDB">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.models.</code><code class="sig-name descname">SimulationDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.SimulationDB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<p>Simulation Status</p>
+<dl class="py method">
+<dt id="simulation_API.model.models.SimulationDB.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.SimulationDB.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple constructor that allows initialization from kwargs.</p>
+<p>Sets attributes on the constructed instance using the names and
+values in <code class="docutils literal notranslate"><span class="pre">kwargs</span></code>.</p>
+<p>Only keys that are present as
+attributes of the instance’s class are allowed. These could be,
+for example, any mapped columns or relationships.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.date">
+<code class="sig-name descname">date</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.message">
+<code class="sig-name descname">message</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.method">
+<code class="sig-name descname">method</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.parameters">
+<code class="sig-name descname">parameters</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.plots">
+<code class="sig-name descname">plots</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.plots" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.route_pickle">
+<code class="sig-name descname">route_pickle</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.route_pickle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.route_plots">
+<code class="sig-name descname">route_plots</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.route_plots" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.route_results">
+<code class="sig-name descname">route_results</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.route_results" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.sim_id">
+<code class="sig-name descname">sim_id</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.sim_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.success">
+<code class="sig-name descname">success</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.success" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.system">
+<code class="sig-name descname">system</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.system" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.user">
+<code class="sig-name descname">user</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.user_id">
+<code class="sig-name descname">user_id</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.user_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="simulation_API.model.models.UserDB">
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.models.</code><code class="sig-name descname">UserDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.UserDB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<p>Users</p>
+<dl class="py method">
+<dt id="simulation_API.model.models.UserDB.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.UserDB.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple constructor that allows initialization from kwargs.</p>
+<p>Sets attributes on the constructed instance using the names and
+values in <code class="docutils literal notranslate"><span class="pre">kwargs</span></code>.</p>
+<p>Only keys that are present as
+attributes of the instance’s class are allowed. These could be,
+for example, any mapped columns or relationships.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.UserDB.hash_value">
+<code class="sig-name descname">hash_value</code><a class="headerlink" href="#simulation_API.model.models.UserDB.hash_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.UserDB.simulations">
+<code class="sig-name descname">simulations</code><a class="headerlink" href="#simulation_API.model.models.UserDB.simulations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.UserDB.user_id">
+<code class="sig-name descname">user_id</code><a class="headerlink" href="#simulation_API.model.models.UserDB.user_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.UserDB.username">
+<code class="sig-name descname">username</code><a class="headerlink" href="#simulation_API.model.models.UserDB.username" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-simulation_API.model">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulation_API.model" title="Permalink to this headline">¶</a></h2>
@@ -205,7 +413,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="simulation_API.model.db.html" class="btn btn-neutral float-right" title="simulation_API.model.db package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="simulation_API.simulation.html" class="btn btn-neutral float-right" title="simulation_API.simulation package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="simulation_API.controller.html" class="btn btn-neutral float-left" title="simulation_API.controller package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
