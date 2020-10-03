@@ -178,10 +178,187 @@
 <span id="simulation-api-model-crud-module"></span><h2>simulation_API.model.crud module<a class="headerlink" href="#module-simulation_API.model.crud" title="Permalink to this headline">¶</a></h2>
 <p>This program manages database querys.
 CRUD comes from: Create, Read, Update, and Delete.</p>
+<dl class="py function">
+<dt id="simulation_API.model.crud._create_parameters">
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_create_parameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">parameters</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.ParameterDBSchCreate" title="simulation_API.controller.schemas.ParameterDBSchCreate">simulation_API.controller.schemas.ParameterDBSchCreate</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#simulation_API.model.crud._create_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert parameter entry into parameters table</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>db</strong> (<em>Session</em>) – Database Session.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.model.crud._create_plot_query_values">
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_create_plot_query_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">plot_query_params</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.PlotDBSchCreate" title="simulation_API.controller.schemas.PlotDBSchCreate">simulation_API.controller.schemas.PlotDBSchCreate</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#simulation_API.model.crud._create_plot_query_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert row in plots table (contains plot query params)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>db</strong> (<em>Session</em>) – Database Session.</p></li>
+<li><p><strong>plot_query_params</strong> (<em>List</em><em>[</em><a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.PlotDBSchCreate" title="simulation_API.controller.schemas.PlotDBSchCreate"><em>PlotDBSchCreate</em></a><em>]</em>) – List of rows to be inserted in <code class="docutils literal notranslate"><span class="pre">plots</span></code> table.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.model.crud._create_simulation">
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_create_simulation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">simulation</span><span class="p">:</span> <span class="n"><a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.SimulationDBSchCreate" title="simulation_API.controller.schemas.SimulationDBSchCreate">simulation_API.controller.schemas.SimulationDBSchCreate</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#simulation_API.model.models.SimulationDB" title="simulation_API.model.models.SimulationDB">simulation_API.model.models.SimulationDB</a><a class="headerlink" href="#simulation_API.model.crud._create_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts simulation in simulations table</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>db</strong> (<em>Session</em>) – Database Session.</p></li>
+<li><p><strong>simulation</strong> (<a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.SimulationDBSchCreate" title="simulation_API.controller.schemas.SimulationDBSchCreate"><em>SimulationDBSchCreate</em></a>) – Simulation row in <code class="docutils literal notranslate"><span class="pre">simulations</span></code> table.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>db_simulation</strong> – Updated <code class="docutils literal notranslate"><span class="pre">simulation</span></code>’s row.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#simulation_API.model.models.SimulationDB" title="simulation_API.model.models.SimulationDB">SimulationDB</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.model.crud._create_user">
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_create_user</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">user</span><span class="p">:</span> <span class="n"><a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.UserDBSchCreate" title="simulation_API.controller.schemas.UserDBSchCreate">simulation_API.controller.schemas.UserDBSchCreate</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#simulation_API.model.models.UserDB" title="simulation_API.model.models.UserDB">simulation_API.model.models.UserDB</a><a class="headerlink" href="#simulation_API.model.crud._create_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts <code class="docutils literal notranslate"><span class="pre">user</span></code> in <code class="docutils literal notranslate"><span class="pre">users</span></code> table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>db</strong> (<em>Session</em>) – Database Session.</p></li>
+<li><p><strong>user</strong> (<a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.UserDBSchCreate" title="simulation_API.controller.schemas.UserDBSchCreate"><em>UserDBSchCreate</em></a>) – User row in database.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>db_user</strong> – Updated inserted row (with <code class="xref py py-attr docutils literal notranslate"><span class="pre">models.UserBD.user_id</span></code>).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#simulation_API.model.models.UserDB" title="simulation_API.model.models.UserDB">UserDB</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.model.crud._get_all_simulations">
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_get_all_simulations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span><a class="reference internal" href="#simulation_API.model.models.SimulationDB" title="simulation_API.model.models.SimulationDB">simulation_API.model.models.SimulationDB</a><span class="p">]</span><a class="headerlink" href="#simulation_API.model.crud._get_all_simulations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all simulation entries in <code class="docutils literal notranslate"><span class="pre">simulations</span></code> table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>db</strong> (<em>Session</em>) – Database Session.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Querry of all rows in <code class="docutils literal notranslate"><span class="pre">simulations</span></code> table</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">sqlalchemy.orm.Query</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.model.crud._get_parameters">
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_get_parameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">param_type</span><span class="p">:</span> <span class="n"><a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.ParamType" title="simulation_API.controller.schemas.ParamType">simulation_API.controller.schemas.ParamType</a></span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>List<span class="p">[</span>float<span class="p">]</span><span class="p">, </span>Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><span class="p">]</span><a class="headerlink" href="#simulation_API.model.crud._get_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parameters from parameters table</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>db</strong> (<em>Session</em>) – Database Session.</p></li>
+<li><p><strong>sim_id</strong> (<em>str</em>) – Simulation ID.</p></li>
+<li><p><strong>param_type</strong> (<a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.ParamType" title="simulation_API.controller.schemas.ParamType"><em>ParamType</em></a>) – Type of parameter, wether <code class="docutils literal notranslate"><span class="pre">'initial</span> <span class="pre">condition'</span></code> or <code class="docutils literal notranslate"><span class="pre">'parameter'</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">list</span></code> of initial conditions or <code class="docutils literal notranslate"><span class="pre">dict</span></code> with mapping between
+parameter name and parameter value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[float] or Dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.model.crud._get_plot_query_values">
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_get_plot_query_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.crud._get_plot_query_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return plot query parameters for a given simulation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>db</strong> (<em>Session</em>) – Database Session.</p></li>
+<li><p><strong>sim_id</strong> (<em>str</em>) – Simulation ID.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Plot query values associated to <code class="docutils literal notranslate"><span class="pre">sim_id</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.PlotQueryValues" title="simulation_API.controller.schemas.PlotQueryValues"><code class="xref py py-data docutils literal notranslate"><span class="pre">PlotQueryValues</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.model.crud._get_simulation">
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_get_simulation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#simulation_API.model.models.SimulationDB" title="simulation_API.model.models.SimulationDB">simulation_API.model.models.SimulationDB</a><a class="headerlink" href="#simulation_API.model.crud._get_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get simulation with specific id from simulations table</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>db</strong> (<em>Session</em>) – Database Session.</p></li>
+<li><p><strong>sim_id</strong> (<em>str</em>) – Simulation ID.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Query with simulation information of <code class="docutils literal notranslate"><span class="pre">sim_id</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">sqlalchemy.orm.Query</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simulation_API.model.crud._get_username">
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_get_username</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">user_id</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.crud._get_username" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets <code class="docutils literal notranslate"><span class="pre">user</span></code> from <code class="docutils literal notranslate"><span class="pre">users</span></code> table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>db</strong> (<em>Session</em>) – Database Session.</p></li>
+<li><p><strong>user_id</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Query with information about username with given <code class="docutils literal notranslate"><span class="pre">user_id</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">sqlalchemy.orm.Query</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="module-simulation_API.model.db_manager">
 <span id="simulation-api-model-db-manager-module"></span><h2>simulation_API.model.db_manager module<a class="headerlink" href="#module-simulation_API.model.db_manager" title="Permalink to this headline">¶</a></h2>
-<p>This module handles all the database interactions with our API</p>
+<p>This module starts the database engine, the database session and the
+basemodel for the database tables.</p>
 </div>
 <div class="section" id="module-simulation_API.model.models">
 <span id="simulation-api-model-models-module"></span><h2>simulation_API.model.models module<a class="headerlink" href="#module-simulation_API.model.models" title="Permalink to this headline">¶</a></h2>
@@ -190,7 +367,90 @@ CRUD comes from: Create, Read, Update, and Delete.</p>
 <dt id="simulation_API.model.models.ParameterDB">
 <em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.models.</code><code class="sig-name descname">ParameterDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.ParameterDB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
-<p>Stores parameters and initial conditions of simulations</p>
+<p>Parmaeters table model.</p>
+<p>Stores parameters and initial conditions of simulations.</p>
+<dl class="py attribute">
+<dt id="simulation_API.model.models.ParameterDB.__tablename__">
+<code class="sig-name descname">__tablename__</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.__tablename__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.ParameterDB.param_id">
+<code class="sig-name descname">param_id</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.param_id" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, int, primary_key</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.ParameterDB.sim_id">
+<code class="sig-name descname">sim_id</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.sim_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulation ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.ParameterDB.param_type">
+<code class="sig-name descname">param_type</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.param_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameter type, wether <code class="docutils literal notranslate"><span class="pre">'initial</span> <span class="pre">condition'</span></code> or <code class="docutils literal notranslate"><span class="pre">'parameter'</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, str, <a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.ParamType" title="simulation_API.controller.schemas.ParamType"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulation_API.controller.schemas.ParamType</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.ParameterDB.param_key">
+<code class="sig-name descname">param_key</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.param_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of parameter. Must be one of the required parameters related to
+the system being simulated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.ParameterDB.ini_cndtn_id">
+<code class="sig-name descname">ini_cndtn_id</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.ini_cndtn_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial condition position in array of initial conditions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.ParameterDB.value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of <code class="docutils literal notranslate"><span class="pre">'parameter'</span></code> or <code class="docutils literal notranslate"><span class="pre">initial</span> <span class="pre">contidion</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.ParameterDB.simulation">
+<code class="sig-name descname">simulation</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>ORM relationship with simulations’ table.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt id="simulation_API.model.models.ParameterDB.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.ParameterDB.__init__" title="Permalink to this definition">¶</a></dt>
@@ -203,38 +463,39 @@ for example, any mapped columns or relationships.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.ParameterDB.ini_cndtn_id">
-<code class="sig-name descname">ini_cndtn_id</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.ini_cndtn_id" title="Permalink to this definition">¶</a></dt>
+<dt id="id0">
+<code class="sig-name descname">ini_cndtn_id</code><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.ParameterDB.param_id">
-<code class="sig-name descname">param_id</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.param_id" title="Permalink to this definition">¶</a></dt>
+<dt id="id1">
+<code class="sig-name descname">param_id</code><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Column, int, primary_key:</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="id2">
+<code class="sig-name descname">param_key</code><a class="headerlink" href="#id2" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.ParameterDB.param_key">
-<code class="sig-name descname">param_key</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.param_key" title="Permalink to this definition">¶</a></dt>
+<dt id="id3">
+<code class="sig-name descname">param_type</code><a class="headerlink" href="#id3" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.ParameterDB.param_type">
-<code class="sig-name descname">param_type</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.param_type" title="Permalink to this definition">¶</a></dt>
+<dt id="id4">
+<code class="sig-name descname">sim_id</code><a class="headerlink" href="#id4" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.ParameterDB.sim_id">
-<code class="sig-name descname">sim_id</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.sim_id" title="Permalink to this definition">¶</a></dt>
+<dt id="id5">
+<code class="sig-name descname">simulation</code><a class="headerlink" href="#id5" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.ParameterDB.simulation">
-<code class="sig-name descname">simulation</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.simulation" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="simulation_API.model.models.ParameterDB.value">
-<code class="sig-name descname">value</code><a class="headerlink" href="#simulation_API.model.models.ParameterDB.value" title="Permalink to this definition">¶</a></dt>
+<dt id="id6">
+<code class="sig-name descname">value</code><a class="headerlink" href="#id6" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -243,8 +504,57 @@ for example, any mapped columns or relationships.</p>
 <dt id="simulation_API.model.models.PlotDB">
 <em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.models.</code><code class="sig-name descname">PlotDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.PlotDB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
+<p>Plots table model.</p>
 <p>Stores query parameter values of plots needed to access simulation
-results via GET in route /api/results/{sim_id}/plot?value={plot_query_value}</p>
+results via GET in route
+<code class="docutils literal notranslate"><span class="pre">/api/results/{sim_id}/plot?value={plot_query_value}</span></code>.</p>
+<dl class="py attribute">
+<dt id="simulation_API.model.models.PlotDB.__tablename__">
+<code class="sig-name descname">__tablename__</code><a class="headerlink" href="#simulation_API.model.models.PlotDB.__tablename__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.PlotDB.plot_id">
+<code class="sig-name descname">plot_id</code><a class="headerlink" href="#simulation_API.model.models.PlotDB.plot_id" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, int, primary_key</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.PlotDB.sim_id">
+<code class="sig-name descname">sim_id</code><a class="headerlink" href="#simulation_API.model.models.PlotDB.sim_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulation ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.PlotDB.plot_query_value">
+<code class="sig-name descname">plot_query_value</code><a class="headerlink" href="#simulation_API.model.models.PlotDB.plot_query_value" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.PlotDB.simulation">
+<code class="sig-name descname">simulation</code><a class="headerlink" href="#simulation_API.model.models.PlotDB.simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>ORM relationship with simulations’ table.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt id="simulation_API.model.models.PlotDB.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.PlotDB.__init__" title="Permalink to this definition">¶</a></dt>
@@ -257,23 +567,23 @@ for example, any mapped columns or relationships.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.PlotDB.plot_id">
-<code class="sig-name descname">plot_id</code><a class="headerlink" href="#simulation_API.model.models.PlotDB.plot_id" title="Permalink to this definition">¶</a></dt>
+<dt id="id7">
+<code class="sig-name descname">plot_id</code><a class="headerlink" href="#id7" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.PlotDB.plot_query_value">
-<code class="sig-name descname">plot_query_value</code><a class="headerlink" href="#simulation_API.model.models.PlotDB.plot_query_value" title="Permalink to this definition">¶</a></dt>
+<dt id="id8">
+<code class="sig-name descname">plot_query_value</code><a class="headerlink" href="#id8" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.PlotDB.sim_id">
-<code class="sig-name descname">sim_id</code><a class="headerlink" href="#simulation_API.model.models.PlotDB.sim_id" title="Permalink to this definition">¶</a></dt>
+<dt id="id9">
+<code class="sig-name descname">sim_id</code><a class="headerlink" href="#id9" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.PlotDB.simulation">
-<code class="sig-name descname">simulation</code><a class="headerlink" href="#simulation_API.model.models.PlotDB.simulation" title="Permalink to this definition">¶</a></dt>
+<dt id="id10">
+<code class="sig-name descname">simulation</code><a class="headerlink" href="#id10" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -282,7 +592,143 @@ for example, any mapped columns or relationships.</p>
 <dt id="simulation_API.model.models.SimulationDB">
 <em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.models.</code><code class="sig-name descname">SimulationDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.SimulationDB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
-<p>Simulation Status</p>
+<p>Simulation Status table model.</p>
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.__tablename__">
+<code class="sig-name descname">__tablename__</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.__tablename__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.sim_id">
+<code class="sig-name descname">sim_id</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.sim_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulation ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, str, primary_key</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.user_id">
+<code class="sig-name descname">user_id</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.user_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Foreign key: <a class="reference internal" href="#id25" title="simulation_API.model.models.UserDB.user_id"><code class="xref py py-attr docutils literal notranslate"><span class="pre">user_id</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.date">
+<code class="sig-name descname">date</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.date" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.system">
+<code class="sig-name descname">system</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.system" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulated system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, str, <a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimSystem</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.method">
+<code class="sig-name descname">method</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.method" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, str, <code class="xref py py-class docutils literal notranslate"><span class="pre">IntegrationMethod</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.route_pickle">
+<code class="sig-name descname">route_pickle</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.route_pickle" title="Permalink to this definition">¶</a></dt>
+<dd><p>API route to GET simulation results in pickle format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.route_results">
+<code class="sig-name descname">route_results</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.route_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>API route to GET simulation results displayed in frontend web page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.route_plots">
+<code class="sig-name descname">route_plots</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.route_plots" title="Permalink to this definition">¶</a></dt>
+<dd><p>API route to GET simulation plots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.success">
+<code class="sig-name descname">success</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.success" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tells if the simulation was successful or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.message">
+<code class="sig-name descname">message</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Message with further information about the simulation status.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.user">
+<code class="sig-name descname">user</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.user" title="Permalink to this definition">¶</a></dt>
+<dd><p>ORM relationship with users’ table.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.plots">
+<code class="sig-name descname">plots</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.plots" title="Permalink to this definition">¶</a></dt>
+<dd><p>ORM relationship with plots’ table.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.SimulationDB.parameters">
+<code class="sig-name descname">parameters</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>ORM relationship with parameters’ table.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt id="simulation_API.model.models.SimulationDB.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.SimulationDB.__init__" title="Permalink to this definition">¶</a></dt>
@@ -295,68 +741,68 @@ for example, any mapped columns or relationships.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.SimulationDB.date">
-<code class="sig-name descname">date</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.date" title="Permalink to this definition">¶</a></dt>
+<dt id="id11">
+<code class="sig-name descname">date</code><a class="headerlink" href="#id11" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.SimulationDB.message">
-<code class="sig-name descname">message</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.message" title="Permalink to this definition">¶</a></dt>
+<dt id="id12">
+<code class="sig-name descname">message</code><a class="headerlink" href="#id12" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.SimulationDB.method">
-<code class="sig-name descname">method</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.method" title="Permalink to this definition">¶</a></dt>
+<dt id="id13">
+<code class="sig-name descname">method</code><a class="headerlink" href="#id13" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.SimulationDB.parameters">
-<code class="sig-name descname">parameters</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.parameters" title="Permalink to this definition">¶</a></dt>
+<dt id="id14">
+<code class="sig-name descname">parameters</code><a class="headerlink" href="#id14" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.SimulationDB.plots">
-<code class="sig-name descname">plots</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.plots" title="Permalink to this definition">¶</a></dt>
+<dt id="id15">
+<code class="sig-name descname">plots</code><a class="headerlink" href="#id15" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.SimulationDB.route_pickle">
-<code class="sig-name descname">route_pickle</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.route_pickle" title="Permalink to this definition">¶</a></dt>
+<dt id="id16">
+<code class="sig-name descname">route_pickle</code><a class="headerlink" href="#id16" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.SimulationDB.route_plots">
-<code class="sig-name descname">route_plots</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.route_plots" title="Permalink to this definition">¶</a></dt>
+<dt id="id17">
+<code class="sig-name descname">route_plots</code><a class="headerlink" href="#id17" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.SimulationDB.route_results">
-<code class="sig-name descname">route_results</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.route_results" title="Permalink to this definition">¶</a></dt>
+<dt id="id18">
+<code class="sig-name descname">route_results</code><a class="headerlink" href="#id18" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.SimulationDB.sim_id">
-<code class="sig-name descname">sim_id</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.sim_id" title="Permalink to this definition">¶</a></dt>
+<dt id="id19">
+<code class="sig-name descname">sim_id</code><a class="headerlink" href="#id19" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.SimulationDB.success">
-<code class="sig-name descname">success</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.success" title="Permalink to this definition">¶</a></dt>
+<dt id="id20">
+<code class="sig-name descname">success</code><a class="headerlink" href="#id20" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.SimulationDB.system">
-<code class="sig-name descname">system</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.system" title="Permalink to this definition">¶</a></dt>
+<dt id="id21">
+<code class="sig-name descname">system</code><a class="headerlink" href="#id21" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.SimulationDB.user">
-<code class="sig-name descname">user</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.user" title="Permalink to this definition">¶</a></dt>
+<dt id="id22">
+<code class="sig-name descname">user</code><a class="headerlink" href="#id22" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.SimulationDB.user_id">
-<code class="sig-name descname">user_id</code><a class="headerlink" href="#simulation_API.model.models.SimulationDB.user_id" title="Permalink to this definition">¶</a></dt>
+<dt id="id23">
+<code class="sig-name descname">user_id</code><a class="headerlink" href="#id23" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -365,7 +811,49 @@ for example, any mapped columns or relationships.</p>
 <dt id="simulation_API.model.models.UserDB">
 <em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.models.</code><code class="sig-name descname">UserDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.UserDB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
-<p>Users</p>
+<p>Users table model.</p>
+<p>This table stores basic user information.</p>
+<dl class="py attribute">
+<dt id="simulation_API.model.models.UserDB.__tablename__">
+<code class="sig-name descname">__tablename__</code><a class="headerlink" href="#simulation_API.model.models.UserDB.__tablename__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.UserDB.user_id">
+<code class="sig-name descname">user_id</code><a class="headerlink" href="#simulation_API.model.models.UserDB.user_id" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, int, primary_key</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.UserDB.username">
+<code class="sig-name descname">username</code><a class="headerlink" href="#simulation_API.model.models.UserDB.username" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="simulation_API.model.models.UserDB.hash_value">
+<code class="sig-name descname">hash_value</code><a class="headerlink" href="#simulation_API.model.models.UserDB.hash_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hash value of the usser’s password.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Column, str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#id24" title="simulation_API.model.models.UserDB.hash_value"><code class="xref py py-attr docutils literal notranslate"><span class="pre">hash_value</span></code></a> and this <code class="docutils literal notranslate"><span class="pre">users</span></code> table is not
+appropiately used yet because logging is not yet implemented in the app.</p>
+</div>
 <dl class="py method">
 <dt id="simulation_API.model.models.UserDB.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.UserDB.__init__" title="Permalink to this definition">¶</a></dt>
@@ -378,8 +866,8 @@ for example, any mapped columns or relationships.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.UserDB.hash_value">
-<code class="sig-name descname">hash_value</code><a class="headerlink" href="#simulation_API.model.models.UserDB.hash_value" title="Permalink to this definition">¶</a></dt>
+<dt id="id24">
+<code class="sig-name descname">hash_value</code><a class="headerlink" href="#id24" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -388,13 +876,13 @@ for example, any mapped columns or relationships.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.UserDB.user_id">
-<code class="sig-name descname">user_id</code><a class="headerlink" href="#simulation_API.model.models.UserDB.user_id" title="Permalink to this definition">¶</a></dt>
+<dt id="id25">
+<code class="sig-name descname">user_id</code><a class="headerlink" href="#id25" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="simulation_API.model.models.UserDB.username">
-<code class="sig-name descname">username</code><a class="headerlink" href="#simulation_API.model.models.UserDB.username" title="Permalink to this definition">¶</a></dt>
+<dt id="id26">
+<code class="sig-name descname">username</code><a class="headerlink" href="#id26" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

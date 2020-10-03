@@ -54,7 +54,16 @@ autodoc_default_options = {
                        '_create_plot_path_disk, '
                        '_pickle, _plot_solution, '
                        '_run_simulation, '
-                       '_sim_form_to_sim_request',
+                       '_sim_form_to_sim_request, '
+                       '_create_user, '
+                       '_get_username, '
+                       '_create_simulation, '
+                       '_get_simulation, '
+                       '_get_all_simulations, '
+                       '_create_plot_query_values, '
+                       '_get_plot_query_values, '
+                       '_create_parameters, '
+                       '_get_parameters',
     'special-members': '__init__',
     'inherited-members': False,
     'show-inheritance': False,

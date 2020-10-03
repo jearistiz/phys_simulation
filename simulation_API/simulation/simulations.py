@@ -13,7 +13,7 @@ class Simulation(object):
 
     Attributes
     ---------
-    t_span : list of floats shape (2,) or None
+    t_span : List[float, float] or None
         Interval of integration (t0, tf).
     t_eval : array_like or None
         Times at which to store the computed solution, must be sorted and
@@ -30,9 +30,9 @@ class Simulation(object):
         Username that instantiated the simulation.
     system : string or None
         Name of system.
-    date : datetime.
+    date : datetime (str).
         UTC date and time of instantiation of object.
-    results : scipy.integrate._ivp.ivp.OdeResult or None
+    results : ``scipy.integrate._ivp.ivp.OdeResult`` or None
         Results of simulation.
     """
     system = None
@@ -43,7 +43,7 @@ class Simulation(object):
                  params: Optional[dict] = None,
                  method: Optional[str] = 'RK45',
                  user_name: Optional[str] = None) -> None:
-        """Initializes :class:`self` attributes except ``self.system``"""
+        """Initializes all :class:`self` attributes except ``self.system``"""
         self.t_span = t_span
         self.t_eval = t_eval
         self.ini_cndtn = ini_cndtn
@@ -54,7 +54,13 @@ class Simulation(object):
         self.date = str(datetime.utcnow())
 
     def dyn_sys_eqns(self, t: float, y: List[float]) -> List[float]:
-        """Trivial 2D dynamical system. Just for reference."""
+        """Trivial 2D dynamical system. Just for reference.
+        
+        Note
+        ----
+        The actual simulations that inherit this class will replace this method
+        with the relevant dynamical equations.
+        """
         # The vector is decomposed in its phase space variables.
         p, q = y
         
@@ -65,7 +71,8 @@ class Simulation(object):
         return dydt
 
     def simulate(self) -> OdeResult:
-        """Simulates ``self.system`` using ``scipy.integrate.solve_ivp``
+        """Simulates ``self.system`` abstracted in ``self.dyn_sys_eqns``
+        and using ``scipy.integrate.solve_ivp``.
         
         Returns
         -------
@@ -120,11 +127,6 @@ class HarmonicOsc1D(Simulation):
     k : float
         Force constant of harmonic oscilltor.
 
-    Methods
-    -------
-    dyn_sys_eqns(self, t, y):
-        Calculates hamilton's equations for 1D-Harmonic Oscillator.
-
     Notes
     -----
     The hamiltonian describing the harmonic oscillator is defined as
@@ -142,9 +144,11 @@ class HarmonicOsc1D(Simulation):
                  params: dict = {"m": 1., "k": 1.},
                  method: str = 'RK45',
                  user_name: Optional[str] = None) -> None:
-        """Extends :meth:`simulation_API.model.simulation.simulations.Simulation.__init__`
+        """Extends :meth:`simulation_API.simulation.simulations.Simulation.__init__`
         
-        Adds attributes ``self.k`` and ``self.m``.
+        Adds attributes
+        :attr:`~simulation_API.simulation.simulations.HarmonicOsc1D.m` and
+        :attr:`~simulation_API.simulation.simulations.HarmonicOsc1D.k`.
         
         Parameters
         ----------
@@ -154,7 +158,7 @@ class HarmonicOsc1D(Simulation):
             generalised position and :math:`p_0` is the initial generalised
             momentum. Default is ``[0., 1.]``. A list of initial conditions
             can be used, in this case a list of solutions will be returned by
-            :meth:`~simulation_API.model.simulation.simulations.Simulation.simulate`.
+            :meth:`~simulation_API.simulation.simulations.Simulation.simulate`.
         params : dict, optional
             Contains all the parameters of the simulation. Schema must match::
 
@@ -170,7 +174,11 @@ class HarmonicOsc1D(Simulation):
         self.k = params["k"]
 
     def dyn_sys_eqns(self, t: float, y: List[float]) -> List[float]:
-        """Hamilton's equations for 1D-Harmonic Oscillator
+        """Hamilton's equations for 1D-Harmonic Oscillator.
+
+        Note
+        ----
+        Overwrites :attr:`simulation_API.simulation.simulations.Simulation.dyn_sys_eqns`.
 
         Parameters
         ----------
@@ -183,8 +191,8 @@ class HarmonicOsc1D(Simulation):
 
         Returns
         -------
-        dydt : list
-            Hamilton's equations for 1d Harmonic Oscillator.
+        dydt : array_like, shape (2,)
+            Hamilton's equations for 1D Harmonic Oscillator.
             :math:`\\texttt{dydt} = \left[ \\frac{dq}{dt}, \\frac{dp}{dt} \\right] =
             \left[ \\frac{\partial H}{\partial p}, - \\frac{\partial H}{\partial q} \\right]`
         """
@@ -233,9 +241,12 @@ class ChenLeeAttractor(Simulation):
                  params: dict = {"a": 3., "b": - 5., "c": - 1.},
                  method: str = 'RK45',
                  user_name: Optional[str] = None) -> None:
-        """Extends :meth:`simulation_API.model.simulation.simulations.Simulation.__init__`
+        """Extends :meth:`simulation_API.simulation.simulations.Simulation.__init__`
         
-        Adds attributes ``self.a``, ``self.b`` and ``self.c``.
+        Adds attributes
+        :attr:`~simulation_API.simulation.simulations.ChenLeeAttractor.a`,
+        :attr:`~simulation_API.simulation.simulations.ChenLeeAttractor.b` and
+        :attr:`~simulation_API.simulation.simulations.ChenLeeAttractor.c`.
         
         Parameters
         ----------
@@ -244,7 +255,7 @@ class ChenLeeAttractor(Simulation):
             :math:`\\texttt{ini_cndtn} = [\omega_{x0}, \omega_{y0}, \omega_{z0}]`.
             Default is ``[10, 10, 0]``. A list of initial conditions can be
             used, in this case a list of solutions will be returned by
-            :py:meth:`~simulation_API.model.simulation.simulations.Simulation.simulate`
+            :py:meth:`~simulation_API.simulation.simulations.Simulation.simulate`
         params : dict, optional
             Contains all the parameters of the simulation. Schema must match::
             
@@ -264,6 +275,10 @@ class ChenLeeAttractor(Simulation):
     def dyn_sys_eqns(self, t: float, w: List[float]) -> List[float]:
         """Chen-Lee Dynamical system definition
         
+        Note
+        ----
+        Overwrites :attr:`simulation_API.simulation.simulations.Simulation.dyn_sys_eqns`.
+
         Parameters
         ----------
         w : array_like, shape (3,)
@@ -274,8 +289,8 @@ class ChenLeeAttractor(Simulation):
         
         Returns
         -------
-        dwdt : List[Float]
-            Dynamical system equations of Chen Lee attractor.
+        dwdt : array_like, shape (3,)
+            Dynamical system equations of Chen Lee attractor evaluated at ``w``.
         """
         wx, wy, wz = w
         dwdt = [
@@ -291,3 +306,10 @@ Simulations = {
     HarmonicOsc1D.system: HarmonicOsc1D,
     ChenLeeAttractor.system: ChenLeeAttractor,
 }
+"""Maps the names of the available systems to their corresponding classes.
+
+Warning
+-------
+Must be updated each time a new simulation is added (add the new relevant item
+to the dictionary).
+"""

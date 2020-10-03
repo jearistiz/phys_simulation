@@ -10,7 +10,20 @@ from simulation_API.controller.schemas import *
 
 
 def _create_user(db: Session, user: UserDBSchCreate) -> UserDB:
-    """Inserts user in users table"""
+    """Inserts ``user`` in ``users`` table.
+    
+    Parameters
+    ----------
+    db : Session
+        Database Session.
+    user : UserDBSchCreate
+        User row in database.
+
+    Returns
+    -------
+    db_user : UserDB
+        Updated inserted row (with :attr:`.models.UserBD.user_id`).
+    """
     # Create a user instance from database models
     db_user = UserDB(**user.dict())
     # Add db_user to session
@@ -25,12 +38,38 @@ def _create_user(db: Session, user: UserDBSchCreate) -> UserDB:
 
 
 def _get_username(db: Session, user_id: int):
+    """Gets ``user`` from ``users`` table.
+
+    Parameters
+    ----------
+    db : Session
+        Database Session.
+    user_id : int
+    
+    Returns
+    -------
+    ``sqlalchemy.orm.Query``
+        Query with information about username with given ``user_id``.
+    """
     return db.query(UserDB.username).filter(UserDB.user_id == user_id).first()
 
 
 def _create_simulation(db: Session,
                        simulation: SimulationDBSchCreate) -> SimulationDB:
-    """Inserts simulation in simulations table"""
+    """Inserts simulation in simulations table
+
+    Parameters
+    ----------
+    db : Session
+        Database Session.
+    simulation : SimulationDBSchCreate
+        Simulation row in ``simulations`` table.
+
+    Returns
+    -------
+    db_simulation : SimulationDB
+        Updated ``simulation``'s row.
+    """
     db_simulation = SimulationDB(**simulation.dict())
     db.add(db_simulation)
     db.commit()
@@ -39,17 +78,54 @@ def _create_simulation(db: Session,
 
 
 def _get_simulation(db: Session, sim_id: str) -> SimulationDB:
-    """Get simulation with specific id from simulations table"""
+    """Get simulation with specific id from simulations table
+
+    Parameters
+    ----------
+    db : Session
+        Database Session.
+    sim_id : str
+        Simulation ID.
+
+    Returns
+    -------
+    ``sqlalchemy.orm.Query``
+        Query with simulation information of ``sim_id``.
+    """
     return db.query(SimulationDB).filter(SimulationDB.sim_id == sim_id).first()
 
 
 def _get_all_simulations(db: Session) -> Tuple[SimulationDB]:
+    """Get all simulation entries in ``simulations`` table.
+    
+    Parameters
+    ----------
+    db : Session
+        Database Session.
+
+    Returns
+    -------
+    ``sqlalchemy.orm.Query``
+        Querry of all rows in ``simulations`` table
+    """
     return db.query(SimulationDB).order_by(SimulationDB.date.desc()).all()
 
 
 def _create_plot_query_values(db: Session,
                               plot_query_params: List[PlotDBSchCreate]) -> None:
-    """Insert row in plots table (contains plot query params)"""
+    """Insert row in plots table (contains plot query params)
+
+    Parameters
+    ----------
+    db : Session
+        Database Session.
+    plot_query_params : List[PlotDBSchCreate]
+        List of rows to be inserted in ``plots`` table.
+
+    Returns
+    -------
+    None
+    """
     db_plot_query_params = [
         PlotDB(**plot_qp.dict()) for plot_qp in plot_query_params
     ]
@@ -59,7 +135,20 @@ def _create_plot_query_values(db: Session,
 
 
 def _get_plot_query_values(db: Session, sim_id: str):
-    """Return plot query parameters for a given simulation"""
+    """Return plot query parameters for a given simulation
+
+    Parameters
+    ----------
+    db : Session
+        Database Session.
+    sim_id : str
+        Simulation ID.
+
+    Returns
+    -------
+    List[:data:`~simulation_API.controller.schemas.PlotQueryValues`]
+        Plot query values associated to ``sim_id``.
+    """
     return [
         result[-1] for result in 
         db.query(PlotDB.plot_query_value).filter(PlotDB.sim_id == sim_id).all()
@@ -68,7 +157,17 @@ def _get_plot_query_values(db: Session, sim_id: str):
 
 def _create_parameters(db: Session,
                        parameters: List[ParameterDBSchCreate]) -> None:
-    """Insert parameter entry into parameters table"""
+    """Insert parameter entry into parameters table
+    
+    Parameters
+    ----------
+    db : Session
+        Database Session.
+    
+    Returns
+    -------
+    None
+    """
     db_parameters = [
         ParameterDB(**parameter.dict()) for parameter in parameters
     ]
@@ -78,7 +177,23 @@ def _create_parameters(db: Session,
 
 def _get_parameters(db: Session, sim_id: str,
                     param_type: ParamType) -> Union[List[float], Dict[str, float]]:
-    """Get parameters from parameters table"""
+    """Get parameters from parameters table
+    
+    Parameters
+    ----------
+    db : Session
+        Database Session.
+    sim_id : str
+        Simulation ID.
+    param_type : ParamType
+        Type of parameter, wether ``'initial condition'`` or ``'parameter'``.
+
+    Returns
+    -------
+    List[float] or Dict[str, float]
+        ``list`` of initial conditions or ``dict`` with mapping between
+        parameter name and parameter value.
+    """
     query = db.query(ParameterDB) \
                 .filter((ParameterDB.param_type == param_type) & (ParameterDB.sim_id == sim_id)) \
                     .order_by(ParameterDB.ini_cndtn_id.asc()) \

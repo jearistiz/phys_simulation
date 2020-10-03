@@ -59,7 +59,7 @@ def get_db():
 @app.get("/")
 # La definición async es la que hace a FastAPI realmetn
 async def index(request: Request):
-    """Index web page
+    """Index frontend web page.
     
     \f
     Parameters
@@ -69,7 +69,7 @@ async def index(request: Request):
 
     Returns
     -------
-    TemplateResponse : TemplateResponse
+    ``fastapi.templating.Jinja2Templates.TemplateResponse``
         Renders greeting template and hyperlinks to simulation rquests and
         results.
     """
@@ -92,8 +92,8 @@ async def index(request: Request):
 async def simulate(request: Request):
     """Simulate web page.
     
-    Here the clients can select between the available systems to simulate the
-    one they choose.
+    Here the clients can select between the available systems to simulate their
+    preferred one.
 
     \f
     Parameters
@@ -103,8 +103,8 @@ async def simulate(request: Request):
 
     Returns
     -------
-    TemplateResponse : TemplateResponse
-        Renders template displaying the available systems to be simulated.
+    ``fastapi.templating.Jinja2Templates.TemplateResponse``
+        Template displaying the available systems to be simulated.
     """
     # Available simulations
     sys_values = [
@@ -141,8 +141,8 @@ async def simulate_sim_system(request: Request,
 
     Returns
     -------
-    TemplateResponse : TemplateResponse
-        Renders template displaying the form.
+    ``fastapi.templating.Jinja2Templates.TemplateResponse``
+        Template displaying the simulation request form.
     """
 
     # Get Simulation form schema depending on system and instantiate it. This
@@ -163,20 +163,23 @@ async def simulate_sim_system(request: Request,
 
 
 @app.post("/simulate/{sim_system}")
-async def simulate_post_form(request: Request, sim_system: SimSystem,
-                             background_tasks: BackgroundTasks,
-                             db: Session = Depends(get_db),
-                             sim_sys: SimSystem = Form(...),
-                             username: str = Form(...), t0: float = Form(...),
-                             tf: float = Form(...), dt: float = Form(...),
-                             method: IntegrationMethods = Form(...)):
+async def simulate_sim_system_post(request: Request, sim_system: SimSystem,
+                                   background_tasks: BackgroundTasks,
+                                   db: Session = Depends(get_db),
+                                   sim_sys: SimSystem = Form(...),
+                                   username: str = Form(...),
+                                   t0: float = Form(...),
+                                   tf: float = Form(...),
+                                   dt: float = Form(...),
+                                   method: IntegrationMethods = Form(...)):
     """Receives the simulation request information from the frontend form and
     requests the simulation to the backend.
     
     \f
-    This route receives the form requesting a simulation (and filled in
-    frontend via GET in route "/simulate/{sim_system}"). The simulation is
-    internally requested using the function `_api_simulation_request`.
+    This route receives the form requesting a simulation (filled in
+    frontend via GET in route ``/simulate/{sim_system}``). The simulation is
+    internally requested using the function 
+    :func:`simulation_API.controller.tasks._api_simulation_request`.
     Finally the client is redirected to the "Simulation ID" frontend web
     page, where further information about the simulation is displayed.
 
@@ -209,19 +212,22 @@ async def simulate_post_form(request: Request, sim_system: SimSystem,
 
     Returns
     -------
-    TemplateResponse or RedirectResponse
-        Redirects the user either to "Simulation ID" frontend web page or –if
-        the user made a mistake filling the form– to the form again.
+    ``fastapi.templating.Jinja2Templates.TemplateResponse`` or ``starlette.responses.RedirectResponse``
+        If the client made a mistake filling the form renders the simulation
+        request form again. Otherwise, redirects the client to "Simulation ID"
+        frontend web page.
     
-    Notes
-    -----
-    The parameters of the form accessed by FastAPI's Form class are only
+    Note
+    ----
+    The values of the form accessed by ``fastapi.Form`` are only
     declared as parameters so that pydantic checks the types, but they are not
-    used directly to request the simulation. Here, we access the form directly
-    by using the request.form() method as can be seen in the first lines. This
-    allows us a better control over the data and also to handle different type
-    of forms –which depend on the simulation because parameters and initial
-    conditions are intrinsically different for different systems.
+    used directly to request the simulation. 
+    Here, we access the form directly
+    by using the method :meth:`fastapi.Request.form()` as can be seen in the
+    first lines of this function. This allows us a better control over the data
+    and also to handle different type of forms –which depend on the simulation
+    because parameters and initial conditions are intrinsically different for
+    different systems.
     """
     # Here we get form directly from request.
     # NOTE The other method is using FastAPI's Form function, but here it is
@@ -305,10 +311,11 @@ async def simulate_id_sim_id(request: Request, sim_id: str):
         HTTP request, used internally by FastAPI.
     sim_id : str
         ID of the simulation.
+
     Returns
     -------
-    TemplateResponse : TemplateResponse
-        Renders template displaying the simulation ID and a hyperlink to
+    ``fastapi.templating.Jinja2Templates.TemplateResponse``
+        Template displaying the simulation ID and a hyperlink to
         further information about the simulation.
     """
     sim_status_url = app.url_path_for(
@@ -332,7 +339,7 @@ async def simulate_id_sim_id(request: Request, sim_id: str):
 @app.get("/simulate/status/{sim_id}", name="fronted_simulation_status")
 async def simulate_status_sim_id(request: Request, sim_id: str,
                                  db: Session = Depends(get_db)):
-    """Shows simulation status for a given simulation via its `sim_id`.
+    """Shows simulation status for a given simulation via its ``sim_id``.
     
     \f
     Parameters
@@ -347,10 +354,10 @@ async def simulate_status_sim_id(request: Request, sim_id: str,
 
     Returns
     -------
-    TemplateResponse : TemplateResponse
-        Renders a template displaying the simulation status and a hyperlinks to
+    ``fastapi.templating.Jinja2Templates.TemplateResponse``
+        Template displaying the simulation status and a hyperlinks to
         simulation results in several formats. If simulation id is not
-        available, renders a message about the situation.
+        available (not yet in database), renders a message about the situation.
     """
     try:
         sim_info = crud._get_simulation(db, sim_id)
@@ -396,7 +403,7 @@ async def simulate_status_sim_id(request: Request, sim_id: str,
 # Let the user see all the available results including his/her results
 @app.get("/results", name="frontend_results")
 async def results(request: Request, db: Session = Depends(get_db)):
-    """Shows a list of all the available simulation results.
+    """Renders web page showing a list of all the available simulation results.
     
     \f
     Parameters
@@ -409,8 +416,8 @@ async def results(request: Request, db: Session = Depends(get_db)):
 
     Returns
     -------
-    TemplateResponse : TemplateResponse
-        Renders template displaying all the available simulation results.
+    ``fastapi.templating.Jinja2Templates.TemplateResponse``
+        Template displaying all the available simulation results.
     """
     # Pull all simulations from database
     simulations = crud._get_all_simulations(db)
@@ -430,7 +437,7 @@ async def results(request: Request, db: Session = Depends(get_db)):
 @app.get("/results/{sim_system}/{sim_id}")
 async def results_sim_system_sim_id(request: Request, sim_system: SimSystem,
                                     sim_id: str):
-    """Shows graphic results of a simulation in frontend for a given `sim_id`
+    """Shows graphic results of a simulation in frontend for a given ``sim_id``.
     
     \f
     Parameters
@@ -444,9 +451,8 @@ async def results_sim_system_sim_id(request: Request, sim_system: SimSystem,
 
     Returns
     -------
-    TemplateResponse : TemplateResponse
-        Renders a template displaying all the generated plots for a given
-        simulation.
+    ``fastapi.templating.Jinja2Templates.TemplateResponse``
+        Template displaying all the generated plots for a given simulation.
     """
 
     # Pickle download route
@@ -499,7 +505,10 @@ async def api_simulate_sim_system(sim_system: SimSystem,
     simulation.
     
     \f
-    Note here we use BackgroudTasks to make the simulation in the background.
+    Note 
+    ----
+    Here we use ``fastapi.BackgroudTasks`` to make the simulation in the
+    background.
     
     Parameters
     ----------
@@ -517,7 +526,7 @@ async def api_simulate_sim_system(sim_system: SimSystem,
     Returns
     -------
     sim_id_response : SimIdResponse
-        JSON containing relevant info about the simulation and how to get the
+        Contains relevant information about the simulation and how to get the
         results.
     """
 
@@ -528,9 +537,10 @@ async def api_simulate_sim_system(sim_system: SimSystem,
 
 
 @app.get("/api/simulate/status/{sim_id}", name="api_simulate_status")
-async def api_results_sim_id(sim_id: str,
-                             db: Session = Depends(get_db)) -> SimStatus:
-    """Returns status of requested simulation.
+async def api_simulate_status_sim_id(
+    sim_id: str, db: Session = Depends(get_db)
+) -> SimStatus:
+    """Obtains status of requested simulation.
 
     \f
     Parameters
@@ -543,8 +553,8 @@ async def api_results_sim_id(sim_id: str,
 
     Returns
     -------
-    SimStatus : SimStatus
-        JSON containing status of the simulation and how to get the results.
+    SimStatus
+        Status information of the simulation and how to get the results.
     """
 
     # Simulation status
@@ -579,7 +589,7 @@ async def api_results_sim_id(sim_id: str,
 
 
 @app.get("/api/results/{sim_id}/pickle", name="api_download_pickle")
-async def api_results_sim_id(sim_id: str):
+async def api_results_sim_id_pickle(sim_id: str):
     """Download pickle of previously requested simulation. 
 
     \f
@@ -590,8 +600,8 @@ async def api_results_sim_id(sim_id: str):
 
     Returns
     -------
-    FileResponse : FileResponse
-        FileResponse from starlette.responses containing the simulation results
+    starlette.responses.FileResponse
+        ``FileResponse`` containing the simulation results
         in pickle format.
     """
     pickle_path_disk = _create_pickle_path_disk(sim_id)
@@ -612,7 +622,7 @@ async def api_results_sim_id(sim_id: str):
 # `value` is a query parameter and its value must match one of the plot_ids
 # given in simulation status via GET in route "/api/results/{sim_id}"
 @app.get("/api/results/{sim_id}/plot", name="api_download_plots")
-async def api_results_sim_id(sim_id: str, value: PlotQueryValues):
+async def api_results_sim_id_plot(sim_id: str, value: PlotQueryValues):
     """Download plot of previously requested simulation.
     
     Note one query param is required here.
@@ -629,8 +639,8 @@ async def api_results_sim_id(sim_id: str, value: PlotQueryValues):
 
     Returns
     -------
-    FileResponse : FileResponse
-        FileResponse from starlette.responses containing the requested plot.
+    starlette.responses.FileResponse
+        ``FileResponse`` containing the requested plot.
     """
 
     plot_path_disk = _create_plot_path_disk(sim_id, value.value, PLOTS_FORMAT)
@@ -656,6 +666,3 @@ async def custom_http_exception_handler(request: Request,
             "request": request,
         }
     )
-
-if __name__ == "__main__":
-    pass

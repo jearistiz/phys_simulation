@@ -1,11 +1,12 @@
-"""This module handles all the database interactions with our API"""
+"""This module starts the database engine, the database session and the
+basemodel for the database tables."""
 from sqlalchemy import create_engine
 # declarative_base is needed to create tables and add entries to tables
 from sqlalchemy.ext.declarative import declarative_base
-"""sessionmaker is needed to use all the Object Relational Mapper (ORM)
-capabilities of sqlalchemy to read more about ORM visit 
-https://docs.sqlalchemy.org/en/13/orm/tutorial.html or read the references
-in Personal CS Projects notebook"""
+# sessionmaker is needed to use all the Object Relational Mapper (ORM)
+# capabilities of sqlalchemy to read more about ORM visit 
+# https://docs.sqlalchemy.org/en/13/orm/tutorial.html or read the references
+# in Personal CS Projects notebook
 from sqlalchemy.orm import sessionmaker
 
 from simulation_API.config import PATH_DB
