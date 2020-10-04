@@ -21,9 +21,15 @@ python-multipart = "*"
 requests = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
+sphinx-hoverxref = "*"
 
 [requires]
 python_version = "3.6"
 
 [scripts]
 simulation_API = "python run.py"
+s_autodoc = "sphinx-apidoc -o ./source ../simulation_API"
+s_autodoc_force = "sphinx-apidoc -f -o ./source ../simulation_API"
+
+[pipenv]
+allow_prereleases = true

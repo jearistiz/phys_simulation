@@ -28,14 +28,13 @@ class Simulation(object):
         Method of integration.
     user_name : str or None
         Username that instantiated the simulation.
-    system : string or None
-        Name of system.
     date : datetime (str).
         UTC date and time of instantiation of object.
     results : ``scipy.integrate._ivp.ivp.OdeResult`` or None
         Results of simulation.
     """
     system = None
+    """Name of system."""
     def __init__(self,
                  t_span: Optional[List[float]] = None,
                  t_eval: Optional[list] = None,
@@ -129,7 +128,7 @@ class HarmonicOsc1D(Simulation):
 
     Notes
     -----
-    The hamiltonian describing the harmonic oscillator is defined as
+    The hamiltonian describing the Harmonic Oscillator is defined dy
 
     .. math::
         
@@ -218,15 +217,18 @@ class ChenLeeAttractor(Simulation):
 
     Notes
     -----
-    The Chen-Lee Attractor is a dynamical system defined by [#]_:
+    The Chen-Lee Attractor is a dynamical system defined by:[#]_
     
     .. math::
         
-        \omega_x &= - \omega_y \omega_z + a \, \omega_x
+        \\frac{d\omega_x}{dt} &= - \omega_y \omega_z + a \, \omega_x
 
-        \omega_y &= \omega_z \omega_x + b \, \omega_y
+        \\frac{d\omega_y}{dt} &= \omega_z \omega_x + b \, \omega_y
         
-        \omega_z &= \\frac{1}{3} \omega_x \omega_y + c \, \omega_z  
+        \\frac{d\omega_z}{dt} &= \\frac{1}{3} \omega_x \omega_y + c \, \omega_z  
+
+    Its origin is closely related to the motion of a rigid body in a rotating
+    frame of reference.
 
     References
     ----------

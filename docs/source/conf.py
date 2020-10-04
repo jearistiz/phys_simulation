@@ -20,11 +20,12 @@ sys.path.insert(0, os.path.abspath('../../'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'Simulation FastAPI'
+project = 'PHYS Simulation API'
 copyright = '2020, Juan E. Aristizabal'
 author = 'Juan E. Aristizabal'
 
 # The full version, including alpha/beta/rc tags
+version = '0.0.1'
 release = '0.0.1'
 
 
@@ -34,6 +35,7 @@ release = '0.0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'hoverxref.extension',
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
     'sphinx_rtd_theme',
@@ -80,3 +82,44 @@ html_theme =  "sphinx_rtd_theme"  # 'classic' # 'sphinx_material'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+# The name of the Pygments (syntax highlighting) style to use.
+pygments_style = 'sphinx'
+
+# If true, the reST sources are included in the HTML build as _sources/<name>.
+html_copy_source = True
+
+
+# Options for sphinx-hoverxref options
+# ------------------------------------
+
+# hoverxref_auto_ref = True
+# hoverxref_default_type = 'tooltip'
+# hoverxref_role_types = {
+#     "hoverxref": "tooltip",
+#     'class': 'tooltip',
+#     'mod': 'tooltip',
+#     'attr': 'tooltip',
+#     'func': 'tooltip',
+# }
+# hoverxref_roles = ['class', 'mod', 'attr', 'func']
+
+
+hoverxref_tooltip_maxwidth = 650
+hoverxref_auto_ref = True
+hoverxref_roles = [
+    'confval',
+]
+
+hoverxref_role_types = {
+    'hoverxref': 'tooltip',
+    'ref': 'modal',
+    'confval': 'tooltip',
+    'mod': 'modal',
+    'class': 'modal',
+}
+hoverxref_domains = [
+    'py',
+]
+hoverxref_sphinxtabs = True
+hoverxref_mathjax = True

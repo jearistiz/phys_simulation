@@ -33,13 +33,6 @@ class SimSystem(str, Enum):
     """List of available systems for simulation.
     
     \f
-    Attributes
-    ----------
-    HO : str
-        Harmonic Oscillator Enum attribute.
-    ChenLee : str
-         Chen-Lee Attractor Enum attribute.
-
     Warning
     -------
     The values of the attributes of this class must coincide with the
@@ -52,8 +45,10 @@ class SimSystem(str, Enum):
     This class needs update each time a new simulation is added: add an
     appropiate new attribute.
     """
-    HO = "Harmonic-Oscillator"
-    ChenLee = "Chen-Lee-Attractor"
+    HO: str = "Harmonic-Oscillator"
+    """Harmonic Oscillator Enum attribute."""
+    ChenLee: str = "Chen-Lee-Attractor"
+    """Chen-Lee Attractor Enum attribute."""
 
 
 
@@ -65,13 +60,6 @@ class IntegrationMethods(str, Enum):
     """List of available integration methods
     
     \f
-    Attributes
-    ----------
-    RK45 : str
-        Explicit Runge-Kutta method of order 5(4).
-    RK23 : str
-        Explicit Runge-Kutta method of order 3(2).
-    
     Note
     ----
     For more information about these integration methods see
@@ -83,7 +71,9 @@ class IntegrationMethods(str, Enum):
     appropiate new attribute.
     """
     RK45 = "RK45"
+    """Explicit Runge-Kutta method of order 5(4)."""
     RK23 = "RK23"
+    """Explicit Runge-Kutta method of order 3(2)."""
 
 
 # Needed to generate dict used to display available integration methods in frontend
@@ -117,96 +107,73 @@ integration_methods = {
 class SimForm(BaseModel):
     """Basemodel of schema used to Request a Simulation in Frontend.
     
-    Attributes
-    ----------
-    username: Optional[str]
-    t0 : float
-        Initial time of simulation.
-    tf : float
-        Final time of simulation.
-    dt : float
-        Time step size of simulation.
-    method : IntegrationMethods
-        Integration method used in simulation.
-
+    \f
     Warning
     -------
     Needs update each time a new simulation is added:
 
     1. Create a new appropiate class similar to
-       :class:`~simulation_API.controller.schemas.HOSimForm` or to
-       :class:`~simulation_API.controller.schemas.ChenLeeSimForm`.
+       :py:class:`~simulation_API.controller.schemas.HOSimForm` or to
+       :py:class:`~simulation_API.controller.schemas.ChenLeeSimForm`.
     2. Add the class to the dict :data:`~simulation_API.controller.schemas.SimFormDict`
        defined somewhere in this module.
     """
     username: Optional[str] = "Pepito"
     t0: Optional[float] = 0.0
+    """Initial time of simulation."""
     tf: Optional[float] = 2 * pi
+    """Final time of simulation."""
     dt: Optional[float] = pi / 10
+    """Time step size of simulation."""
     method: Optional[IntegrationMethods] = "RK45"
+    """Integration method used in simulation."""
 
 
 class HOSimForm(SimForm):
     """Schema used to Request Harmonic Oscillator Simulation in Frontend via
     form.
     
-    Attributes
-    ----------
-    sim_system : SimSystem
-        System to be simulated.
-    ini0 : float
-        :math:`q` initial value.
-    ini1 : float
-        :math:`p` initial value.
-    param0 : float
-        Paramer of name :attr:`~simulation_API.controller.schemas.HOParams.m`.
-    param1 : float
-        Paramer of name :attr:`~simulation_API.controller.schemas.HOParams.k`.
-
+    \f
     Note
     ----
     For more information about Chen-Lee Attactor simulation see 
-    :class:`~simulation_API.simulation.simulations.HarmonicOsc1D`.
+    :py:class:`~simulation_API.simulation.simulations.HarmonicOsc1D`.
     """
     sim_sys: SimSystem = SimSystem.HO.value
+    """System to be simulated."""
     ini0: Optional[float] = 1.0
+    """:math:`q` initial value."""
     ini1: Optional[float] = 0.0
+    """:math:`p` initial value."""
     param0: Optional[float] = 1.0
+    """Parameter of name :attr:`~simulation_API.controller.schemas.HOParams.m`."""
     param1: Optional[float] = 1.0
+    """Parameter of name :attr:`~simulation_API.controller.schemas.HOParams.k`."""
 
 
 class ChenLeeSimForm(SimForm):
     """Schema used to Request Chen Lee Simulation in Frontend via form.
     
-    Attributes
-    ----------
-    sim_system : SimSystem
-        System to be simulated.
-    ini0 : float
-        :math:`\omega_x` initial condition.
-    ini1 : float
-        :math:`\omega_y` initial condition.
-    ini2 : float
-        :math:`\omega_z` initial condition.
-    param0 : float
-        Paramer of name :attr:`~simulation_API.controller.schemas.ChenLeeParams.a`.
-    param1 : float
-        Paramer of name :attr:`~simulation_API.controller.schemas.ChenLeeParams.b`.
-    param2 : float
-        Paramer of name :attr:`~simulation_API.controller.schemas.ChenLeeParams.c`.
-
+    \f
     Note
     ----
     For more information about Chen-Lee Attactor simulation see 
-    :class:`~simulation_API.simulation.simulations.ChenLeeAttractor`.
+    :py:class:`~simulation_API.simulation.simulations.ChenLeeAttractor`.
     """
     sim_sys: SimSystem = SimSystem.ChenLee.value
+    """System to be simulated."""
     ini0: Optional[float] = 10.0
+    """:math:`\omega_x` initial condition."""
     ini1: Optional[float] = 10.0
+    """:math:`\omega_y` initial condition."""
     ini2: Optional[float] = 0.0
+    """:math:`\omega_z` initial condition."""
     param0: Optional[float] = 3.0
+    """Parameter of name :attr:`~simulation_API.controller.schemas.ChenLeeParams.a`."""
     param1: Optional[float] = - 5.0
+    """Parameter of name :attr:`~simulation_API.controller.schemas.ChenLeeParams.b`."""
     param2: Optional[float] = - 1.0
+    """Parameter of name :attr:`~simulation_API.controller.schemas.ChenLeeParams.c`."""
 
 
 
@@ -216,54 +183,45 @@ class ChenLeeSimForm(SimForm):
 class HOParams(BaseModel):
     """List of parameters of the Harmonic Oscillator system.
     
-    Attributes
-    ----------
-    m: float
-        Mass of object.
-    k: float
-        Force constant of object.
-
+    \f
     Note
     ----
     For more information about Harmonic Oscillator's parameters see 
-    :class:`~simulation_API.simulation.simulations.HarmonicOsc1D`.
+    :py:class:`~simulation_API.simulation.simulations.HarmonicOsc1D`.
 
     Warning
     -------
     This needs update each time a new simulation is added: add an
     appropiate new class similar to this one or to
-    :class:`simulation_API.controller.schemas.ChenLeeParams`.
+    :py:class:`simulation_API.controller.schemas.ChenLeeParams`.
     """
     m: float    # Mass
+    """Mass of object."""
     k: float    # Force constant
+    """Force constant of object."""
 
 
 class ChenLeeParams(BaseModel):
     """List of parameters of the Chen-Lee Attractor system.
 
-    Attributes
-    ----------
-    a : float
-        :math:`\omega_x` parameter.
-    b : float
-        :math:`\omega_y` parameter.
-    c : float
-        :math:`\omega_z` parameter.
-
+    \f
     Note
     ----
     For more information about Chen-Lee Attactor's parameters see 
-    :class:`~simulation_API.simulation.simulations.ChenLeeAttractor`.
+    :py:class:`~simulation_API.simulation.simulations.ChenLeeAttractor`.
 
     Warning
     -------
     This needs update each time a new simulation is added: add an
     appropiate new class similar to this one or to
-    :class:`simulation_API.controller.schemas.HOParams`.
+    :py:class:`simulation_API.controller.schemas.HOParams`.
     """
     a: float
+    """:math:`\omega_x` parameter."""
     b: float
+    """:math:`\omega_y` parameter."""
     c: float
+    """:math:`\omega_z` parameter."""
 
 
 # Maps each system to its parameters (used in backend)
@@ -304,7 +262,7 @@ params_mapping_HO = {
 }
 """Maps the name of each Harmonic Oscillator parameter in frontend form to its
 name in backend (defined by its corresponding attribute in class
-:class:`~simulation_API.simulation.simulations.HarmonicOsc1D`)
+:py:class:`~simulation_API.simulation.simulations.HarmonicOsc1D`)
 """
 params_mapping_ChenLee = {
     "param0": "a",
@@ -313,7 +271,7 @@ params_mapping_ChenLee = {
 }
 """Maps the name of each Chen-Lee Attractor parameter in frontend form to its
 name in backend (defined by its corresponding attribute in class
-:class:`~simulation_API.simulation.simulations.ChenLeeAttractor`)
+:py:class:`~simulation_API.simulation.simulations.ChenLeeAttractor`)
 """
 
 # This dict maps each system to its parameter change-of-convention
@@ -329,7 +287,7 @@ mapping (e.g. :data:`~simulation_API.controller.schemas.params_mapping_HO` or
 This is used to translate the parameters name convention in frontend simulation
 request to the parameters name convention in backend simulation request (with
 appropiate schema given by
-:class:`simulation_API.controller.schemas.SimRequest`.)
+:py:class:`simulation_API.controller.schemas.SimRequest`.)
 """
 
 
@@ -340,31 +298,15 @@ class SimRequest(BaseModel):
     """Schema needed to request simulations via POST in
     ``/api/request/{sim_system}``.
     
+    \f
     For the attributes that do not have a description see
-    :class:`simulation_API.simulation.simulations.Simulation`.
-
+    :py:class:`simulation_API.simulation.simulations.Simulation`.
+    
     Note
     ----
     Most of the attributes in this pydantic class are arguments of the 
     classes defined in the module :mod:`simulation_API.simulation.simulations`,
     for more information please refer to It.
-
-    Attributes
-    ----------
-    system : SimSystem
-    t_span : List[float]
-    t_eval : List
-    t_steps : int
-    ini_cndtn : List[float]
-    params : Dict[str, float]
-    method : IntegrationMethods
-    sim_id : str
-        ID of simulation. This is handled internally, leave it blank
-        when requesting a simulation.
-    user_id : int
-        User id number stored in database. This is handled internally, leave it
-        blank when requesting a simulation.
-    username : str
     """
     system: SimSystem = SimSystem.HO
     t_span: List[float] = []
@@ -375,8 +317,13 @@ class SimRequest(BaseModel):
     method: Optional[IntegrationMethods] = 'RK45'
     # The backend will assign a sim_id, so it is not necessary to provide one.
     sim_id: Optional[str] = None
+    """ID of simulation. This is handled internally, leave it blank when
+    requesting a simulation.
+    """
     # If we implement logging, user_id will be handled by backend
     user_id: Optional[int] = 0
+    """User id number stored in database. This is handled internally, leave it
+    blank when requesting a simulation."""
     username: str = "Pepito Perez"
 
 
@@ -387,34 +334,25 @@ class SimIdResponse(BaseModel):
     """Schema for the response of a simulation request (requested via POST in
     route ``/api/simulate/{sim_sys}``.)
 
+    \f
     Note
     ----
     The request of the simulation must follow the model
-    :class:`~simulation_API.controller.schemas.SimRequest`.
-
-    Attributes
-    ----------
-    sim_id : str
-        ID of simulation.
-    user_id : int
-        User id number stored in database.
-    username : str
-    sim_sys : SimSystem
-        Simulated system.
-    sim_status_path : str
-        Path to GET the status of the simulation.
-    sim_pickle_path : str
-        Path to GET (download) a pickle with the results of the simulation.
-    message : str
-        Explanatory message.
+    :py:class:`~simulation_API.controller.schemas.SimRequest`.
     """
     sim_id: Optional[str]
+    """ID of simulation."""
     user_id: Optional[int]
+    """User id number stored in database."""
     username: Optional[str]
     sim_sys: Optional[SimSystem]
+    """Simulated system."""
     sim_status_path: Optional[str]
+    """Path to GET the status of the simulation."""
     sim_pickle_path: Optional[str]
+    """Path to GET (download) a pickle with the results of the simulation."""
     message: Optional[str]
+    """Explanatory message."""
 
 
 
@@ -427,7 +365,8 @@ class PlotQueryValues_HO(str, Enum):
     
     These tags are used as the possible values of the querry param ``value``
     in route ``/api/results/{sim_id}/plot?value=<plot_query_value>``.
-
+    
+    \f
     Note
     ----
     :attr:`simualtion_API.controller.shcemas.SimIdResponse.sim_id` must be
@@ -444,6 +383,7 @@ class PlotQueryValues_ChenLee(str, Enum):
     These tags are used as the possible values of the querry param ``value``
     in route ``/api/results/{sim_id}/plot?value=<plot_query_value>``.
     
+    \f
     Note
     ----
     :attr:`simualtion_API.controller.schemas.SimIdResponse.sim_id` must be
@@ -459,7 +399,7 @@ PlotQueryValues = Union[
     PlotQueryValues_ChenLee,
 ]
 """Union of the classes defining Enums of plot query values for each system.
-This is needed in :class:`~simualtion_API.controller.schemas.SimStatus`."""
+This is needed in :py:class:`~simualtion_API.controller.schemas.SimStatus`."""
 
 
 
@@ -479,52 +419,39 @@ class SimStatus(BaseModel):
     This pydantic model is intended to store paths of results of the
     simulations algong with some metadata. This information can be accessed via
     GET in ``/api/simulate/status/{sim_id}``.
-    
-    Attributes
-    ---------
-    sim_id : int
-        ID of simulation.
-    user_id : int
-        User id number stored in database.
-    date : datetime
-        Date of request of simulation.
-    system : SimSystem
-        Simulated system.
-    route_pickle : str
-        Route of pickle file generated by the simulation.
-    route_results : str
-        Route of frontend showing results.
-    route_plot : list
-        Route of plots generated by the simulation backend.
-    plot_query_values : List[str]
-        Query params values of different automatically generated plots.
-        These values are needed to download the plots in route 
-        ``/api/results/{sim_id}/plot?value=<plot_query_value>``.
-    success : bool
-        Success status of simulation.
-    message : str
-        Additional information on status of simulation.
     """
     # User-related attributes
     sim_id: str
+    """ID of simulation."""
     user_id : int
+    """User id number stored in database."""
     date: datetime
+    """Date of request of simulation."""
 
     # Simulation-related attributes
     system: Optional[SimSystem]
+    """Simulated system."""
     ini_cndtn: Optional[List[float]]
     params: Optional[Dict[str, float]]
     method: Optional[IntegrationMethods]
 
     # Response-related attributes
     route_pickle: Optional[str]
+    """Route of pickle file generated by the simulation."""
     route_results: Optional[str]
+    """Route of frontend showing results."""
     route_plots: Optional[str]
+    """Route of plots generated by the simulation backend."""
     plot_query_values: Optional[List[PlotQueryValues]]
+    """Query params values of different automatically generated plots.
+    These values are needed to download the plots in route 
+    ``/api/results/{sim_id}/plot?value=<plot_query_value>``."""
     plot_query_receipe: Optional[str] = \
         "'route_plots' + '?value=' + 'plot_query_value'"
     success : Optional[bool]
+    """Success status of simulation."""
     message : Optional[str]
+    """Additional information on status of simulation."""
 
 
 
@@ -566,7 +493,6 @@ class UserDBSchCreate(BaseModel):
     # Production username and hash_value must be mandatory
     username : str
     hash_value: Optional[str]
-    pass
 
 
 ############################ Simulation status ############################

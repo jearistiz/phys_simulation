@@ -7,12 +7,21 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to Simulation FastAPI’s documentation! &mdash; Simulation FastAPI 0.0.1 documentation</title>
+  <title>PHYS Simulation API 0.0.1 documentation &mdash; PHYS Simulation API 0.0.1 documentation</title>
   
 
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/tooltipster.custom.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/tooltipster.bundle.min.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/tooltipster-sideTip-shadow.min.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/tooltipster-sideTip-punk.min.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/tooltipster-sideTip-noir.min.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/tooltipster-sideTip-light.min.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/tooltipster-sideTip-borderless.min.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/micromodal.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/sphinx_rtd_theme.css" type="text/css" />
 
   
   
@@ -30,6 +39,9 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
+        <script src="_static/js/hoverxref.js"></script>
+        <script src="_static/js/tooltipster.bundle.min.js"></script>
+        <script src="_static/js/micromodal.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
@@ -37,7 +49,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="simulation_API" href="modules.html" /> 
+    <link rel="next" title="Overview" href="start/overview.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -51,7 +63,7 @@
           
 
           
-            <a href="#" class="icon icon-home" alt="Documentation Home"> Simulation FastAPI
+            <a href="#" class="icon icon-home" alt="Documentation Home"> PHYS Simulation API
           
 
           
@@ -59,6 +71,10 @@
 
           
             
+            
+              <div class="version">
+                0.0.1
+              </div>
             
           
 
@@ -82,9 +98,16 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">simulation_API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="start/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="start/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="start/frontend.html">Website</a></li>
+</ul>
+<p class="caption"><span class="caption-text">THE CODE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="code_docs/simulation_API.html">simulation_API Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="code_docs/new_simulation.html">Add a New Simulation</a></li>
 </ul>
 
             
@@ -100,7 +123,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">Simulation FastAPI</a>
+          <a href="#">PHYS Simulation API</a>
         
       </nav>
 
@@ -131,7 +154,7 @@
     
       <li><a href="#" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Welcome to Simulation FastAPI’s documentation!</li>
+      <li>PHYS Simulation API 0.0.1 documentation</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -150,25 +173,71 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-simulation-fastapi-s-documentation">
-<h1>Welcome to Simulation FastAPI’s documentation!<a class="headerlink" href="#welcome-to-simulation-fastapi-s-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="phys-simulation-api-version-documentation">
+<span id="topics-index"></span><h1>PHYS Simulation API 0.0.1 documentation<a class="headerlink" href="#phys-simulation-api-version-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Using PHYS Simulation API you can request simulations of some physical or
+mathematical systems such as the <a class="reference external" href="https://en.wikipedia.org/wiki/Harmonic_oscillator">Harmonic Oscillator</a> or the
+<a class="reference external" href="https://doi.org/10.1016/j.chaos.2003.12.034">Chen-Lee Attractor</a> –and soon many others, stay tuned!</p>
+<div class="section" id="history">
+<h2>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h2>
+<p>PHYS Simulation API started as a way of learning to develop a web application.
+We believe that the best way of learning is by doing. This way, we chose
+a topic that drives us (yes, physics and mathematics!) and started learning by
+writting code! Of course, we had to read a lot and fail a lot as well, but
+we managed to develop our very first web application and we are proud of it, as
+impefect as it may be.</p>
+<p>In the future we want to add as many features as we can, so far that it enriches
+the user experience.</p>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">simulation_API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="simulation_API.html">simulation_API package</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="start/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="start/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="start/frontend.html">Website</a></li>
 </ul>
 </div>
+</div>
+</div>
+<div class="section" id="for-developers">
+<h1>For Developers<a class="headerlink" href="#for-developers" title="Permalink to this headline">¶</a></h1>
+<p>This API is built on top of <a class="reference external" href="https://github.com/tiangolo/fastapi">FastAPI</a>. If you want to contribute to this
+project, you may find <a class="reference external" href="https://fastapi.tiangolo.com/">their docs</a> very useful.</p>
+<p>In this section you can find all the source code docuentation. If you have a
+question on how some function, class or method works, maybe it’s answered here.
+If not, do not hesitate to <a class="reference external" href="mailto:jeaz&#46;git&#37;&#52;&#48;gmail&#46;com">contact us</a>.</p>
+<div class="section" id="the-code">
+<h2>The Code<a class="headerlink" href="#the-code" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+<dl>
+<dt><a class="reference internal" href="code_docs/simulation_API.html#module-simulation_API" title="simulation_API"><code class="xref py py-mod docutils literal notranslate"><span class="pre">simulation_API</span></code></a></dt><dd><p>Initialization of web application.</p>
+<dl class="simple">
+<dt><a class="reference internal" href="code_docs/simulation_API.controller.html#module-simulation_API.controller" title="simulation_API.controller"><code class="xref py py-mod docutils literal notranslate"><span class="pre">simulation_API.controller</span></code></a></dt><dd><p>The core package of our API. Here you can find the main app, schemas and
+background tasks.</p>
+</dd>
+<dt><a class="reference internal" href="code_docs/simulation_API.model.html#module-simulation_API.model" title="simulation_API.model"><code class="xref py py-mod docutils literal notranslate"><span class="pre">simulation_API.model</span></code></a></dt><dd><p>Database-related package.</p>
+</dd>
+<dt><a class="reference internal" href="code_docs/simulation_API.simulation.html#module-simulation_API.simulation" title="simulation_API.simulation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">simulation_API.simulation</span></code></a></dt><dd><p>Simulation-related package. Here you can find all the programs we use to
+simulate the available systems.</p>
+</dd>
+<dt><a class="reference internal" href="code_docs/simulation_API.config.html#module-simulation_API.config" title="simulation_API.config"><code class="xref py py-mod docutils literal notranslate"><span class="pre">simulation_API.config</span></code></a></dt><dd><p>Configuration module. Some very basic configurations of our web application.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </div>
 <div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
+<div class="section" id="a-special-aknowledgement">
+<h3>A Special Aknowledgement<a class="headerlink" href="#a-special-aknowledgement" title="Permalink to this headline">¶</a></h3>
+<p>To Camilo Hincapié who guided me in this process.</p>
+</div>
+</div>
 </div>
 
 
@@ -179,7 +248,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="modules.html" class="btn btn-neutral float-right" title="simulation_API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="start/overview.html" class="btn btn-neutral float-right" title="Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>

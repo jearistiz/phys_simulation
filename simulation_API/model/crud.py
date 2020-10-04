@@ -22,7 +22,7 @@ def _create_user(db: Session, user: UserDBSchCreate) -> UserDB:
     Returns
     -------
     db_user : UserDB
-        Updated inserted row (with :attr:`.models.UserBD.user_id`).
+        Updated inserted row (with :attr:`~.models.UserDB.user_id`.)
     """
     # Create a user instance from database models
     db_user = UserDB(**user.dict())
@@ -56,7 +56,7 @@ def _get_username(db: Session, user_id: int):
 
 def _create_simulation(db: Session,
                        simulation: SimulationDBSchCreate) -> SimulationDB:
-    """Inserts simulation in simulations table
+    """Inserts simulation in simulations table.
 
     Parameters
     ----------
@@ -78,7 +78,7 @@ def _create_simulation(db: Session,
 
 
 def _get_simulation(db: Session, sim_id: str) -> SimulationDB:
-    """Get simulation with specific id from simulations table
+    """Get simulation with specific id from simulations table.
 
     Parameters
     ----------
@@ -106,7 +106,7 @@ def _get_all_simulations(db: Session) -> Tuple[SimulationDB]:
     Returns
     -------
     ``sqlalchemy.orm.Query``
-        Querry of all rows in ``simulations`` table
+        Querry of all rows in ``simulations`` table.
     """
     return db.query(SimulationDB).order_by(SimulationDB.date.desc()).all()
 
@@ -135,7 +135,7 @@ def _create_plot_query_values(db: Session,
 
 
 def _get_plot_query_values(db: Session, sim_id: str):
-    """Return plot query parameters for a given simulation
+    """Return plot query parameters for a given simulation.
 
     Parameters
     ----------
@@ -157,12 +157,14 @@ def _get_plot_query_values(db: Session, sim_id: str):
 
 def _create_parameters(db: Session,
                        parameters: List[ParameterDBSchCreate]) -> None:
-    """Insert parameter entry into parameters table
+    """Insert parameter entry into parameters table.
     
     Parameters
     ----------
     db : Session
         Database Session.
+    parameters: List[ParameterDBSchCreate]
+        Parameter row in ``parameters``' table.
     
     Returns
     -------
@@ -177,7 +179,7 @@ def _create_parameters(db: Session,
 
 def _get_parameters(db: Session, sim_id: str,
                     param_type: ParamType) -> Union[List[float], Dict[str, float]]:
-    """Get parameters from parameters table
+    """Get parameters from parameters table.
     
     Parameters
     ----------
@@ -191,8 +193,8 @@ def _get_parameters(db: Session, sim_id: str,
     Returns
     -------
     List[float] or Dict[str, float]
-        ``list`` of initial conditions or ``dict`` with mapping between
-        parameter name and parameter value.
+        ``list`` of initial conditions or ``dict`` mapping parameter names to
+        parameter values.
     """
     query = db.query(ParameterDB) \
                 .filter((ParameterDB.param_type == param_type) & (ParameterDB.sim_id == sim_id)) \
