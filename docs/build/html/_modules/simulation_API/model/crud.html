@@ -1,0 +1,419 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>simulation_API.model.crud &mdash; PHYS Simulation API 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> PHYS Simulation API
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../start/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../start/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../start/frontend.html">Website</a></li>
+</ul>
+<p class="caption"><span class="caption-text">THE CODE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_docs/simulation_API.html">simulation_API Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_docs/new_simulation.html">Add a new simulation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PHYS Simulation API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>simulation_API.model.crud</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for simulation_API.model.crud</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This program manages database querys.</span>
+<span class="sd">CRUD comes from: Create, Read, Update, and Delete.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">Session</span>
+
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">simulation_API.controller.schemas</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="_create_user"><a class="viewcode-back" href="../../../code_docs/simulation_API.model.html#simulation_API.model.crud._create_user">[docs]</a><span class="k">def</span> <span class="nf">_create_user</span><span class="p">(</span><span class="n">db</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="n">UserDBSchCreate</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UserDB</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Inserts ``user`` in ``users`` table.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    db : Session</span>
+<span class="sd">        Database Session.</span>
+<span class="sd">    user : UserDBSchCreate</span>
+<span class="sd">        User row in database.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    db_user : UserDB</span>
+<span class="sd">        Updated inserted row (with :attr:`~.models.UserDB.user_id`.)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create a user instance from database models</span>
+    <span class="n">db_user</span> <span class="o">=</span> <span class="n">UserDB</span><span class="p">(</span><span class="o">**</span><span class="n">user</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
+    <span class="c1"># Add db_user to session</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">db_user</span><span class="p">)</span>
+    <span class="c1"># Commit user to database (write data in disk)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="c1"># Refresh db_user (this will refresh the user with other information</span>
+    <span class="c1"># contained in db e.g. automatically generated ids) </span>
+    <span class="n">db</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">db_user</span><span class="p">)</span>
+    <span class="c1"># Finally return the user that was geretated </span>
+    <span class="k">return</span> <span class="n">db_user</span></div>
+
+
+<div class="viewcode-block" id="_get_username"><a class="viewcode-back" href="../../../code_docs/simulation_API.model.html#simulation_API.model.crud._get_username">[docs]</a><span class="k">def</span> <span class="nf">_get_username</span><span class="p">(</span><span class="n">db</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gets ``user`` from ``users`` table.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    db : Session</span>
+<span class="sd">        Database Session.</span>
+<span class="sd">    user_id : int</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ``sqlalchemy.orm.Query``</span>
+<span class="sd">        Query with information about username with given ``user_id``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">UserDB</span><span class="o">.</span><span class="n">username</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">UserDB</span><span class="o">.</span><span class="n">user_id</span> <span class="o">==</span> <span class="n">user_id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_create_simulation"><a class="viewcode-back" href="../../../code_docs/simulation_API.model.html#simulation_API.model.crud._create_simulation">[docs]</a><span class="k">def</span> <span class="nf">_create_simulation</span><span class="p">(</span><span class="n">db</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span>
+                       <span class="n">simulation</span><span class="p">:</span> <span class="n">SimulationDBSchCreate</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SimulationDB</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Inserts simulation in simulations table.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    db : Session</span>
+<span class="sd">        Database Session.</span>
+<span class="sd">    simulation : SimulationDBSchCreate</span>
+<span class="sd">        Simulation row in ``simulations`` table.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    db_simulation : SimulationDB</span>
+<span class="sd">        Updated ``simulation``&#39;s row.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">db_simulation</span> <span class="o">=</span> <span class="n">SimulationDB</span><span class="p">(</span><span class="o">**</span><span class="n">simulation</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">db_simulation</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">db_simulation</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">db_simulation</span></div>
+
+
+<div class="viewcode-block" id="_get_simulation"><a class="viewcode-back" href="../../../code_docs/simulation_API.model.html#simulation_API.model.crud._get_simulation">[docs]</a><span class="k">def</span> <span class="nf">_get_simulation</span><span class="p">(</span><span class="n">db</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SimulationDB</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get simulation with specific id from simulations table.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    db : Session</span>
+<span class="sd">        Database Session.</span>
+<span class="sd">    sim_id : str</span>
+<span class="sd">        Simulation ID.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ``sqlalchemy.orm.Query``</span>
+<span class="sd">        Query with simulation information of ``sim_id``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">SimulationDB</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">SimulationDB</span><span class="o">.</span><span class="n">sim_id</span> <span class="o">==</span> <span class="n">sim_id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_get_all_simulations"><a class="viewcode-back" href="../../../code_docs/simulation_API.model.html#simulation_API.model.crud._get_all_simulations">[docs]</a><span class="k">def</span> <span class="nf">_get_all_simulations</span><span class="p">(</span><span class="n">db</span><span class="p">:</span> <span class="n">Session</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">SimulationDB</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Get all simulation entries in ``simulations`` table.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    db : Session</span>
+<span class="sd">        Database Session.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ``sqlalchemy.orm.Query``</span>
+<span class="sd">        Querry of all rows in ``simulations`` table.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">SimulationDB</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">SimulationDB</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span><span class="o">.</span><span class="n">all</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_create_plot_query_values"><a class="viewcode-back" href="../../../code_docs/simulation_API.model.html#simulation_API.model.crud._create_plot_query_values">[docs]</a><span class="k">def</span> <span class="nf">_create_plot_query_values</span><span class="p">(</span><span class="n">db</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span>
+                              <span class="n">plot_query_params</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">PlotDBSchCreate</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Insert row in plots table (contains plot query params)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    db : Session</span>
+<span class="sd">        Database Session.</span>
+<span class="sd">    plot_query_params : List[PlotDBSchCreate]</span>
+<span class="sd">        List of rows to be inserted in ``plots`` table.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">db_plot_query_params</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">PlotDB</span><span class="p">(</span><span class="o">**</span><span class="n">plot_qp</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span> <span class="k">for</span> <span class="n">plot_qp</span> <span class="ow">in</span> <span class="n">plot_query_params</span>
+    <span class="p">]</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">bulk_save_objects</span><span class="p">(</span><span class="n">db_plot_query_params</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="k">return</span> </div>
+
+
+<div class="viewcode-block" id="_get_plot_query_values"><a class="viewcode-back" href="../../../code_docs/simulation_API.model.html#simulation_API.model.crud._get_plot_query_values">[docs]</a><span class="k">def</span> <span class="nf">_get_plot_query_values</span><span class="p">(</span><span class="n">db</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return plot query parameters for a given simulation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    db : Session</span>
+<span class="sd">        Database Session.</span>
+<span class="sd">    sim_id : str</span>
+<span class="sd">        Simulation ID.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    List[:data:`~simulation_API.controller.schemas.PlotQueryValues`]</span>
+<span class="sd">        Plot query values associated to ``sim_id``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">result</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> 
+        <span class="n">db</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">PlotDB</span><span class="o">.</span><span class="n">plot_query_value</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">PlotDB</span><span class="o">.</span><span class="n">sim_id</span> <span class="o">==</span> <span class="n">sim_id</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="_create_parameters"><a class="viewcode-back" href="../../../code_docs/simulation_API.model.html#simulation_API.model.crud._create_parameters">[docs]</a><span class="k">def</span> <span class="nf">_create_parameters</span><span class="p">(</span><span class="n">db</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span>
+                       <span class="n">parameters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ParameterDBSchCreate</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Insert parameter entry into parameters table.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    db : Session</span>
+<span class="sd">        Database Session.</span>
+<span class="sd">    parameters: List[ParameterDBSchCreate]</span>
+<span class="sd">        Parameter row in ``parameters``&#39; table.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">db_parameters</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">ParameterDB</span><span class="p">(</span><span class="o">**</span><span class="n">parameter</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span> <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">parameters</span>
+    <span class="p">]</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">bulk_save_objects</span><span class="p">(</span><span class="n">db_parameters</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="k">return</span></div>
+
+<div class="viewcode-block" id="_get_parameters"><a class="viewcode-back" href="../../../code_docs/simulation_API.model.html#simulation_API.model.crud._get_parameters">[docs]</a><span class="k">def</span> <span class="nf">_get_parameters</span><span class="p">(</span><span class="n">db</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                    <span class="n">param_type</span><span class="p">:</span> <span class="n">ParamType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;Get parameters from parameters table.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    db : Session</span>
+<span class="sd">        Database Session.</span>
+<span class="sd">    sim_id : str</span>
+<span class="sd">        Simulation ID.</span>
+<span class="sd">    param_type : ParamType</span>
+<span class="sd">        Type of parameter, wether ``&#39;initial condition&#39;`` or ``&#39;parameter&#39;``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    List[float] or Dict[str, float]</span>
+<span class="sd">        ``list`` of initial conditions or ``dict`` mapping parameter names to</span>
+<span class="sd">        parameter values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">ParameterDB</span><span class="p">)</span> \
+                <span class="o">.</span><span class="n">filter</span><span class="p">((</span><span class="n">ParameterDB</span><span class="o">.</span><span class="n">param_type</span> <span class="o">==</span> <span class="n">param_type</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">ParameterDB</span><span class="o">.</span><span class="n">sim_id</span> <span class="o">==</span> <span class="n">sim_id</span><span class="p">))</span> \
+                    <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">ParameterDB</span><span class="o">.</span><span class="n">ini_cndtn_id</span><span class="o">.</span><span class="n">asc</span><span class="p">())</span> \
+                        <span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">param_type</span> <span class="o">==</span> <span class="n">ParamType</span><span class="o">.</span><span class="n">ini_cndtn</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">Param</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">Param</span> <span class="ow">in</span> <span class="n">query</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">Param</span><span class="o">.</span><span class="n">param_key</span><span class="p">:</span> <span class="n">Param</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">Param</span> <span class="ow">in</span> <span class="n">query</span><span class="p">}</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Juan E. Aristizabal
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -35,11 +35,23 @@ release = '0.0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'hoverxref.extension',
+    'sphinx.ext.viewcode',
+    #'sphinx.ext.linkcode',  # Show exact codeblock: difficult to configure.
+    #'hoverxref.extension',
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
     'sphinx_rtd_theme',
 ]
+
+# Linkcode extension configuration function - Very complicated to link to
+# codeblock. Much easier: use  viewcode.
+# def linkcode_resolve(domain, info):
+#     if domain != 'py':
+#         return None
+#     if not info['module']:
+#         return None
+#     filename = info['module'].replace('.', '/')
+#     return "https://github.com/jearistiz/simulation-api/blob/master/%s.py" % filename
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -89,37 +101,29 @@ pygments_style = 'sphinx'
 # If true, the reST sources are included in the HTML build as _sources/<name>.
 html_copy_source = True
 
+# favicon
+html_favicon = '../../simulation_API/static/img/favicon.ico'
 
-# Options for sphinx-hoverxref options
-# ------------------------------------
+# Background color for code blocks 
+codebgcolor = '#F0FFFF' # Did not work wih read the docs theme
 
+
+# hoverxref configurations (taken from conf.py from hoverxref documentation source code)
+# hoverxref_tooltip_maxwidth = 650
 # hoverxref_auto_ref = True
-# hoverxref_default_type = 'tooltip'
+# hoverxref_roles = [
+#     'confval',
+# ]
+
 # hoverxref_role_types = {
-#     "hoverxref": "tooltip",
-#     'class': 'tooltip',
-#     'mod': 'tooltip',
-#     'attr': 'tooltip',
-#     'func': 'tooltip',
+#     'hoverxref': 'tooltip',
+#     'ref': 'modal',
+#     'confval': 'tooltip',
+#     'mod': 'modal',
+#     'class': 'modal',
 # }
-# hoverxref_roles = ['class', 'mod', 'attr', 'func']
-
-
-hoverxref_tooltip_maxwidth = 650
-hoverxref_auto_ref = True
-hoverxref_roles = [
-    'confval',
-]
-
-hoverxref_role_types = {
-    'hoverxref': 'tooltip',
-    'ref': 'modal',
-    'confval': 'tooltip',
-    'mod': 'modal',
-    'class': 'modal',
-}
-hoverxref_domains = [
-    'py',
-]
-hoverxref_sphinxtabs = True
-hoverxref_mathjax = True
+# hoverxref_domains = [
+#     'py',
+# ]
+# hoverxref_sphinxtabs = True
+# hoverxref_mathjax = True

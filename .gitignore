@@ -13,6 +13,8 @@ documentation
 .vscode/
 *.pickle
 *.png
+# Builds made by VScode restructured text extension.
+docs/source/_*  
 
 # User-specific files
 *.rsuser

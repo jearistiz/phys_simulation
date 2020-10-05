@@ -1,0 +1,880 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>simulation_API.controller.main &mdash; PHYS Simulation API 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> PHYS Simulation API
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../start/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../start/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../start/frontend.html">Website</a></li>
+</ul>
+<p class="caption"><span class="caption-text">THE CODE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_docs/simulation_API.html">simulation_API Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_docs/new_simulation.html">Add a new simulation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PHYS Simulation API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>simulation_API.controller.main</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for simulation_API.controller.main</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This file manages all requests that are made to our app</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># TODO|FIXME|BUG|HACK|NOTE| Some nice colored tags for comments.</span>
+
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">isfile</span>
+<span class="kn">from</span> <span class="nn">uuid</span> <span class="kn">import</span> <span class="n">UUID</span>
+
+<span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">Request</span><span class="p">,</span> <span class="n">BackgroundTasks</span><span class="p">,</span> <span class="n">HTTPException</span><span class="p">,</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">Form</span>
+<span class="kn">from</span> <span class="nn">starlette.exceptions</span> <span class="kn">import</span> <span class="n">HTTPException</span> <span class="k">as</span> <span class="n">StarletteHTTPException</span>
+<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">FileResponse</span><span class="p">,</span> <span class="n">RedirectResponse</span>
+<span class="kn">from</span> <span class="nn">starlette.status</span> <span class="kn">import</span> <span class="n">HTTP_303_SEE_OTHER</span><span class="p">,</span> <span class="n">HTTP_404_NOT_FOUND</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">Session</span>
+
+<span class="c1"># App instance and templates</span>
+<span class="kn">from</span> <span class="nn">simulation_API</span> <span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">templates</span>
+<span class="c1"># Schemas</span>
+<span class="kn">from</span> <span class="nn">.schemas</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="c1"># Simulation handler</span>
+<span class="kn">from</span> <span class="nn">.tasks</span> <span class="kn">import</span> <span class="p">(</span><span class="n">_create_pickle_path_disk</span><span class="p">,</span> <span class="n">_create_plot_path_disk</span><span class="p">,</span> 
+                    <span class="n">_sim_form_to_sim_request</span><span class="p">,</span> <span class="n">_api_simulation_request</span><span class="p">)</span>
+<span class="c1"># Database-related</span>
+<span class="kn">from</span> <span class="nn">simulation_API.model</span> <span class="kn">import</span> <span class="n">crud</span><span class="p">,</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">simulation_API.model.db_manager</span> <span class="kn">import</span> <span class="n">SessionLocal</span><span class="p">,</span> <span class="n">engine</span>
+<span class="kn">from</span> <span class="nn">simulation_API.config</span> <span class="kn">import</span> <span class="n">PLOTS_FORMAT</span>
+
+<span class="c1"># Creates all tables (defined in models) in database (simulations.db)</span>
+<span class="n">models</span><span class="o">.</span><span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">From FastAPI docs https://fastapi.tiangolo.com/tutorial/sql-databases/#alembic-note:</span>
+
+<span class="sd">Alembic Note</span>
+<span class="sd">------------</span>
+<span class="sd">Normally you would probably initialize your database (create tables, etc)</span>
+<span class="sd">with Alembic.</span>
+
+<span class="sd">And you would also use Alembic for &quot;migrations&quot; (that&#39;s its main job).</span>
+
+<span class="sd">A &quot;migration&quot; is the set of steps needed whenever you change the structure of</span>
+<span class="sd">your SQLAlchemy models, add a new attribute, etc. to replicate those changes in</span>
+<span class="sd">the database, add a new column, a new table, etc.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1"># Dependency. This will instantiate and finally close SessionLocal in every</span>
+<span class="c1"># route we need to interact with the database.</span>
+<span class="c1"># Read more: https://fastapi.tiangolo.com/tutorial/sql-databases/#create-a-dependency</span>
+<div class="viewcode-block" id="get_db"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.main.get_db">[docs]</a><span class="k">def</span> <span class="nf">get_db</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Starts and ends session in each route that needs database access&quot;&quot;&quot;</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">SessionLocal</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">db</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<span class="c1"># This decorator tells us the route and method</span>
+<span class="c1"># in this case route=&#39;domain.com/&#39; and method=&#39;get&#39;</span>
+<div class="viewcode-block" id="index"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.main.index">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="c1"># La definición async es la que hace a FastAPI realmetn</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Index frontend web page.</span>
+<span class="sd">    </span>
+<span class="sd">    \f</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    request : Request</span>
+<span class="sd">        HTTP request, used internally by FastAPI.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ``fastapi.templating.Jinja2Templates.TemplateResponse``</span>
+<span class="sd">        Renders greeting template and hyperlinks to simulation rquests and</span>
+<span class="sd">        results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">route_simulate</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">url_path_for</span><span class="p">(</span><span class="s2">&quot;frontend_simulate&quot;</span><span class="p">)</span>
+    <span class="n">route_results</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">url_path_for</span><span class="p">(</span><span class="s2">&quot;frontend_results&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span>
+        <span class="s2">&quot;index.html&quot;</span><span class="p">,</span> 
+        <span class="p">{</span>
+            <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span> 
+            <span class="s2">&quot;route_simulate&quot;</span><span class="p">:</span> <span class="n">route_simulate</span><span class="p">,</span>
+            <span class="s2">&quot;route_results&quot;</span><span class="p">:</span> <span class="n">route_results</span>
+        <span class="p">}</span>
+    <span class="p">)</span></div>
+
+
+<span class="c1"># Let the user input the parameters of the simulation</span>
+<div class="viewcode-block" id="simulate"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.main.simulate">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/simulate&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;frontend_simulate&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Simulate web page.</span>
+<span class="sd">    </span>
+<span class="sd">    Here the clients can select between the available systems to simulate their</span>
+<span class="sd">    preferred one.</span>
+
+<span class="sd">    \f</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    request : Request</span>
+<span class="sd">        HTTP request, used internally by FastAPI.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ``fastapi.templating.Jinja2Templates.TemplateResponse``</span>
+<span class="sd">        Template displaying the available systems to be simulated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Available simulations</span>
+    <span class="n">sys_values</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)]</span> <span class="k">for</span> <span class="n">sys</span> <span class="ow">in</span> <span class="n">SimSystem</span>
+    <span class="p">]</span>
+
+    <span class="c1"># Render template</span>
+    <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span>
+        <span class="s2">&quot;simulate.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span> <span class="s2">&quot;sys_values&quot;</span><span class="p">:</span> <span class="n">sys_values</span><span class="p">}</span>
+    <span class="p">)</span></div>
+
+
+<span class="c1"># Depending on the system the user decides to simulate, there are different</span>
+<span class="c1"># routes, bc we need different parameters</span>
+<div class="viewcode-block" id="simulate_sim_system"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.main.simulate_sim_system">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/simulate/</span><span class="si">{sim_system}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;frontend_request_simulation&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">simulate_sim_system</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> 
+                              <span class="n">sim_system</span><span class="p">:</span> <span class="n">SimSystem</span><span class="p">,</span>
+                              <span class="n">error_message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Simulation&#39;s form web page.</span>
+<span class="sd">    </span>
+<span class="sd">    The clients input the desired parameters for the simulation of their</span>
+<span class="sd">    choosing.</span>
+
+<span class="sd">    \f</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    request : Request</span>
+<span class="sd">        HTTP request, used internally by FastAPI.</span>
+<span class="sd">    sim_system : SimSystem</span>
+<span class="sd">        System to be simulated.</span>
+<span class="sd">    error_message : str</span>
+<span class="sd">        Internally used by the backend to display error messages in forntend</span>
+<span class="sd">        form.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ``fastapi.templating.Jinja2Templates.TemplateResponse``</span>
+<span class="sd">        Template displaying the simulation request form.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Get Simulation form schema depending on system and instantiate it. This</span>
+    <span class="c1"># schema contains the default values for initial conditions and parameters</span>
+    <span class="n">SysSimForm</span> <span class="o">=</span> <span class="n">SimFormDict</span><span class="p">[</span><span class="n">sim_system</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+    <span class="n">sim_form</span> <span class="o">=</span> <span class="n">SysSimForm</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;request-simulation.html&quot;</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;sim_system&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">sim_system</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+            <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
+            <span class="s2">&quot;integration_methods&quot;</span><span class="p">:</span> <span class="n">integration_methods</span><span class="p">,</span>
+            <span class="s2">&quot;error_message&quot;</span><span class="p">:</span> <span class="n">error_message</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">sim_form</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span>
+        <span class="p">}</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="simulate_sim_system_post"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.main.simulate_sim_system_post">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/simulate/</span><span class="si">{sim_system}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">simulate_sim_system_post</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">sim_system</span><span class="p">:</span> <span class="n">SimSystem</span><span class="p">,</span>
+                                   <span class="n">background_tasks</span><span class="p">:</span> <span class="n">BackgroundTasks</span><span class="p">,</span>
+                                   <span class="n">db</span><span class="p">:</span> <span class="n">Session</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_db</span><span class="p">),</span>
+                                   <span class="n">sim_sys</span><span class="p">:</span> <span class="n">SimSystem</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+                                   <span class="n">username</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+                                   <span class="n">t0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+                                   <span class="n">tf</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+                                   <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+                                   <span class="n">method</span><span class="p">:</span> <span class="n">IntegrationMethods</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;Receives the simulation request information from the frontend form and</span>
+<span class="sd">    requests the simulation to the backend.</span>
+<span class="sd">    </span>
+<span class="sd">    \f</span>
+<span class="sd">    This route receives the form requesting a simulation (filled in</span>
+<span class="sd">    frontend via GET in route ``/simulate/{sim_system}``). The simulation is</span>
+<span class="sd">    internally requested using the function </span>
+<span class="sd">    :func:`simulation_API.controller.tasks._api_simulation_request`.</span>
+<span class="sd">    Finally the client is redirected to the &quot;Simulation ID&quot; frontend web</span>
+<span class="sd">    page, where further information about the simulation is displayed.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    request : Request</span>
+<span class="sd">        HTTP request, used internally by FastAPI.</span>
+<span class="sd">    sim_system : SimSystem</span>
+<span class="sd">        System to be simulated.</span>
+<span class="sd">    background_tasks : BackgroundTasks</span>
+<span class="sd">        Needed to request simulation to the backend (in background). Handled</span>
+<span class="sd">        internally by the API.</span>
+<span class="sd">    db : Session</span>
+<span class="sd">        Database Session, needed to interact with database. This is handled </span>
+<span class="sd">        internally.</span>
+<span class="sd">    sim_sys : SimSystem</span>
+<span class="sd">        Form entry: system to be simulated. Must be one of the members of</span>
+<span class="sd">        SimSystem.</span>
+<span class="sd">    username : str</span>
+<span class="sd">        Form entry: name of the user requesting the simulation.</span>
+<span class="sd">    t0 : float</span>
+<span class="sd">        Form entry: initial time of simulation.</span>
+<span class="sd">    tf : float</span>
+<span class="sd">        Form entry: final time of simulation.</span>
+<span class="sd">    dt : float</span>
+<span class="sd">        Form entry: timestep of simulation.</span>
+<span class="sd">    method : IntegrationMethods</span>
+<span class="sd">        Form entry: method of integration. Must be a member of</span>
+<span class="sd">        IntegrationMethods.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ``fastapi.templating.Jinja2Templates.TemplateResponse`` or ``starlette.responses.RedirectResponse``</span>
+<span class="sd">        If the client made a mistake filling the form renders the simulation</span>
+<span class="sd">        request form again. Otherwise, redirects the client to &quot;Simulation ID&quot;</span>
+<span class="sd">        frontend web page.</span>
+<span class="sd">    </span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The values of the form accessed by ``fastapi.Form`` are only</span>
+<span class="sd">    declared as parameters so that pydantic checks the types, but they are not</span>
+<span class="sd">    used directly to request the simulation. </span>
+<span class="sd">    Here, we access the form directly</span>
+<span class="sd">    by using the method :meth:`fastapi.Request.form()` as can be seen in the</span>
+<span class="sd">    first lines of this function. This allows us a better control over the data</span>
+<span class="sd">    and also to handle different type of forms –which depend on the simulation</span>
+<span class="sd">    because parameters and initial conditions are intrinsically different for</span>
+<span class="sd">    different systems.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Here we get form directly from request.</span>
+    <span class="c1"># NOTE The other method is using FastAPI&#39;s Form function, but here it is</span>
+    <span class="c1"># easier to access the form directly from request (as below).</span>
+    <span class="c1"># NOTE This method does NOT provide pydantic type checking. However, type</span>
+    <span class="c1"># checking is more or less provided in the frontend by the form itself.</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">()</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;_dict&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Check for some errors</span>
+    <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">t0</span> <span class="o">&lt;</span> <span class="n">tf</span><span class="p">:</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;in Time Stamp, t0 must be less than tf&quot;</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">tf</span> <span class="o">-</span> <span class="n">t0</span> <span class="o">&gt;</span> <span class="n">dt</span> <span class="ow">or</span> <span class="n">dt</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;in Time Stamp, dt must be within 0 and tf - t0&quot;</span>
+    <span class="k">if</span> <span class="n">error_message</span><span class="p">:</span>
+        <span class="n">SysSimForm</span> <span class="o">=</span> <span class="n">SimFormDict</span><span class="p">[</span><span class="n">sim_system</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+        <span class="n">sim_form</span> <span class="o">=</span> <span class="n">SysSimForm</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span>
+            <span class="s2">&quot;request-simulation.html&quot;</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;sim_system&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">sim_system</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+                <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
+                <span class="s2">&quot;integration_methods&quot;</span><span class="p">:</span> <span class="n">integration_methods</span><span class="p">,</span>
+                <span class="s2">&quot;error_message&quot;</span><span class="p">:</span> <span class="n">error_message</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">sim_form</span><span class="o">.</span><span class="n">dict</span><span class="p">(),</span>
+            <span class="p">},</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="mi">400</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Change format from form data to SimRequest schema.</span>
+    <span class="n">sim_request</span> <span class="o">=</span> <span class="n">_sim_form_to_sim_request</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+    
+    <span class="c1"># BUG? Is the simulation request as done in the next lines of code OK?</span>
+    <span class="c1"># </span>
+    <span class="c1"># FIXME</span>
+    <span class="c1">#  </span>
+    <span class="c1"># In the first place I was thinking of asking the API to somehow internally</span>
+    <span class="c1"># go to route &quot;/api/simulate/{sim_system}&quot; BUT I could not do that.</span>
+    <span class="c1"># I tried using the methods shown below: </span>
+    <span class="c1"># </span>
+    <span class="c1"># NOTE Method 1) using request.post()</span>
+    <span class="c1"># request_simulation_url = app.url_path_for(</span>
+    <span class="c1">#     &quot;api_request_sim&quot;,</span>
+    <span class="c1">#     sim_system=sim_request.system.value</span>
+    <span class="c1"># )</span>
+    <span class="c1"># req = requests.post(&quot;http://0.0.0.0:5700&quot; + request_simulation_url, data=sim_request.json())</span>
+    <span class="c1">#</span>
+    <span class="c1"># NOTE Method 2) using RedirectResponse</span>
+    <span class="c1"># req = RedirectResponse(request_simulation_url)</span>
+    <span class="c1">#</span>
+    <span class="c1"># Neither of the methods worked so I solved it by just doing the same as in</span>
+    <span class="c1"># route &quot;/api/simulate/{sim_system}&quot; (calling _api_simulation_request as</span>
+    <span class="c1"># done below)</span>
+    
+    <span class="c1"># Request simulation from backend and get sim_id_response</span>
+    <span class="n">sim_id_response</span> <span class="o">=</span> <span class="n">_api_simulation_request</span><span class="p">(</span><span class="n">sim_sys</span><span class="p">,</span> <span class="n">sim_request</span><span class="p">,</span>
+                                              <span class="n">background_tasks</span><span class="p">,</span> <span class="n">db</span><span class="p">)</span>
+    
+    <span class="c1"># Redirect client to &#39;success&#39; page</span>
+    <span class="c1"># POST/REDIRECT/GET Strategy with 303 status code</span>
+    <span class="c1"># https://en.wikipedia.org/wiki/Post/Redirect/Get </span>
+    <span class="n">simulation_id_url</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">url_path_for</span><span class="p">(</span>
+        <span class="s2">&quot;frontend_simulation_id&quot;</span><span class="p">,</span>
+        <span class="n">sim_id</span><span class="o">=</span><span class="n">sim_id_response</span><span class="o">.</span><span class="n">sim_id</span>
+    <span class="p">)</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">simulation_id_url</span><span class="p">,</span>
+                           <span class="n">status_code</span><span class="o">=</span><span class="n">HTTP_303_SEE_OTHER</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">req</span></div>
+
+
+<div class="viewcode-block" id="simulate_id_sim_id"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.main.simulate_id_sim_id">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/simulate/id/</span><span class="si">{sim_id}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;frontend_simulation_id&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">simulate_id_sim_id</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Shows simulation id after asking for simulation in frontend form.</span>
+
+<span class="sd">    \f</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    request : Request</span>
+<span class="sd">        HTTP request, used internally by FastAPI.</span>
+<span class="sd">    sim_id : str</span>
+<span class="sd">        ID of the simulation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ``fastapi.templating.Jinja2Templates.TemplateResponse``</span>
+<span class="sd">        Template displaying the simulation ID and a hyperlink to</span>
+<span class="sd">        further information about the simulation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sim_status_url</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">url_path_for</span><span class="p">(</span>
+        <span class="s2">&quot;fronted_simulation_status&quot;</span><span class="p">,</span>
+        <span class="n">sim_id</span><span class="o">=</span><span class="n">sim_id</span>
+    <span class="p">)</span>
+
+    <span class="c1"># This same template is used to show simulation id info or simulation</span>
+    <span class="c1"># status info, here we need simulation id info, so we set status=False.</span>
+    <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span>
+        <span class="s2">&quot;simulation-id-or-status.html&quot;</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
+            <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;sim_id&quot;</span><span class="p">:</span> <span class="n">sim_id</span><span class="p">,</span>
+            <span class="s2">&quot;sim_status_url&quot;</span><span class="p">:</span> <span class="n">sim_status_url</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="simulate_status_sim_id"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.main.simulate_status_sim_id">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/simulate/status/</span><span class="si">{sim_id}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;fronted_simulation_status&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">simulate_status_sim_id</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                 <span class="n">db</span><span class="p">:</span> <span class="n">Session</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_db</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;Shows simulation status for a given simulation via its ``sim_id``.</span>
+<span class="sd">    </span>
+<span class="sd">    \f</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    request : Request</span>
+<span class="sd">        HTTP request, used internally by FastAPI.</span>
+<span class="sd">    sim_id : str</span>
+<span class="sd">        ID of the simulation.</span>
+<span class="sd">    db : Session</span>
+<span class="sd">        Database Session, needed to interact with database. This is handled </span>
+<span class="sd">        internally.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ``fastapi.templating.Jinja2Templates.TemplateResponse``</span>
+<span class="sd">        Template displaying the simulation status and a hyperlinks to</span>
+<span class="sd">        simulation results in several formats. If simulation id is not</span>
+<span class="sd">        available (not yet in database), renders a message about the situation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">sim_info</span> <span class="o">=</span> <span class="n">crud</span><span class="o">.</span><span class="n">_get_simulation</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">)</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">crud</span><span class="o">.</span><span class="n">_get_username</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">sim_info</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span>
+            <span class="s2">&quot;simulation-id-or-status.html&quot;</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
+                <span class="s2">&quot;sim_id&quot;</span><span class="p">:</span> <span class="n">sim_id</span><span class="p">,</span>
+                <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">&quot;not_finished&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+    <span class="n">params</span> <span class="o">=</span> <span class="n">crud</span><span class="o">.</span><span class="n">_get_parameters</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">,</span> <span class="n">ParamType</span><span class="o">.</span><span class="n">param</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">plot_query_values</span> <span class="o">=</span> <span class="n">crud</span><span class="o">.</span><span class="n">_get_plot_query_values</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">)</span>
+
+    <span class="n">plots_url</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">url_path_for</span><span class="p">(</span>
+        <span class="s2">&quot;api_download_plots&quot;</span><span class="p">,</span>
+        <span class="n">sim_id</span><span class="o">=</span><span class="n">sim_id</span>
+    <span class="p">)</span>
+    <span class="n">path_plots</span> <span class="o">=</span> <span class="p">[</span><span class="n">plots_url</span> <span class="o">+</span> <span class="s2">&quot;?value=&quot;</span> <span class="o">+</span> <span class="n">value</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">plot_query_values</span><span class="p">]</span>
+
+    <span class="n">ini_cndtn</span> <span class="o">=</span> <span class="n">crud</span><span class="o">.</span><span class="n">_get_parameters</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">,</span> <span class="n">ParamType</span><span class="o">.</span><span class="n">ini_cndtn</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="c1"># This same template is used to show simulation id info or simulation</span>
+    <span class="c1"># status info, here we need simulation status so we set status=True.</span>
+    <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span>
+        <span class="s2">&quot;simulation-id-or-status.html&quot;</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
+            <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">username</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s2">&quot;ini_cndtn&quot;</span><span class="p">:</span> <span class="n">ini_cndtn</span><span class="p">,</span>
+            <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+            <span class="s2">&quot;path_plots&quot;</span><span class="p">:</span> <span class="n">path_plots</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">sim_info</span><span class="o">.</span><span class="vm">__dict__</span>
+        <span class="p">}</span>
+    <span class="p">)</span></div>
+
+
+<span class="c1"># Let the user see all the available results including his/her results</span>
+<div class="viewcode-block" id="results"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.main.results">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/results&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;frontend_results&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">results</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">db</span><span class="p">:</span> <span class="n">Session</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_db</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;Renders web page showing a list of all the available simulation results.</span>
+<span class="sd">    </span>
+<span class="sd">    \f</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    request : Request</span>
+<span class="sd">        HTTP request, used internally by FastAPI.</span>
+<span class="sd">    db : Session</span>
+<span class="sd">        Database Session, needed to interact with database. This is handled </span>
+<span class="sd">        internally.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ``fastapi.templating.Jinja2Templates.TemplateResponse``</span>
+<span class="sd">        Template displaying all the available simulation results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Pull all simulations from database</span>
+    <span class="n">simulations</span> <span class="o">=</span> <span class="n">crud</span><span class="o">.</span><span class="n">_get_all_simulations</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+    <span class="n">simulations</span> <span class="o">=</span> <span class="p">[</span><span class="n">simulation</span><span class="o">.</span><span class="vm">__dict__</span> <span class="k">for</span> <span class="n">simulation</span> <span class="ow">in</span> <span class="n">simulations</span><span class="p">]</span>
+    <span class="n">sim_status_url</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">url_path_for</span><span class="p">(</span><span class="s2">&quot;fronted_simulation_status&quot;</span><span class="p">,</span> <span class="n">sim_id</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span>
+        <span class="s2">&quot;results.html&quot;</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
+            <span class="s2">&quot;simulations&quot;</span><span class="p">:</span> <span class="n">simulations</span><span class="p">,</span>
+            <span class="s2">&quot;sim_status_url&quot;</span><span class="p">:</span> <span class="n">sim_status_url</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="results_sim_system_sim_id"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.main.results_sim_system_sim_id">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/results/</span><span class="si">{sim_system}</span><span class="s2">/</span><span class="si">{sim_id}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">results_sim_system_sim_id</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">sim_system</span><span class="p">:</span> <span class="n">SimSystem</span><span class="p">,</span>
+                                    <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Shows graphic results of a simulation in frontend for a given ``sim_id``.</span>
+<span class="sd">    </span>
+<span class="sd">    \f</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    request : Request</span>
+<span class="sd">        HTTP request, used internally by FastAPI.</span>
+<span class="sd">    sim_system : SimSystem</span>
+<span class="sd">        System to be simulated.</span>
+<span class="sd">    sim_id : str</span>
+<span class="sd">        ID of the simulation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ``fastapi.templating.Jinja2Templates.TemplateResponse``</span>
+<span class="sd">        Template displaying all the generated plots for a given simulation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Pickle download route</span>
+    <span class="n">route_pickle</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">url_path_for</span><span class="p">(</span><span class="s2">&quot;api_download_pickle&quot;</span><span class="p">,</span> <span class="n">sim_id</span><span class="o">=</span><span class="n">sim_id</span><span class="p">)</span>
+
+    <span class="c1"># Plot download routes</span>
+    <span class="n">plot_paths</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">url_path_for</span><span class="p">(</span><span class="s2">&quot;api_download_plots&quot;</span><span class="p">,</span> <span class="n">sim_id</span><span class="o">=</span><span class="n">sim_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sim_system</span> <span class="o">==</span> <span class="n">SimSystem</span><span class="o">.</span><span class="n">HO</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="n">coord</span> <span class="o">=</span> <span class="n">PlotQueryValues_HO</span><span class="o">.</span><span class="n">coord</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">phase</span> <span class="o">=</span> <span class="n">PlotQueryValues_HO</span><span class="o">.</span><span class="n">phase</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">plot_routes</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">coord</span><span class="p">:</span> <span class="n">plot_paths</span> <span class="o">+</span> <span class="s2">&quot;?value=&quot;</span> <span class="o">+</span> <span class="n">coord</span><span class="p">,</span>
+            <span class="n">phase</span><span class="p">:</span> <span class="n">plot_paths</span> <span class="o">+</span> <span class="s2">&quot;?value=&quot;</span> <span class="o">+</span> <span class="n">phase</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="k">elif</span> <span class="n">sim_system</span> <span class="o">==</span> <span class="n">SimSystem</span><span class="o">.</span><span class="n">ChenLee</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="n">threeD</span> <span class="o">=</span> <span class="n">PlotQueryValues_ChenLee</span><span class="o">.</span><span class="n">threeD</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">project</span> <span class="o">=</span> <span class="n">PlotQueryValues_ChenLee</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">plot_routes</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">threeD</span><span class="p">:</span> <span class="n">plot_paths</span> <span class="o">+</span> <span class="s2">&quot;?value=&quot;</span> <span class="o">+</span> <span class="n">threeD</span><span class="p">,</span>
+            <span class="n">project</span><span class="p">:</span> <span class="n">plot_paths</span> <span class="o">+</span> <span class="s2">&quot;?value=&quot;</span> <span class="o">+</span> <span class="n">project</span>
+        <span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plot_routes</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="n">results_info</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;sim_sys&quot;</span><span class="p">:</span> <span class="n">sim_system</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+        <span class="s2">&quot;sim_id&quot;</span><span class="p">:</span> <span class="n">sim_id</span><span class="p">,</span>
+        <span class="s2">&quot;route_pickle&quot;</span><span class="p">:</span> <span class="n">route_pickle</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span>
+        <span class="s2">&quot;results-show.html&quot;</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
+            <span class="s2">&quot;plot_routes&quot;</span><span class="p">:</span> <span class="n">plot_routes</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">results_info</span>
+        <span class="p">}</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="api_simulate_sim_system"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.main.api_simulate_sim_system">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/api/simulate/</span><span class="si">{sim_system}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;api_request_sim&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">api_simulate_sim_system</span><span class="p">(</span><span class="n">sim_system</span><span class="p">:</span> <span class="n">SimSystem</span><span class="p">,</span>
+                                  <span class="n">sim_params</span><span class="p">:</span> <span class="n">SimRequest</span><span class="p">,</span>
+                                  <span class="n">background_tasks</span><span class="p">:</span> <span class="n">BackgroundTasks</span><span class="p">,</span>
+                                  <span class="n">db</span><span class="p">:</span> <span class="n">Session</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_db</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">SimIdResponse</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;In this route the client can request a simulation.</span>
+
+<span class="sd">    When the client requests a simulation via ``/api/simulate/{sim_system}``,</span>
+<span class="sd">    he/she obtains relevant information on how to get the results of the</span>
+<span class="sd">    simulation.</span>
+<span class="sd">    </span>
+<span class="sd">    \f</span>
+<span class="sd">    Note </span>
+<span class="sd">    ----</span>
+<span class="sd">    Here we use ``fastapi.BackgroudTasks`` to make the simulation in the</span>
+<span class="sd">    background.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sim_system : SimSystem</span>
+<span class="sd">        System to be simulated.</span>
+<span class="sd">    sim_params : SimRequest</span>
+<span class="sd">        Simulation request information with schema given by SimRequest and</span>
+<span class="sd">        decalared in schemas.py.</span>
+<span class="sd">    background_tasks : BackgroundTasks</span>
+<span class="sd">        Background task FastAPI manager (Class). This is handled internally.</span>
+<span class="sd">    db : Session</span>
+<span class="sd">        Database Session, needed to interact with database. This is handled </span>
+<span class="sd">        internally.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sim_id_response : SimIdResponse</span>
+<span class="sd">        Contains relevant information about the simulation and how to get the</span>
+<span class="sd">        results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">sim_id_response</span> <span class="o">=</span> <span class="n">_api_simulation_request</span><span class="p">(</span><span class="n">sim_system</span><span class="p">,</span> <span class="n">sim_params</span><span class="p">,</span>
+                                              <span class="n">background_tasks</span><span class="p">,</span> <span class="n">db</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sim_id_response</span></div>
+
+
+<div class="viewcode-block" id="api_simulate_status_sim_id"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.main.api_simulate_status_sim_id">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/api/simulate/status/</span><span class="si">{sim_id}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;api_simulate_status&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">api_simulate_status_sim_id</span><span class="p">(</span>
+    <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">db</span><span class="p">:</span> <span class="n">Session</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_db</span><span class="p">)</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SimStatus</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Obtains status of requested simulation.</span>
+
+<span class="sd">    \f</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sim_id : str</span>
+<span class="sd">        ID of the simulation.</span>
+<span class="sd">    db : Session</span>
+<span class="sd">        Database Session, needed to interact with database. This is handled </span>
+<span class="sd">        internally.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    SimStatus</span>
+<span class="sd">        Status information of the simulation and how to get the results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Simulation status</span>
+    <span class="n">sim_status</span> <span class="o">=</span> <span class="n">crud</span><span class="o">.</span><span class="n">_get_simulation</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">)</span>
+    <span class="c1"># Plot query params possible values</span>
+    <span class="n">plot_query_values</span> <span class="o">=</span> <span class="n">crud</span><span class="o">.</span><span class="n">_get_plot_query_values</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">)</span>
+
+    <span class="c1"># Parameters</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">crud</span><span class="o">.</span><span class="n">_get_parameters</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">,</span> <span class="n">ParamType</span><span class="o">.</span><span class="n">param</span><span class="p">)</span>
+    <span class="c1"># Initial conditions</span>
+    <span class="n">ini_cndtn</span> <span class="o">=</span> <span class="n">crud</span><span class="o">.</span><span class="n">_get_parameters</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">,</span> <span class="n">ParamType</span><span class="o">.</span><span class="n">ini_cndtn</span><span class="p">)</span>
+
+    <span class="n">sim_status_NA</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;sim_id&quot;</span><span class="p">:</span> <span class="n">sim_id</span><span class="p">,</span>
+        <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()),</span>
+        <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">sim_id_not_found_message</span>
+    <span class="p">}</span>
+
+    <span class="n">sim_status</span> <span class="o">=</span> <span class="n">sim_status</span><span class="o">.</span><span class="vm">__dict__</span> <span class="k">if</span> <span class="n">sim_status</span> <span class="k">else</span> <span class="n">sim_status_NA</span>
+
+    <span class="n">sim_status_complete</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;ini_cndtn&quot;</span><span class="p">:</span> <span class="n">ini_cndtn</span><span class="p">,</span>
+        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s2">&quot;plot_query_values&quot;</span><span class="p">:</span> <span class="n">plot_query_values</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">sim_status</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">SimStatus</span><span class="p">(</span><span class="o">**</span><span class="n">sim_status_complete</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="api_results_sim_id_pickle"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.main.api_results_sim_id_pickle">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/api/results/</span><span class="si">{sim_id}</span><span class="s2">/pickle&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;api_download_pickle&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">api_results_sim_id_pickle</span><span class="p">(</span><span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Download pickle of previously requested simulation. </span>
+
+<span class="sd">    \f</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sim_id : str</span>
+<span class="sd">        ID of the simulation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    starlette.responses.FileResponse</span>
+<span class="sd">        ``FileResponse`` containing the simulation results</span>
+<span class="sd">        in pickle format.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pickle_path_disk</span> <span class="o">=</span> <span class="n">_create_pickle_path_disk</span><span class="p">(</span><span class="n">sim_id</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">isfile</span><span class="p">(</span><span class="n">pickle_path_disk</span><span class="p">):</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;The file you requested is not in our database. &quot;</span> \
+                  <span class="s2">&quot;If your smulation id (sim_id) is correct, there might be &quot;</span> \
+                  <span class="s2">&quot;an internal server error and the file you requested is &quot;</span> \
+                  <span class="s2">&quot;not available.&quot;</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
+    
+    <span class="c1"># Media type application/octet-stream is any type of binary data</span>
+    <span class="c1"># The technical name of media types is &quot;MIME types&quot;</span>
+    <span class="k">return</span> <span class="n">FileResponse</span><span class="p">(</span><span class="n">pickle_path_disk</span><span class="p">,</span> <span class="n">media_type</span><span class="o">=</span><span class="s2">&quot;application/octet-stream&quot;</span><span class="p">,</span>
+                        <span class="n">filename</span><span class="o">=</span><span class="n">sim_id</span> <span class="o">+</span> <span class="s2">&quot;.pickle&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># `value` is a query parameter and its value must match one of the plot_ids</span>
+<span class="c1"># given in simulation status via GET in route &quot;/api/results/{sim_id}&quot;</span>
+<div class="viewcode-block" id="api_results_sim_id_plot"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.main.api_results_sim_id_plot">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/api/results/</span><span class="si">{sim_id}</span><span class="s2">/plot&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;api_download_plots&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">api_results_sim_id_plot</span><span class="p">(</span><span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">PlotQueryValues</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Download plot of previously requested simulation.</span>
+<span class="sd">    </span>
+<span class="sd">    Note one query param is required here.</span>
+<span class="sd">    \f</span>
+<span class="sd">    Here we use FileResponse from starlette.responses</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sim_id : str</span>
+<span class="sd">        ID of the simulation.</span>
+<span class="sd">    value : PlotQueryValues</span>
+<span class="sd">        Query values. Must be a member of one of the Enum classes given in</span>
+<span class="sd">        PlotQueryValues.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    starlette.responses.FileResponse</span>
+<span class="sd">        ``FileResponse`` containing the requested plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">plot_path_disk</span> <span class="o">=</span> <span class="n">_create_plot_path_disk</span><span class="p">(</span><span class="n">sim_id</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">PLOTS_FORMAT</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">isfile</span><span class="p">(</span><span class="n">plot_path_disk</span><span class="p">):</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;The plot you requested is not in our database. &quot;</span> \
+                  <span class="s2">&quot;If your smulation id (sim_id) and the query param &quot;</span> \
+                  <span class="s2">&quot;&#39;value&#39; are correct, there might be an internal server &quot;</span> \
+                  <span class="s2">&quot;error and the plot you requested is not available.&quot;</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">FileResponse</span><span class="p">(</span><span class="n">plot_path_disk</span><span class="p">,</span> <span class="n">media_type</span><span class="o">=</span><span class="s2">&quot;image/png&quot;</span><span class="p">,</span>
+                        <span class="n">filename</span><span class="o">=</span><span class="n">sim_id</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">value</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="custom_http_exception_handler"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.main.custom_http_exception_handler">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">exception_handler</span><span class="p">(</span><span class="n">StarletteHTTPException</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">custom_http_exception_handler</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
+                                        <span class="n">exc</span><span class="p">:</span> <span class="n">StarletteHTTPException</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Handles 404 exceptions by rendering a template.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span>
+        <span class="s2">&quot;404.html&quot;</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Juan E. Aristizabal
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

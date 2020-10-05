@@ -9,18 +9,6 @@ from pydantic import BaseModel
 from scipy.integrate._ivp.ivp import OdeResult
 from numpy import pi
 
-"""How to add a new system to this API?
-
-    1)  Add Simulation in simulations module and test it. 
-    2)  Add the relevant simulation to Simulations dict located in __init__
-        in simulations module.
-    3)  Add relevant schemas and models to schemas.py
-    4)  Add relevant form entries in frontend.
-    4)  Add relevant plots to _plot_solution in tasks.py –do not forget to add.
-        plot_query_value for each plot.
-    5)  Add frontend results HTML template to show plots.
-"""
-
 
 ###############################################################################
 ################### Schemas needed in main.py and tasks.py ####################
@@ -63,12 +51,16 @@ class IntegrationMethods(str, Enum):
     Note
     ----
     For more information about these integration methods see
-    `scipy.integrate.solve_ivp <https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html>`_.
+    `scipy.integrate.solve_ivp`_.
     
     Warning
     -------
-    This class needs update each time a new simulation is added: add an
-    appropiate new attribute.
+    Please update this class with relvant simulation methods available in 
+    `scipy.integrate.solve_ivp`_ –only the ones that do not require more
+    parameters than the ones provided in
+    :py:class:`~simulation_API.controller.schemas.SimRequest`.
+
+    .. _scipy.integrate.solve_ivp: https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html
     """
     RK45 = "RK45"
     """Explicit Runge-Kutta method of order 5(4)."""
@@ -77,8 +69,7 @@ class IntegrationMethods(str, Enum):
 
 
 # Needed to generate dict used to display available integration methods in frontend
-# NOTE: Needs update each time a new simulation is added. Needs to coincide
-# with Integration Methods
+# NOTE:Needs to coincide with Integration Methods
 class IntegrationMethodsFrontend(str, Enum):
     """List of captions of available integration methods. These are displayed
     in frontend simulation form.
@@ -115,7 +106,7 @@ class SimForm(BaseModel):
     1. Create a new appropiate class similar to
        :py:class:`~simulation_API.controller.schemas.HOSimForm` or to
        :py:class:`~simulation_API.controller.schemas.ChenLeeSimForm`.
-    2. Add the class to the dict :data:`~simulation_API.controller.schemas.SimFormDict`
+    2. Add the class to the ``dict`` :data:`~simulation_API.controller.schemas.SimFormDict`
        defined somewhere in this module.
     """
     username: Optional[str] = "Pepito"
@@ -237,7 +228,6 @@ Warning
 Needs update each time a new simulation is added: add a new appropiate item
 to this dict.
 """
-
 
 # Maps systems to pydantic schemas used in route "/simulate/{sim_system}"
 # NOTE Needs update each time a new system is added (add new entry in dict).

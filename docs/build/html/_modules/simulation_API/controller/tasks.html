@@ -1,0 +1,782 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>simulation_API.controller.tasks &mdash; PHYS Simulation API 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> PHYS Simulation API
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../start/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../start/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../start/frontend.html">Website</a></li>
+</ul>
+<p class="caption"><span class="caption-text">THE CODE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_docs/simulation_API.html">simulation_API Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_docs/new_simulation.html">Add a new simulation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PHYS Simulation API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>simulation_API.controller.tasks</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for simulation_API.controller.tasks</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This file will do background tasks e.g. the simulation&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">uuid</span> <span class="kn">import</span> <span class="n">uuid4</span>
+
+<span class="c1"># Needed to simulate in backgroung</span>
+<span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">BackgroundTasks</span><span class="p">,</span> <span class="n">HTTPException</span>
+<span class="c1"># Database-related</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">Session</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">from</span> <span class="nn">matplotlib.figure</span> <span class="kn">import</span> <span class="n">Figure</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+<span class="c1"># import matplotlib.pyplot as plt</span>
+<span class="kn">import</span> <span class="nn">pickle</span> <span class="k">as</span> <span class="nn">pkl</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">linspace</span><span class="p">,</span> <span class="nb">abs</span>
+
+<span class="kn">from</span> <span class="nn">simulation_API</span> <span class="kn">import</span> <span class="n">app</span>
+<span class="c1"># Import pydantic schemas</span>
+<span class="kn">from</span> <span class="nn">.schemas</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="c1"># Import paths to save plots and pickles</span>
+<span class="kn">from</span> <span class="nn">simulation_API.config</span> <span class="kn">import</span> <span class="n">PATH_PLOTS</span><span class="p">,</span> <span class="n">PATH_PICKLES</span><span class="p">,</span> <span class="n">PLOTS_FORMAT</span>
+<span class="c1"># Import simulation module</span>
+<span class="kn">from</span> <span class="nn">simulation_API.simulation.simulations</span> <span class="kn">import</span> <span class="n">Simulations</span>
+<span class="c1"># Database-related</span>
+<span class="kn">from</span> <span class="nn">simulation_API.model.db_manager</span> <span class="kn">import</span> <span class="n">SessionLocal</span>
+<span class="kn">from</span> <span class="nn">simulation_API.model</span> <span class="kn">import</span> <span class="n">crud</span>
+
+<span class="c1"># Next line of code avoids a warning when generating matplotlib figures: </span>
+<span class="c1"># `UserWarning: Starting a Matplotlib GUI outside of the main thread will likely</span>
+<span class="c1"># fail.`</span>
+
+<span class="c1"># Found the solution in this post: </span>
+<span class="c1"># https://stackoverflow.com/questions/50157759/runtimeerror-main-thread-is-not-in-main-loop-using-matplotlib-with-django</span>
+<span class="c1"># The latter cites this matplotlib documentation:</span>
+<span class="c1"># https://matplotlib.org/faq/howto_faq.html#matplotlib-in-a-web-application-server</span>
+
+<span class="c1"># From last link: &#39;You may be able to work on separate figures from separate</span>
+<span class="c1"># threads. However, you must in that case use a non-interactive backend</span>
+<span class="c1"># (typically Agg), because most GUI backends require being run from the main</span>
+<span class="c1"># thread as well.&#39;</span>
+
+<span class="c1"># And also: &#39;In general, the simplest solution when using</span>
+<span class="c1"># Matplotlib in a web server is to completely avoid using pyplot.&#39;</span>
+
+<span class="c1"># Next line of code is only needed if using pyplot (which is not recommended)</span>
+
+<span class="c1"># mpl.use(&#39;Agg&#39;)</span>
+
+<div class="viewcode-block" id="_api_simulation_request"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.tasks._api_simulation_request">[docs]</a><span class="k">def</span> <span class="nf">_api_simulation_request</span><span class="p">(</span><span class="n">sim_system</span><span class="p">:</span> <span class="n">SimSystem</span><span class="p">,</span>
+                            <span class="n">sim_params</span><span class="p">:</span> <span class="n">SimRequest</span><span class="p">,</span>
+                            <span class="n">background_tasks</span><span class="p">:</span> <span class="n">BackgroundTasks</span><span class="p">,</span>
+                            <span class="n">db</span><span class="p">:</span> <span class="n">Session</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SimIdResponse</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Requests simulation to BackgroundTasks.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sim_system : SimSystem</span>
+<span class="sd">        System to be simulated.</span>
+<span class="sd">    sim_params : SimRequest</span>
+<span class="sd">        Contains all the information about the simulation request.</span>
+<span class="sd">    background_tasks : ``fastapi.BackgroundTasks``</span>
+<span class="sd">        Object needed to request simulation in the background.</span>
+<span class="sd">    db : ``sqlalchemy.orm.Session``</span>
+<span class="sd">        Needed for interaction with database.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sim_id_response : SimIdResponse</span>
+<span class="sd">        Contains information about simulation request, such as simulation ID</span>
+<span class="sd">        and others. See</span>
+<span class="sd">        :class:`~simulation_API.controller.schemas.SimIdResponse` for more</span>
+<span class="sd">        information.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check that the simulation parameters are the ones needed for the</span>
+    <span class="c1"># requested simulation. This is not checked by the pydantic model.</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ParamsModel</span> <span class="o">=</span> <span class="n">SimSystem_to_SimParams</span><span class="p">[</span><span class="n">sim_system</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+        <span class="n">ParamsModel</span><span class="p">(</span><span class="o">**</span><span class="n">sim_params</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">sim_id_response</span> <span class="o">=</span> <span class="n">SimIdResponse</span><span class="p">(</span>
+            <span class="n">username</span><span class="o">=</span><span class="n">sim_params</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Error: you provided the wrong set of parameters. &quot;</span>
+                    <span class="s2">&quot;Your simulation was not requested&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">sim_id_response</span>
+    
+    <span class="c1"># Create user in database (meanwhile)</span>
+    <span class="c1"># FIXME FIXME FIXME</span>
+    <span class="c1"># In production user can NOT be created here, login will be required.</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">UserDBSchCreate</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">sim_params</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">crud</span><span class="o">.</span><span class="n">_create_user</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+    <span class="c1"># Get user_id from user and store it in sim params !</span>
+    <span class="n">sim_params</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">user_id</span>
+
+    <span class="c1"># Create an id for the simulation store it in hex notation</span>
+    <span class="n">sim_params</span><span class="o">.</span><span class="n">sim_id</span> <span class="o">=</span> <span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span>
+
+    <span class="c1"># Close ccurrent db connection, so that _run_simulation can update table</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c1"># Check that the client is accessing the right path for the right simulation</span>
+    <span class="c1"># sim_system.value NEEDS to match the request given in JSON as</span>
+    <span class="c1"># sim_params.system</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sim_system</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">sim_params</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="mi">403</span><span class="p">,</span>
+            <span class="n">detail</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;403 - Forbidden : URI&#39;s </span><span class="si">{sim_system}</span><span class="s2"> value must coincide &quot;</span>
+                   <span class="sa">r</span><span class="s2">&quot;with &#39;system&#39; key value in posted JSON file&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Simulate system in BACKGROUND</span>
+    <span class="c1"># TODO TODO TODO Por dentro _run_simulation puede abrir un websocket para</span>
+    <span class="c1"># TODO TODO TODO indicar que la simulación ya se completó</span>
+    <span class="n">background_tasks</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="n">_run_simulation</span><span class="p">,</span> <span class="n">sim_params</span><span class="p">)</span>
+
+    <span class="c1"># Declare some variables needed as params to SimIdResponse</span>
+    <span class="n">sim_status_path</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">url_path_for</span><span class="p">(</span><span class="s2">&quot;api_simulate_status&quot;</span><span class="p">,</span>
+                                       <span class="n">sim_id</span><span class="o">=</span><span class="n">sim_params</span><span class="o">.</span><span class="n">sim_id</span><span class="p">)</span>
+    
+    <span class="n">sim_pickle_path</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">url_path_for</span><span class="p">(</span><span class="s2">&quot;api_download_pickle&quot;</span><span class="p">,</span>
+                                       <span class="n">sim_id</span><span class="o">=</span><span class="n">sim_params</span><span class="o">.</span><span class="n">sim_id</span><span class="p">)</span>
+
+    <span class="n">message1</span> <span class="o">=</span> <span class="s2">&quot;(When –and if– available) request via GET your simulation&#39;s&quot;</span> \
+               <span class="s2">&quot;status in route &#39;sim_status_path&#39; or download your results&quot;</span> \
+               <span class="s2">&quot;(pickle fomat) via GET in route &#39;sim_pickle_path&#39;&quot;</span>
+    <span class="n">message2</span> <span class="o">=</span> <span class="n">na_message</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">message1</span> <span class="k">if</span> <span class="n">sim_params</span><span class="o">.</span><span class="n">system</span> <span class="ow">in</span> <span class="n">SimSystem</span> <span class="k">else</span> <span class="n">message2</span>
+
+    <span class="n">sim_id_response</span> <span class="o">=</span> <span class="n">SimIdResponse</span><span class="p">(</span>
+        <span class="n">sim_id</span><span class="o">=</span><span class="n">sim_params</span><span class="o">.</span><span class="n">sim_id</span><span class="p">,</span>
+        <span class="n">user_id</span><span class="o">=</span><span class="n">sim_params</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span>
+        <span class="n">username</span><span class="o">=</span><span class="n">sim_params</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
+        <span class="n">sim_sys</span><span class="o">=</span><span class="n">sim_params</span><span class="o">.</span><span class="n">system</span><span class="p">,</span>
+        <span class="n">sim_status_path</span><span class="o">=</span><span class="n">sim_status_path</span><span class="p">,</span>
+        <span class="n">sim_pickle_path</span><span class="o">=</span><span class="n">sim_pickle_path</span><span class="p">,</span>
+        <span class="n">message</span><span class="o">=</span><span class="n">message</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sim_id_response</span></div>
+
+
+<span class="c1"># NOTE Maybe this function is overloaded, we could split some of the tasks</span>
+<span class="c1"># maybe its ok, just consider it</span>
+<div class="viewcode-block" id="_run_simulation"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.tasks._run_simulation">[docs]</a><span class="k">def</span> <span class="nf">_run_simulation</span><span class="p">(</span><span class="n">sim_params</span><span class="p">:</span> <span class="n">SimRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> 
+    <span class="sd">&quot;&quot;&quot;Runs the requested simulation and stores the outcome in a database.</span>
+
+<span class="sd">    This function runs the simulation, stores the simulation parameters in a</span>
+<span class="sd">    database, stores the simulation result in a pickle and creates and saves</span>
+<span class="sd">    relevant plots of the simulation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sim_params : SimRequest</span>
+<span class="sd">        Contains all the information needed for the simulation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Start session in dbase</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">SessionLocal</span><span class="p">()</span>
+
+    <span class="c1"># If t_steps is provided in sim_params, generate t_eval</span>
+    <span class="k">if</span> <span class="n">sim_params</span><span class="o">.</span><span class="n">t_steps</span><span class="p">:</span>
+        <span class="n">sim_params</span><span class="o">.</span><span class="n">t_eval</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span>
+            <span class="n">sim_params</span><span class="o">.</span><span class="n">t_span</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sim_params</span><span class="o">.</span><span class="n">t_span</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sim_params</span><span class="o">.</span><span class="n">t_steps</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Convert the SimRequest instance to dict</span>
+    <span class="n">sim_params</span> <span class="o">=</span> <span class="n">sim_params</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+
+    <span class="c1"># Pop some values Simulation __init__ method does not accept.</span>
+    <span class="c1"># Remember &quot;system&quot; will be a member of SimSystem defined in simulation_API.controll.schemas</span>
+    <span class="n">system</span> <span class="o">=</span> <span class="n">sim_params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">)</span>
+    <span class="n">sim_id</span> <span class="o">=</span> <span class="n">sim_params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;sim_id&quot;</span><span class="p">)</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">sim_params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;user_id&quot;</span><span class="p">)</span>
+    <span class="n">sim_params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;t_steps&quot;</span><span class="p">)</span>
+    <span class="n">sim_params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">)</span>
+
+    <span class="n">basic_info</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;sim_id&quot;</span><span class="p">:</span> <span class="n">sim_id</span><span class="p">,</span>
+        <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
+        <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()),</span>
+        <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="n">system</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Check that &quot;system&quot; is in available simulation systems</span>
+    <span class="c1"># NOTE maybe this is not necessary since pydantic already checks this. In</span>
+    <span class="c1"># schema request SimRequest requires &quot;system&quot; to be a member of SimSystem.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">system</span> <span class="ow">in</span> <span class="n">SimSystem</span><span class="p">:</span>
+        <span class="n">create_simulation_status_db</span> <span class="o">=</span> <span class="n">SimulationDBSchCreate</span><span class="p">(</span>
+            <span class="n">success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="n">na_message</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">basic_info</span>
+        <span class="p">)</span>
+        <span class="c1"># Save simulation status in database</span>
+        <span class="n">crud</span><span class="o">.</span><span class="n">_create_simulation</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">create_simulation_status_db</span><span class="p">)</span>
+        <span class="c1"># Close db session</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Try to simulate the system. If there is an exception in simulation store</span>
+    <span class="c1"># it in database and exit this function</span>
+    <span class="k">try</span><span class="p">:</span>        
+        <span class="c1"># Run simulation and get results as returned by scipy.integrate.solve_ivp</span>
+        <span class="n">LocalSimulation</span> <span class="o">=</span> <span class="n">Simulations</span><span class="p">[</span><span class="n">system</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+        <span class="n">simulation_instance</span> <span class="o">=</span> <span class="n">LocalSimulation</span><span class="p">(</span><span class="o">**</span><span class="n">sim_params</span><span class="p">)</span>
+        <span class="n">simulation</span> <span class="o">=</span> <span class="n">simulation_instance</span><span class="o">.</span><span class="n">simulate</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">create_simulation_status_db</span> <span class="o">=</span> <span class="n">SimulationDBSchCreate</span><span class="p">(</span>
+            <span class="n">success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Internal Simulation Error: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span>
+            <span class="o">**</span><span class="n">basic_info</span>
+        <span class="p">)</span>
+        <span class="n">crud</span><span class="o">.</span><span class="n">_create_simulation</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">create_simulation_status_db</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        
+        <span class="c1"># FIXME FIXME FIXME is it better to raise an exception at this point?</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Store simulation result in pickle</span>
+    <span class="n">_pickle</span><span class="p">(</span><span class="n">sim_id</span> <span class="o">+</span> <span class="s2">&quot;.pickle&quot;</span><span class="p">,</span> <span class="n">PATH_PICKLES</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">simulation</span><span class="p">))</span>
+    
+    <span class="c1"># Create and save plots</span>
+    <span class="n">plot_query_values</span> <span class="o">=</span> <span class="n">_plot_solution</span><span class="p">(</span><span class="n">SimResults</span><span class="p">(</span><span class="n">sim_results</span><span class="o">=</span><span class="n">simulation</span><span class="p">),</span>
+                                       <span class="n">system</span><span class="p">,</span> <span class="n">sim_id</span><span class="p">)</span>
+
+    <span class="c1"># Save simulation status in database</span>
+    <span class="n">create_simulation_status_db</span> <span class="o">=</span> <span class="n">SimulationDBSchCreate</span><span class="p">(</span>
+        <span class="n">method</span><span class="o">=</span><span class="n">sim_params</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">],</span>
+        <span class="n">route_pickle</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">url_path_for</span><span class="p">(</span><span class="s2">&quot;api_download_pickle&quot;</span><span class="p">,</span> <span class="n">sim_id</span><span class="o">=</span><span class="n">sim_id</span><span class="p">),</span>
+        <span class="n">route_results</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">url_path_for</span><span class="p">(</span><span class="s2">&quot;api_simulate_status&quot;</span><span class="p">,</span> <span class="n">sim_id</span><span class="o">=</span><span class="n">sim_id</span><span class="p">),</span>
+        <span class="n">route_plots</span><span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">url_path_for</span><span class="p">(</span><span class="s2">&quot;api_download_plots&quot;</span><span class="p">,</span> <span class="n">sim_id</span><span class="o">=</span><span class="n">sim_id</span><span class="p">),</span>
+        <span class="n">success</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">message</span><span class="o">=</span><span class="n">sim_status_finished_message</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">basic_info</span>
+    <span class="p">)</span>
+    <span class="n">crud</span><span class="o">.</span><span class="n">_create_simulation</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">create_simulation_status_db</span><span class="p">)</span>
+
+    <span class="c1">#  Save plot query values to database</span>
+    <span class="n">plot_query_values</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">PlotDBSchCreate</span><span class="p">(</span><span class="n">sim_id</span><span class="o">=</span><span class="n">sim_id</span><span class="p">,</span> <span class="n">plot_query_value</span><span class="o">=</span><span class="n">plot_qb</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">plot_qb</span> <span class="ow">in</span> <span class="n">plot_query_values</span>
+    <span class="p">]</span>
+    <span class="n">crud</span><span class="o">.</span><span class="n">_create_plot_query_values</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">plot_query_values</span><span class="p">)</span>
+
+    <span class="c1"># Store simulation parameters in database</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">simulation_instance</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">parameter</span> <span class="o">=</span> <span class="n">ParameterDBSchCreate</span><span class="p">(</span><span class="n">sim_id</span><span class="o">=</span><span class="n">sim_id</span><span class="p">,</span>
+                                         <span class="n">param_type</span><span class="o">=</span><span class="n">ParamType</span><span class="o">.</span><span class="n">param</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                                         <span class="n">param_key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">parameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ini_cndtn_val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">simulation_instance</span><span class="o">.</span><span class="n">ini_cndtn</span><span class="p">):</span>
+        <span class="n">ini_cndtn</span> <span class="o">=</span> <span class="n">ParameterDBSchCreate</span><span class="p">(</span><span class="n">sim_id</span><span class="o">=</span><span class="n">sim_id</span><span class="p">,</span>
+                                         <span class="n">param_type</span><span class="o">=</span><span class="n">ParamType</span><span class="o">.</span><span class="n">ini_cndtn</span><span class="p">,</span>
+                                         <span class="n">ini_cndtn_id</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">ini_cndtn_val</span><span class="p">)</span>
+        <span class="n">parameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ini_cndtn</span><span class="p">)</span>
+    <span class="n">crud</span><span class="o">.</span><span class="n">_create_parameters</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+    
+    <span class="c1"># Close db session</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">return</span> </div>
+
+
+<div class="viewcode-block" id="_plot_solution"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.tasks._plot_solution">[docs]</a><span class="k">def</span> <span class="nf">_plot_solution</span><span class="p">(</span><span class="n">sim_results</span><span class="p">:</span> <span class="n">SimResults</span><span class="p">,</span> <span class="n">system</span><span class="p">:</span> <span class="n">SimSystem</span><span class="p">,</span>
+                   <span class="n">plots_basename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;00000&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Generates relevant simulation&#39;s plots and saves them.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sim_results : SimResults</span>
+<span class="sd">        Simulation results as returned by</span>
+<span class="sd">        :meth:`~simulation_API.simulation.simulations.Simulation.simulate`.</span>
+<span class="sd">    system : SimSystem</span>
+<span class="sd">        System to be simulated.</span>
+<span class="sd">    plots_basename : str</span>
+<span class="sd">        Base name of the plots. Actual name of each plot will be</span>
+<span class="sd">        ``&lt;plotbasename&gt;_&lt;plot_query_value&gt;.png``, where ``&lt;plot_query_value&gt;``</span>
+<span class="sd">        is a special tag for each type of plot. In this API, baseplot will</span>
+<span class="sd">        always be the value of</span>
+<span class="sd">        :attr:`~simulation_API.controller.schemas.SimIdResponse.sim_id`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    plot_query_values : List[str]</span>
+<span class="sd">        Names of each type of plot. These are very important since they are</span>
+<span class="sd">        needed to access the plots in the API route (these are the possible</span>
+<span class="sd">        values for the query param &quot;value&quot; in route</span>
+<span class="sd">        ``/api/results/{sim_id}/plot``).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">font_normal_size</span> <span class="o">=</span> <span class="mi">17</span>
+    <span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="n">font_normal_size</span><span class="p">})</span>
+
+    <span class="c1"># Get simulation results as OdeResult instance</span>
+    <span class="n">sim_results</span> <span class="o">=</span> <span class="n">sim_results</span><span class="o">.</span><span class="n">sim_results</span>
+    
+    <span class="n">plot_query_values</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">system</span> <span class="o">==</span> <span class="n">SimSystem</span><span class="o">.</span><span class="n">HO</span><span class="p">:</span>    
+        <span class="c1">##################################</span>
+        <span class="c1"># Using pyplot (not recommended) #</span>
+        <span class="c1">##################################</span>
+        <span class="c1"># # Phase space trajectory plot</span>
+        <span class="c1"># plot_query_value = &#39;phase&#39;</span>
+        <span class="c1"># plot_query_values.append(plot_query_value)</span>
+
+        <span class="c1"># fig = plt.figure()</span>
+        <span class="c1"># ax = fig.add_subplot(111)</span>
+        <span class="c1"># plt.plot(sim_results.y[0], sim_results.y[1])</span>
+        <span class="c1"># ax.set_aspect(&#39;equal&#39;, adjustable=&#39;box&#39;)</span>
+        <span class="c1"># plt.xlabel(&#39;q&#39;)</span>
+        <span class="c1"># plt.ylabel(&#39;p&#39;)</span>
+        <span class="c1"># plt.title(&#39;Phase space&#39;)</span>
+        <span class="c1"># fig.savefig(_create_plot_path_disk(plots_basename, plot_query_value))</span>
+        <span class="c1"># plt.close()</span>
+
+        <span class="c1"># # Canonical coordinates evolution plot</span>
+        <span class="c1"># plot_query_value = &#39;coord&#39;</span>
+        <span class="c1"># plot_query_values.append(plot_query_value)</span>
+
+        <span class="c1"># fig = plt.figure()</span>
+        <span class="c1"># ax = fig.add_subplot(111)</span>
+        <span class="c1"># plt.plot(sim_results.t, sim_results.y[0], label=&#39;q(t)&#39;)</span>
+        <span class="c1"># plt.plot(sim_results.t, sim_results.y[1], label=&#39;p(t)&#39;)</span>
+        <span class="c1"># plt.xlabel(&#39;t&#39;)</span>
+        <span class="c1"># plt.ylabel(&#39;Canonical coordinate&#39;)</span>
+        <span class="c1"># plt.title(&#39;Canonical coordinates evolution&#39;)</span>
+        <span class="c1"># plt.legend()</span>
+        <span class="c1"># fig.savefig(_create_plot_path_disk(plots_basename, plot_query_value))</span>
+        <span class="c1"># plt.close()</span>
+
+        <span class="c1">#######################################################################</span>
+        <span class="c1"># NOT using pyplot (RECOMMENDED, read comments provided after imports)#</span>
+        <span class="c1">#######################################################################</span>
+
+        <span class="c1">##################### Phase space trajectory plot #####################</span>
+        <span class="n">plot_query_value</span> <span class="o">=</span> <span class="n">PlotQueryValues_HO</span><span class="o">.</span><span class="n">phase</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">plot_query_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plot_query_value</span><span class="p">)</span>
+
+        <span class="n">xlim</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">ylim</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">ax_lim</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">xlim</span><span class="p">,</span> <span class="n">ylim</span><span class="p">])</span> <span class="o">*</span> <span class="mf">1.05</span>
+        <span class="n">dashed_line</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="n">ax_lim</span><span class="p">,</span> <span class="n">ax_lim</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">Figure</span><span class="p">()</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dashed_line</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dashed_line</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;k--&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dashed_line</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dashed_line</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;k--&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">)</span>
+        <span class="c1"># ax.set_title(&#39;Phase space&#39;)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="n">ax_lim</span><span class="p">,</span> <span class="n">ax_lim</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="n">ax_lim</span><span class="p">,</span> <span class="n">ax_lim</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">_create_plot_path_disk</span><span class="p">(</span><span class="n">plots_basename</span><span class="p">,</span> <span class="n">plot_query_value</span><span class="p">))</span>
+        
+
+        <span class="c1">################ Canonical coordinates evolution plot #################</span>
+        <span class="n">plot_query_value</span> <span class="o">=</span> <span class="n">PlotQueryValues_HO</span><span class="o">.</span><span class="n">coord</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">plot_query_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plot_query_value</span><span class="p">)</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">Figure</span><span class="p">()</span>
+
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sim_results</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;q(t)&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sim_results</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;p(t)&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Canonical coordinate&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+        <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">_create_plot_path_disk</span><span class="p">(</span><span class="n">plots_basename</span><span class="p">,</span> <span class="n">plot_query_value</span><span class="p">))</span>
+    
+    <span class="k">elif</span> <span class="n">system</span> <span class="o">==</span> <span class="n">SimSystem</span><span class="o">.</span><span class="n">ChenLee</span><span class="p">:</span>
+        
+        <span class="c1">########################## 3D Phase portrait ##########################</span>
+        <span class="n">plot_query_value</span> <span class="o">=</span> <span class="n">PlotQueryValues_ChenLee</span><span class="o">.</span><span class="n">threeD</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">plot_query_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plot_query_value</span><span class="p">)</span>
+        
+        <span class="c1"># Plot limits</span>
+        <span class="n">limx</span> <span class="o">=</span> <span class="mf">1.05</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">limy</span> <span class="o">=</span> <span class="mf">1.05</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">limz</span> <span class="o">=</span> <span class="mf">1.05</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="n">xlim</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">limx</span><span class="p">,</span> <span class="n">limx</span><span class="p">)</span>
+        <span class="n">ylim</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">limy</span><span class="p">,</span> <span class="n">limy</span><span class="p">)</span>
+        <span class="n">zlim</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">limz</span><span class="p">)</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">Figure</span><span class="p">()</span> <span class="c1"># figsize=(12,10))</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>    <span class="c1">#Parametric 3D curve</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">c</span><span class="o">=</span><span class="s1">&#39;navy&#39;</span>
+        <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$\Omega_x$&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$\Omega_y$&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s1">&#39;$\Omega_z$&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_zlim</span><span class="p">(</span><span class="o">*</span><span class="n">zlim</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">*</span><span class="n">xlim</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">*</span><span class="n">ylim</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">_create_plot_path_disk</span><span class="p">(</span><span class="n">plots_basename</span><span class="p">,</span> <span class="n">plot_query_value</span><span class="p">))</span>
+
+        <span class="c1">##################### Phase portrait projections ######################</span>
+        <span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">25</span><span class="p">})</span>
+
+        <span class="n">plot_query_value</span> <span class="o">=</span> <span class="n">PlotQueryValues_ChenLee</span><span class="o">.</span><span class="n">project</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">plot_query_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plot_query_value</span><span class="p">)</span>
+
+        <span class="n">nrows</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">ncols</span> <span class="o">=</span> <span class="mi">3</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">Figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+        
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Phase portrait $\Omega_x\Omega_y$&#39;</span><span class="p">,</span>
+            <span class="n">c</span><span class="o">=</span><span class="s1">&#39;indianred&#39;</span>
+        <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$\Omega_x$&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$\Omega_y$&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">*</span><span class="n">xlim</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">*</span><span class="n">ylim</span><span class="p">)</span>
+        
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Phase portrait $\Omega_y\Omega_z$&#39;</span><span class="p">,</span>
+            <span class="n">c</span><span class="o">=</span><span class="s1">&#39;navy&#39;</span>
+        <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$\Omega_y$&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$\Omega_z$&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">*</span><span class="n">ylim</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">*</span><span class="n">zlim</span><span class="p">)</span>
+        
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">sim_results</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Phase portrait $\Omega_x\Omega_z$&#39;</span><span class="p">,</span>
+            <span class="n">c</span><span class="o">=</span><span class="s1">&#39;olive&#39;</span>
+        <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$\Omega_x$&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$\Omega_z$&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">*</span><span class="n">xlim</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">*</span><span class="n">zlim</span><span class="p">)</span>
+        
+        <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">_create_plot_path_disk</span><span class="p">(</span><span class="n">plots_basename</span><span class="p">,</span> <span class="n">plot_query_value</span><span class="p">))</span>
+
+        <span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">17</span><span class="p">})</span>
+    
+    <span class="k">return</span> <span class="n">plot_query_values</span></div>
+
+
+<div class="viewcode-block" id="_pickle"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.tasks._pickle">[docs]</a><span class="k">def</span> <span class="nf">_pickle</span><span class="p">(</span><span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Saves ``data`` to pickle or reads Python object from pickle.</span>
+<span class="sd">    </span>
+<span class="sd">    Saves ``data`` to pickle if ``data``. Otherwise it will try to read a</span>
+<span class="sd">    pickle from ``path + &#39;/&#39; + file_name`` and return the python object stored</span>
+<span class="sd">    in it.</span>
+<span class="sd">    </span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file_name : str</span>
+<span class="sd">        Name of file to be read from or to write on.</span>
+<span class="sd">    path : str</span>
+<span class="sd">        Path of directory in which the file will be saved or read from.</span>
+<span class="sd">    data : dict or None, optional</span>
+<span class="sd">        If you want to save data to a pickle, provide the data as dictionary.</span>
+<span class="sd">        Default is None.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    loaded_object : Any or None</span>
+<span class="sd">        Object loaded when no data is provided.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Set mode to read or write</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;wb&quot;</span> <span class="k">if</span> <span class="n">data</span> <span class="k">else</span> <span class="s2">&quot;rb&quot;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>        
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">pkl</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+            <span class="n">loaded_object</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">loaded_object</span> <span class="o">=</span> <span class="n">pkl</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">loaded_object</span></div>
+
+
+<div class="viewcode-block" id="_sim_form_to_sim_request"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.tasks._sim_form_to_sim_request">[docs]</a><span class="k">def</span> <span class="nf">_sim_form_to_sim_request</span><span class="p">(</span><span class="n">form</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">SimRequest</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Translates simulation form –from frontend– to simulation request which</span>
+<span class="sd">    is understood by backend in</span>
+<span class="sd">    :func:`~simulation_API.controller.tasks._api_simulation_request`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    form: Dict[str, str]</span>
+<span class="sd">        Simulation request information as obtained by frontend.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    SimRequest</span>
+<span class="sd">        Simulation request information in a format the backend understands.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Generate t_eval</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;t0&quot;</span><span class="p">])</span>
+    <span class="n">tf</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;tf&quot;</span><span class="p">])</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;dt&quot;</span><span class="p">])</span>
+    <span class="n">t_eval</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">linspace</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">tf</span><span class="p">,</span> <span class="nb">int</span><span class="p">((</span><span class="n">tf</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span> <span class="o">/</span> <span class="n">dt</span><span class="p">)))</span>
+
+    <span class="c1"># Initial conditions</span>
+    <span class="n">ini_cndtn_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">key</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;ini&quot;</span><span class="p">]</span>
+    <span class="n">ini_cndtn</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;ini</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ini_cndtn_keys</span><span class="p">))]</span>
+    
+    <span class="c1"># Parameters</span>
+    <span class="c1"># NOTE</span>
+    <span class="c1"># We need to get the actual names of the parameters, because the convention</span>
+    <span class="c1"># in frontend form is `param0`, `param1`, ... but SimRequest receives the</span>
+    <span class="c1"># actual name of the parameters (e.g. for the HO `m` and `k`).</span>
+    <span class="c1"># This change of convention is done by the dicts defined in `shcemas.py`</span>
+    <span class="n">param_convention</span> <span class="o">=</span> <span class="n">system_to_params_dict</span><span class="p">[</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;sim_sys&quot;</span><span class="p">]]</span>
+    <span class="n">param_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">key</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;param&quot;</span><span class="p">]</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">param_convention</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;param</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]:</span> <span class="nb">float</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;param</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span> 
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">param_keys</span><span class="p">))</span>
+    <span class="p">}</span>
+
+    <span class="n">sim_request</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;sim_sys&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;t_span&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">t0</span><span class="p">,</span> <span class="n">tf</span><span class="p">],</span>
+        <span class="s2">&quot;t_eval&quot;</span><span class="p">:</span> <span class="n">t_eval</span><span class="p">,</span>
+        <span class="s2">&quot;ini_cndtn&quot;</span><span class="p">:</span> <span class="n">ini_cndtn</span><span class="p">,</span>
+        <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">form</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;sim_request&quot;</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="n">SimRequest</span><span class="p">(</span><span class="o">**</span><span class="n">sim_request</span><span class="p">)</span></div>
+
+
+<span class="c1">############################## Paths and routes ###############################</span>
+
+<div class="viewcode-block" id="_create_pickle_path_disk"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.tasks._create_pickle_path_disk">[docs]</a><span class="k">def</span> <span class="nf">_create_pickle_path_disk</span><span class="p">(</span><span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Creates disk path to simulation results (pickle) by</span>
+<span class="sd">    :attr:`~simulation_API.controller.schemas.SimIdResponse.sim_id`.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">PATH_PICKLES</span> <span class="o">+</span> <span class="n">sim_id</span> <span class="o">+</span> <span class="s2">&quot;.pickle&quot;</span></div>
+
+
+<div class="viewcode-block" id="_create_plot_path_disk"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.tasks._create_plot_path_disk">[docs]</a><span class="k">def</span> <span class="nf">_create_plot_path_disk</span><span class="p">(</span><span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">query_param</span><span class="p">:</span> <span class="n">PlotQueryValues</span><span class="p">,</span>
+                           <span class="n">plot_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">PLOTS_FORMAT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Creates disk path to plots of simulation results by</span>
+<span class="sd">    :attr:`~simulation_API.controller.schemas.SimIdResponse.sim_id`.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">PATH_PLOTS</span> <span class="o">+</span> <span class="n">sim_id</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">query_param</span> <span class="o">+</span> <span class="n">plot_format</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Juan E. Aristizabal
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

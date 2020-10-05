@@ -1,0 +1,842 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>simulation_API.controller.schemas &mdash; PHYS Simulation API 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> PHYS Simulation API
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../start/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../start/examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../start/frontend.html">Website</a></li>
+</ul>
+<p class="caption"><span class="caption-text">THE CODE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_docs/simulation_API.html">simulation_API Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../code_docs/new_simulation.html">Add a new simulation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PHYS Simulation API</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>simulation_API.controller.schemas</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for simulation_API.controller.schemas</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module defines all the models/schemas needed in our application, except</span>
+<span class="sd">the database models required for sqlalchemy ORM.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+<span class="kn">from</span> <span class="nn">scipy.integrate._ivp.ivp</span> <span class="kn">import</span> <span class="n">OdeResult</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">pi</span>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1">################### Schemas needed in main.py and tasks.py ####################</span>
+<span class="c1">###############################################################################</span>
+
+<span class="c1">###################### Available systems for simulation #######################</span>
+
+<span class="c1"># NOTE: Needs update each time a new simulation is added</span>
+<div class="viewcode-block" id="SimSystem"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimSystem">[docs]</a><span class="k">class</span> <span class="nc">SimSystem</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;List of available systems for simulation.</span>
+<span class="sd">    </span>
+<span class="sd">    \f</span>
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    The values of the attributes of this class must coincide with the</span>
+<span class="sd">    dictionary keys defined in</span>
+<span class="sd">    :data:`simulation_API.simulation.simulations.Simulations`, otherwise the</span>
+<span class="sd">    system won&#39;t be simulated by the backend.</span>
+
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    This class needs update each time a new simulation is added: add an</span>
+<span class="sd">    appropiate new attribute.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">HO</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Harmonic-Oscillator&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Harmonic Oscillator Enum attribute.&quot;&quot;&quot;</span>
+    <span class="n">ChenLee</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Chen-Lee-Attractor&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Chen-Lee Attractor Enum attribute.&quot;&quot;&quot;</span></div>
+
+
+
+<span class="c1">######################## Available Integration Methods ########################</span>
+
+<span class="c1"># Enum needed to verify correct values with API</span>
+<span class="c1"># NOTE: Update this with relevant parameters</span>
+<div class="viewcode-block" id="IntegrationMethods"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.IntegrationMethods">[docs]</a><span class="k">class</span> <span class="nc">IntegrationMethods</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;List of available integration methods</span>
+<span class="sd">    </span>
+<span class="sd">    \f</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    For more information about these integration methods see</span>
+<span class="sd">    `scipy.integrate.solve_ivp`_.</span>
+<span class="sd">    </span>
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    Please update this class with relvant simulation methods available in </span>
+<span class="sd">    `scipy.integrate.solve_ivp`_ –only the ones that do not require more</span>
+<span class="sd">    parameters than the ones provided in</span>
+<span class="sd">    :py:class:`~simulation_API.controller.schemas.SimRequest`.</span>
+
+<span class="sd">    .. _scipy.integrate.solve_ivp: https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RK45</span> <span class="o">=</span> <span class="s2">&quot;RK45&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Explicit Runge-Kutta method of order 5(4).&quot;&quot;&quot;</span>
+    <span class="n">RK23</span> <span class="o">=</span> <span class="s2">&quot;RK23&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Explicit Runge-Kutta method of order 3(2).&quot;&quot;&quot;</span></div>
+
+
+<span class="c1"># Needed to generate dict used to display available integration methods in frontend</span>
+<span class="c1"># NOTE:Needs to coincide with Integration Methods</span>
+<div class="viewcode-block" id="IntegrationMethodsFrontend"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.IntegrationMethodsFrontend">[docs]</a><span class="k">class</span> <span class="nc">IntegrationMethodsFrontend</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;List of captions of available integration methods. These are displayed</span>
+<span class="sd">    in frontend simulation form.</span>
+
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    This class needs update each time a new simulation is added: add an</span>
+<span class="sd">    appropiate new attribute.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">RK45</span> <span class="o">=</span> <span class="s2">&quot;Runge-Kutta 5(4)&quot;</span>
+    <span class="n">RK23</span> <span class="o">=</span> <span class="s2">&quot;Runge-Kutta 3(2)&quot;</span></div>
+
+<span class="c1"># Used in frontend and generated automatically from IntegrationMethodsFrontend</span>
+<span class="n">integration_methods</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">member</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">member</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">IntegrationMethodsFrontend</span><span class="o">.</span><span class="n">_member_map_</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="p">}</span>
+
+
+
+<span class="c1">###################### Frontend Simulation Form schemas #######################</span>
+
+<span class="c1"># NOTE Needs update each time a new simulation is added. </span>
+<span class="c1"># NOTE      1) create a new pydantic class similar to HOSimForm. </span>
+<span class="c1"># NOTE      2) add the class to the dict `SimFormDict` defined somewhere below.</span>
+<div class="viewcode-block" id="SimForm"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimForm">[docs]</a><span class="k">class</span> <span class="nc">SimForm</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Basemodel of schema used to Request a Simulation in Frontend.</span>
+<span class="sd">    </span>
+<span class="sd">    \f</span>
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    Needs update each time a new simulation is added:</span>
+
+<span class="sd">    1. Create a new appropiate class similar to</span>
+<span class="sd">       :py:class:`~simulation_API.controller.schemas.HOSimForm` or to</span>
+<span class="sd">       :py:class:`~simulation_API.controller.schemas.ChenLeeSimForm`.</span>
+<span class="sd">    2. Add the class to the ``dict`` :data:`~simulation_API.controller.schemas.SimFormDict`</span>
+<span class="sd">       defined somewhere in this module.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Pepito&quot;</span>
+    <span class="n">t0</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="sd">&quot;&quot;&quot;Initial time of simulation.&quot;&quot;&quot;</span>
+    <span class="n">tf</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span>
+    <span class="sd">&quot;&quot;&quot;Final time of simulation.&quot;&quot;&quot;</span>
+    <span class="n">dt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">pi</span> <span class="o">/</span> <span class="mi">10</span>
+    <span class="sd">&quot;&quot;&quot;Time step size of simulation.&quot;&quot;&quot;</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">IntegrationMethods</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;RK45&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Integration method used in simulation.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="HOSimForm"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.HOSimForm">[docs]</a><span class="k">class</span> <span class="nc">HOSimForm</span><span class="p">(</span><span class="n">SimForm</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Schema used to Request Harmonic Oscillator Simulation in Frontend via</span>
+<span class="sd">    form.</span>
+<span class="sd">    </span>
+<span class="sd">    \f</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    For more information about Chen-Lee Attactor simulation see </span>
+<span class="sd">    :py:class:`~simulation_API.simulation.simulations.HarmonicOsc1D`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sim_sys</span><span class="p">:</span> <span class="n">SimSystem</span> <span class="o">=</span> <span class="n">SimSystem</span><span class="o">.</span><span class="n">HO</span><span class="o">.</span><span class="n">value</span>
+    <span class="sd">&quot;&quot;&quot;System to be simulated.&quot;&quot;&quot;</span>
+    <span class="n">ini0</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="sd">&quot;&quot;&quot;:math:`q` initial value.&quot;&quot;&quot;</span>
+    <span class="n">ini1</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="sd">&quot;&quot;&quot;:math:`p` initial value.&quot;&quot;&quot;</span>
+    <span class="n">param0</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="sd">&quot;&quot;&quot;Parameter of name :attr:`~simulation_API.controller.schemas.HOParams.m`.&quot;&quot;&quot;</span>
+    <span class="n">param1</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="sd">&quot;&quot;&quot;Parameter of name :attr:`~simulation_API.controller.schemas.HOParams.k`.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ChenLeeSimForm"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.ChenLeeSimForm">[docs]</a><span class="k">class</span> <span class="nc">ChenLeeSimForm</span><span class="p">(</span><span class="n">SimForm</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Schema used to Request Chen Lee Simulation in Frontend via form.</span>
+<span class="sd">    </span>
+<span class="sd">    \f</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    For more information about Chen-Lee Attactor simulation see </span>
+<span class="sd">    :py:class:`~simulation_API.simulation.simulations.ChenLeeAttractor`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sim_sys</span><span class="p">:</span> <span class="n">SimSystem</span> <span class="o">=</span> <span class="n">SimSystem</span><span class="o">.</span><span class="n">ChenLee</span><span class="o">.</span><span class="n">value</span>
+    <span class="sd">&quot;&quot;&quot;System to be simulated.&quot;&quot;&quot;</span>
+    <span class="n">ini0</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">10.0</span>
+    <span class="sd">&quot;&quot;&quot;:math:`\omega_x` initial condition.&quot;&quot;&quot;</span>
+    <span class="n">ini1</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">10.0</span>
+    <span class="sd">&quot;&quot;&quot;:math:`\omega_y` initial condition.&quot;&quot;&quot;</span>
+    <span class="n">ini2</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="sd">&quot;&quot;&quot;:math:`\omega_z` initial condition.&quot;&quot;&quot;</span>
+    <span class="n">param0</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">3.0</span>
+    <span class="sd">&quot;&quot;&quot;Parameter of name :attr:`~simulation_API.controller.schemas.ChenLeeParams.a`.&quot;&quot;&quot;</span>
+    <span class="n">param1</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span> <span class="mf">5.0</span>
+    <span class="sd">&quot;&quot;&quot;Parameter of name :attr:`~simulation_API.controller.schemas.ChenLeeParams.b`.&quot;&quot;&quot;</span>
+    <span class="n">param2</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span> <span class="mf">1.0</span>
+    <span class="sd">&quot;&quot;&quot;Parameter of name :attr:`~simulation_API.controller.schemas.ChenLeeParams.c`.&quot;&quot;&quot;</span></div>
+
+
+
+<span class="c1">############################ Simulation Parameters ############################</span>
+
+<span class="c1"># NOTE Needs update each time a new system is added (add a new class).</span>
+<div class="viewcode-block" id="HOParams"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.HOParams">[docs]</a><span class="k">class</span> <span class="nc">HOParams</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;List of parameters of the Harmonic Oscillator system.</span>
+<span class="sd">    </span>
+<span class="sd">    \f</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    For more information about Harmonic Oscillator&#39;s parameters see </span>
+<span class="sd">    :py:class:`~simulation_API.simulation.simulations.HarmonicOsc1D`.</span>
+
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    This needs update each time a new simulation is added: add an</span>
+<span class="sd">    appropiate new class similar to this one or to</span>
+<span class="sd">    :py:class:`simulation_API.controller.schemas.ChenLeeParams`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m</span><span class="p">:</span> <span class="nb">float</span>    <span class="c1"># Mass</span>
+    <span class="sd">&quot;&quot;&quot;Mass of object.&quot;&quot;&quot;</span>
+    <span class="n">k</span><span class="p">:</span> <span class="nb">float</span>    <span class="c1"># Force constant</span>
+    <span class="sd">&quot;&quot;&quot;Force constant of object.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ChenLeeParams"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.ChenLeeParams">[docs]</a><span class="k">class</span> <span class="nc">ChenLeeParams</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;List of parameters of the Chen-Lee Attractor system.</span>
+
+<span class="sd">    \f</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    For more information about Chen-Lee Attactor&#39;s parameters see </span>
+<span class="sd">    :py:class:`~simulation_API.simulation.simulations.ChenLeeAttractor`.</span>
+
+<span class="sd">    Warning</span>
+<span class="sd">    -------</span>
+<span class="sd">    This needs update each time a new simulation is added: add an</span>
+<span class="sd">    appropiate new class similar to this one or to</span>
+<span class="sd">    :py:class:`simulation_API.controller.schemas.HOParams`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="sd">&quot;&quot;&quot;:math:`\omega_x` parameter.&quot;&quot;&quot;</span>
+    <span class="n">b</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="sd">&quot;&quot;&quot;:math:`\omega_y` parameter.&quot;&quot;&quot;</span>
+    <span class="n">c</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="sd">&quot;&quot;&quot;:math:`\omega_z` parameter.&quot;&quot;&quot;</span></div>
+
+
+<span class="c1"># Maps each system to its parameters (used in backend)</span>
+<span class="c1"># NOTE Needs update each time a new system is added</span>
+<span class="n">SimSystem_to_SimParams</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">SimSystem</span><span class="o">.</span><span class="n">HO</span><span class="o">.</span><span class="n">value</span><span class="p">:</span> <span class="n">HOParams</span><span class="p">,</span>
+    <span class="n">SimSystem</span><span class="o">.</span><span class="n">ChenLee</span><span class="o">.</span><span class="n">value</span><span class="p">:</span> <span class="n">ChenLeeParams</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;Maps the name of each available system to its parameters model</span>
+
+<span class="sd">Warning</span>
+<span class="sd">-------</span>
+<span class="sd">Needs update each time a new simulation is added: add a new appropiate item</span>
+<span class="sd">to this dict.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Maps systems to pydantic schemas used in route &quot;/simulate/{sim_system}&quot;</span>
+<span class="c1"># NOTE Needs update each time a new system is added (add new entry in dict).</span>
+<span class="n">SimFormDict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">SimSystem</span><span class="o">.</span><span class="n">HO</span><span class="o">.</span><span class="n">value</span><span class="p">:</span> <span class="n">HOSimForm</span><span class="p">,</span>
+    <span class="n">SimSystem</span><span class="o">.</span><span class="n">ChenLee</span><span class="o">.</span><span class="n">value</span><span class="p">:</span> <span class="n">ChenLeeSimForm</span>
+<span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;Maps the name of each available system to its simulation form model.</span>
+
+<span class="sd">Warning</span>
+<span class="sd">-------</span>
+<span class="sd">Needs update each time a new simulation is added: add a new appropiate item</span>
+<span class="sd">to this dict.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># This dicts map different conventions for simulation parameter names </span>
+<span class="c1"># {param_name_frontend: param_name_backend}</span>
+<span class="c1"># NOTE Needs update each time a new system is added (add new dict with params).</span>
+<span class="n">params_mapping_HO</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;param0&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;param1&quot;</span><span class="p">:</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;Maps the name of each Harmonic Oscillator parameter in frontend form to its</span>
+<span class="sd">name in backend (defined by its corresponding attribute in class</span>
+<span class="sd">:py:class:`~simulation_API.simulation.simulations.HarmonicOsc1D`)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">params_mapping_ChenLee</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;param0&quot;</span><span class="p">:</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;param1&quot;</span><span class="p">:</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;param2&quot;</span><span class="p">:</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;Maps the name of each Chen-Lee Attractor parameter in frontend form to its</span>
+<span class="sd">name in backend (defined by its corresponding attribute in class</span>
+<span class="sd">:py:class:`~simulation_API.simulation.simulations.ChenLeeAttractor`)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># This dict maps each system to its parameter change-of-convention</span>
+<span class="c1"># dictionary defined above (used in frontend simulation request)</span>
+<span class="n">system_to_params_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">SimSystem</span><span class="o">.</span><span class="n">HO</span><span class="o">.</span><span class="n">value</span><span class="p">:</span> <span class="n">params_mapping_HO</span><span class="p">,</span>
+    <span class="n">SimSystem</span><span class="o">.</span><span class="n">ChenLee</span><span class="o">.</span><span class="n">value</span><span class="p">:</span> <span class="n">params_mapping_ChenLee</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="sd">&quot;&quot;&quot;Maps the name of each available system to its parameter change-of-convention</span>
+<span class="sd">mapping (e.g. :data:`~simulation_API.controller.schemas.params_mapping_HO` or</span>
+<span class="sd">:data:`~simulation_API.controller.schemas.params_mapping_ChenLee`.) </span>
+
+<span class="sd">This is used to translate the parameters name convention in frontend simulation</span>
+<span class="sd">request to the parameters name convention in backend simulation request (with</span>
+<span class="sd">appropiate schema given by</span>
+<span class="sd">:py:class:`simulation_API.controller.schemas.SimRequest`.)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+
+<span class="c1">########################## Simulation Request schema ##########################</span>
+
+<div class="viewcode-block" id="SimRequest"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimRequest">[docs]</a><span class="k">class</span> <span class="nc">SimRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Schema needed to request simulations via POST in</span>
+<span class="sd">    ``/api/request/{sim_system}``.</span>
+<span class="sd">    </span>
+<span class="sd">    \f</span>
+<span class="sd">    For the attributes that do not have a description see</span>
+<span class="sd">    :py:class:`simulation_API.simulation.simulations.Simulation`.</span>
+<span class="sd">    </span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    Most of the attributes in this pydantic class are arguments of the </span>
+<span class="sd">    classes defined in the module :mod:`simulation_API.simulation.simulations`,</span>
+<span class="sd">    for more information please refer to It.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">system</span><span class="p">:</span> <span class="n">SimSystem</span> <span class="o">=</span> <span class="n">SimSystem</span><span class="o">.</span><span class="n">HO</span>
+    <span class="n">t_span</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">t_eval</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">t_steps</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ini_cndtn</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">IntegrationMethods</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;RK45&#39;</span>
+    <span class="c1"># The backend will assign a sim_id, so it is not necessary to provide one.</span>
+    <span class="n">sim_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="sd">&quot;&quot;&quot;ID of simulation. This is handled internally, leave it blank when</span>
+<span class="sd">    requesting a simulation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># If we implement logging, user_id will be handled by backend</span>
+    <span class="n">user_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="sd">&quot;&quot;&quot;User id number stored in database. This is handled internally, leave it</span>
+<span class="sd">    blank when requesting a simulation.&quot;&quot;&quot;</span>
+    <span class="n">username</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Pepito Perez&quot;</span></div>
+
+
+
+<span class="c1">### Simulation ID response schema when simulation is requested in frontend. ###</span>
+
+<div class="viewcode-block" id="SimIdResponse"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimIdResponse">[docs]</a><span class="k">class</span> <span class="nc">SimIdResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Schema for the response of a simulation request (requested via POST in</span>
+<span class="sd">    route ``/api/simulate/{sim_sys}``.)</span>
+
+<span class="sd">    \f</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The request of the simulation must follow the model</span>
+<span class="sd">    :py:class:`~simulation_API.controller.schemas.SimRequest`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sim_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="sd">&quot;&quot;&quot;ID of simulation.&quot;&quot;&quot;</span>
+    <span class="n">user_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+    <span class="sd">&quot;&quot;&quot;User id number stored in database.&quot;&quot;&quot;</span>
+    <span class="n">username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">sim_sys</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SimSystem</span><span class="p">]</span>
+    <span class="sd">&quot;&quot;&quot;Simulated system.&quot;&quot;&quot;</span>
+    <span class="n">sim_status_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="sd">&quot;&quot;&quot;Path to GET the status of the simulation.&quot;&quot;&quot;</span>
+    <span class="n">sim_pickle_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="sd">&quot;&quot;&quot;Path to GET (download) a pickle with the results of the simulation.&quot;&quot;&quot;</span>
+    <span class="n">message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="sd">&quot;&quot;&quot;Explanatory message.&quot;&quot;&quot;</span></div>
+
+
+
+<span class="c1">###### Plot Query values needed to download the plots of each simulation ######</span>
+
+<span class="c1"># NOTE Needs update each time a new system is added (add a new class).</span>
+<div class="viewcode-block" id="PlotQueryValues_HO"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.PlotQueryValues_HO">[docs]</a><span class="k">class</span> <span class="nc">PlotQueryValues_HO</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;List of tags of each different plot generated automatically by the</span>
+<span class="sd">    backend when a Harmonic Oscillator simulation is requested.</span>
+<span class="sd">    </span>
+<span class="sd">    These tags are used as the possible values of the querry param ``value``</span>
+<span class="sd">    in route ``/api/results/{sim_id}/plot?value=&lt;plot_query_value&gt;``.</span>
+<span class="sd">    </span>
+<span class="sd">    \f</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    :attr:`simualtion_API.controller.shcemas.SimIdResponse.sim_id` must be</span>
+<span class="sd">    related to the Harmonic Oscillator system.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">coord</span> <span class="o">=</span> <span class="s2">&quot;coord&quot;</span>
+    <span class="n">phase</span> <span class="o">=</span> <span class="s2">&quot;phase&quot;</span></div>
+
+
+<div class="viewcode-block" id="PlotQueryValues_ChenLee"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.PlotQueryValues_ChenLee">[docs]</a><span class="k">class</span> <span class="nc">PlotQueryValues_ChenLee</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;List of tags of each different plot generated automatically by the</span>
+<span class="sd">    backend when a Chen-Lee simulation is requested.</span>
+<span class="sd">    </span>
+<span class="sd">    These tags are used as the possible values of the querry param ``value``</span>
+<span class="sd">    in route ``/api/results/{sim_id}/plot?value=&lt;plot_query_value&gt;``.</span>
+<span class="sd">    </span>
+<span class="sd">    \f</span>
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    :attr:`simualtion_API.controller.schemas.SimIdResponse.sim_id` must be</span>
+<span class="sd">    related to the Chen Lee system.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">threeD</span> <span class="o">=</span> <span class="s2">&quot;threeD&quot;</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="s2">&quot;project&quot;</span></div>
+
+
+<span class="c1"># NOTE Needs update each time a new system is added (new entry w/ name of new class)</span>
+<span class="n">PlotQueryValues</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span>
+    <span class="n">PlotQueryValues_HO</span><span class="p">,</span>
+    <span class="n">PlotQueryValues_ChenLee</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="sd">&quot;&quot;&quot;Union of the classes defining Enums of plot query values for each system.</span>
+<span class="sd">This is needed in :py:class:`~simualtion_API.controller.schemas.SimStatus`.&quot;&quot;&quot;</span>
+
+
+
+<span class="c1">######################### Simulation Results Schemas ##########################</span>
+
+<div class="viewcode-block" id="SimResults"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimResults">[docs]</a><span class="k">class</span> <span class="nc">SimResults</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Results of simulation as returned by ``scipy.integrate.solve_ivp``&quot;&quot;&quot;</span>
+    <span class="n">sim_results</span><span class="p">:</span> <span class="n">OdeResult</span></div>
+
+
+
+<span class="c1">########################### Simulation Status Schema ##########################</span>
+
+<div class="viewcode-block" id="SimStatus"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimStatus">[docs]</a><span class="k">class</span> <span class="nc">SimStatus</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Schema of the status of simulations.</span>
+
+<span class="sd">    This pydantic model is intended to store paths of results of the</span>
+<span class="sd">    simulations algong with some metadata. This information can be accessed via</span>
+<span class="sd">    GET in ``/api/simulate/status/{sim_id}``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># User-related attributes</span>
+    <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="sd">&quot;&quot;&quot;ID of simulation.&quot;&quot;&quot;</span>
+    <span class="n">user_id</span> <span class="p">:</span> <span class="nb">int</span>
+    <span class="sd">&quot;&quot;&quot;User id number stored in database.&quot;&quot;&quot;</span>
+    <span class="n">date</span><span class="p">:</span> <span class="n">datetime</span>
+    <span class="sd">&quot;&quot;&quot;Date of request of simulation.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Simulation-related attributes</span>
+    <span class="n">system</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SimSystem</span><span class="p">]</span>
+    <span class="sd">&quot;&quot;&quot;Simulated system.&quot;&quot;&quot;</span>
+    <span class="n">ini_cndtn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">IntegrationMethods</span><span class="p">]</span>
+
+    <span class="c1"># Response-related attributes</span>
+    <span class="n">route_pickle</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="sd">&quot;&quot;&quot;Route of pickle file generated by the simulation.&quot;&quot;&quot;</span>
+    <span class="n">route_results</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="sd">&quot;&quot;&quot;Route of frontend showing results.&quot;&quot;&quot;</span>
+    <span class="n">route_plots</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="sd">&quot;&quot;&quot;Route of plots generated by the simulation backend.&quot;&quot;&quot;</span>
+    <span class="n">plot_query_values</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">PlotQueryValues</span><span class="p">]]</span>
+    <span class="sd">&quot;&quot;&quot;Query params values of different automatically generated plots.</span>
+<span class="sd">    These values are needed to download the plots in route </span>
+<span class="sd">    ``/api/results/{sim_id}/plot?value=&lt;plot_query_value&gt;``.&quot;&quot;&quot;</span>
+    <span class="n">plot_query_receipe</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> \
+        <span class="s2">&quot;&#39;route_plots&#39; + &#39;?value=&#39; + &#39;plot_query_value&#39;&quot;</span>
+    <span class="n">success</span> <span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
+    <span class="sd">&quot;&quot;&quot;Success status of simulation.&quot;&quot;&quot;</span>
+    <span class="n">message</span> <span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="sd">&quot;&quot;&quot;Additional information on status of simulation.&quot;&quot;&quot;</span></div>
+
+
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1">################### Schemas needed for databse interaction ####################</span>
+<span class="c1">###############################################################################</span>
+
+<span class="c1">############################ Users ############################</span>
+<div class="viewcode-block" id="UserDBSchBase"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.UserDBSchBase">[docs]</a><span class="k">class</span> <span class="nc">UserDBSchBase</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Basemodel for API type checking when querrying ``users`` table in</span>
+<span class="sd">    ``simulations.db`` database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="UserDBSch"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.UserDBSch">[docs]</a><span class="k">class</span> <span class="nc">UserDBSch</span><span class="p">(</span><span class="n">UserDBSchBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Model for API type checking when reading a user information in</span>
+<span class="sd">    ``users`` table in ``simulations.db`` database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user_id</span> <span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+<div class="viewcode-block" id="UserDBSch.Config"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.UserDBSch.Config">[docs]</a>    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;This class is needed for database reading optimization</span>
+<span class="sd">        (thanks to Object Relational Mapper –ORM.)</span>
+<span class="sd">        </span>
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        Read more in</span>
+<span class="sd">        `FastAPI docs &lt;https://fastapi.tiangolo.com/tutorial/sql-databases/#use-pydantics-orm_mode&gt;`_.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">orm_model</span> <span class="o">=</span> <span class="kc">True</span></div></div>
+
+
+<div class="viewcode-block" id="UserDBSchCreate"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.UserDBSchCreate">[docs]</a><span class="k">class</span> <span class="nc">UserDBSchCreate</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Model for API type checking when creating a &#39;user information&#39; row</span>
+<span class="sd">    in ``users`` table in ``simulations.db`` database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Just for now store Null hash TODO TODO TODO change when logging</span>
+    <span class="c1"># Production username and hash_value must be mandatory</span>
+    <span class="n">username</span> <span class="p">:</span> <span class="nb">str</span>
+    <span class="n">hash_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
+
+
+<span class="c1">############################ Simulation status ############################</span>
+<div class="viewcode-block" id="SimulationDBSchBase"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimulationDBSchBase">[docs]</a><span class="k">class</span> <span class="nc">SimulationDBSchBase</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Basemodel for API type checking when querrying ``simulations`` table in</span>
+<span class="sd">    ``simulations.db`` database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sim_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">user_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+    <span class="n">date</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">system</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">route_pickle</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">route_results</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">route_plots</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">success</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
+    <span class="n">message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="SimulationDBSch"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimulationDBSch">[docs]</a><span class="k">class</span> <span class="nc">SimulationDBSch</span><span class="p">(</span><span class="n">SimulationDBSchBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Model for API type checking when reading a row in</span>
+<span class="sd">    ``simulations`` table in ``simulations.db`` database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SimulationDBSch.Config"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimulationDBSch.Config">[docs]</a>    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;This class is needed for database reading optimization</span>
+<span class="sd">        (thanks to Object Relational Mapper –ORM.)</span>
+<span class="sd">        </span>
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        Read more in</span>
+<span class="sd">        `FastAPI docs &lt;https://fastapi.tiangolo.com/tutorial/sql-databases/#use-pydantics-orm_mode&gt;`_.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">orm_model</span> <span class="o">=</span> <span class="kc">True</span></div></div>
+
+
+<div class="viewcode-block" id="SimulationDBSchCreate"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimulationDBSchCreate">[docs]</a><span class="k">class</span> <span class="nc">SimulationDBSchCreate</span><span class="p">(</span><span class="n">SimulationDBSchBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Model for API type checking when creating a &#39;simulation information&#39; row</span>
+<span class="sd">    in ``simulations`` table in ``simulations.db`` database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">date</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">system</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">success</span><span class="p">:</span> <span class="nb">bool</span></div>
+    
+
+<span class="c1">############################ Plots ############################</span>
+<div class="viewcode-block" id="PlotDBSchBase"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.PlotDBSchBase">[docs]</a><span class="k">class</span> <span class="nc">PlotDBSchBase</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Basemodel for API type checking when querrying ``plots`` table in</span>
+<span class="sd">    ``simulations.db`` database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sim_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">plot_query_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="PlotDBSch"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.PlotDBSch">[docs]</a><span class="k">class</span> <span class="nc">PlotDBSch</span><span class="p">(</span><span class="n">PlotDBSchBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Model for API type checking when reading a row in ``plots``</span>
+<span class="sd">    table in ``simulations.db`` database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plot_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+<div class="viewcode-block" id="PlotDBSch.Config"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.PlotDBSch.Config">[docs]</a>    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;This class is needed for database reading optimization</span>
+<span class="sd">        (thanks to Object Relational Mapper –ORM.)</span>
+<span class="sd">        </span>
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        Read more in</span>
+<span class="sd">        `FastAPI docs &lt;https://fastapi.tiangolo.com/tutorial/sql-databases/#use-pydantics-orm_mode&gt;`_.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">orm_model</span> <span class="o">=</span> <span class="kc">True</span></div></div>
+
+
+<div class="viewcode-block" id="PlotDBSchCreate"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.PlotDBSchCreate">[docs]</a><span class="k">class</span> <span class="nc">PlotDBSchCreate</span><span class="p">(</span><span class="n">PlotDBSchBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Model for API type checking when creating a &#39;plot information&#39; row in</span>
+<span class="sd">    ``plots`` table in ``simulations.db`` database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">plot_query_value</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+<span class="c1">############################ Parameters ############################</span>
+<div class="viewcode-block" id="ParamType"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.ParamType">[docs]</a><span class="k">class</span> <span class="nc">ParamType</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;These are the possible values of ``param_type`` column in ``parameters``</span>
+<span class="sd">    table in ``simulations.db`` database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ini_cndtn</span> <span class="o">=</span> <span class="s2">&quot;initial condition&quot;</span>
+    <span class="n">param</span> <span class="o">=</span> <span class="s2">&quot;parameter&quot;</span></div>
+
+
+<div class="viewcode-block" id="ParameterDBSchBase"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.ParameterDBSchBase">[docs]</a><span class="k">class</span> <span class="nc">ParameterDBSchBase</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Basemodel for API type checking when querrying ``parameters`` table in</span>
+<span class="sd">    ``simulations.db`` database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sim_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">param_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ParamType</span><span class="p">]</span>
+    <span class="n">param_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">ini_cndtn_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="ParameterDBSch"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.ParameterDBSch">[docs]</a><span class="k">class</span> <span class="nc">ParameterDBSch</span><span class="p">(</span><span class="n">ParameterDBSchBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Model for API type checking when reading a row in ``parameters`` table</span>
+<span class="sd">    in ``simulations.db`` database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">param_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+<div class="viewcode-block" id="ParameterDBSch.Config"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.ParameterDBSch.Config">[docs]</a>    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;This class is needed for database reading optimization</span>
+<span class="sd">        (thanks to Object Relational Mapper –ORM.)</span>
+<span class="sd">        </span>
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        Read more in</span>
+<span class="sd">        `FastAPI docs &lt;https://fastapi.tiangolo.com/tutorial/sql-databases/#use-pydantics-orm_mode&gt;`_.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">orm_model</span> <span class="o">=</span> <span class="kc">True</span></div></div>
+
+
+<div class="viewcode-block" id="ParameterDBSchCreate"><a class="viewcode-back" href="../../../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.ParameterDBSchCreate">[docs]</a><span class="k">class</span> <span class="nc">ParameterDBSchCreate</span><span class="p">(</span><span class="n">ParameterDBSchBase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Model for API type checking when creating a row in ``parameters`` table</span>
+<span class="sd">    in ``simulations.db`` database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sim_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">param_type</span><span class="p">:</span> <span class="n">ParamType</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">float</span></div>
+
+
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1">################################ Some Messages ################################</span>
+<span class="c1">###############################################################################</span>
+
+<span class="n">na_message</span> <span class="o">=</span> <span class="s2">&quot;Simulation of the system you requested is not available.&quot;</span>
+<span class="n">sim_id_not_found_message</span> <span class="o">=</span> <span class="s2">&quot;The simulation ID (sim_id) you provided is not &quot;</span> \
+                           <span class="s2">&quot;yet in our database. If you are sure about the &quot;</span> \
+                           <span class="s2">&quot;sim_id you provided, either your simulation has &quot;</span> \
+                           <span class="s2">&quot;not finished or there was an internal server &quot;</span> \
+                           <span class="s2">&quot;error. Please come back latter and check.&quot;</span>
+<span class="n">sim_status_finished_message</span> <span class="o">=</span> <span class="s2">&quot;Finished. You can request via GET: download &quot;</span> \
+                              <span class="s2">&quot;simulation results (pickle) in route given &quot;</span> \
+                              <span class="s2">&quot;in &#39;route_pickle&#39;, or; download plots of &quot;</span> \
+                              <span class="s2">&quot;simulation in route &#39;route_plots&#39; using &quot;</span> \
+                              <span class="s2">&quot;query params the ones given in &quot;</span> \
+                              <span class="s2">&quot;&#39;plot_query_values&#39;, or; see results online &quot;</span> \
+                              <span class="s2">&quot;in route &#39;route_results&#39;.&quot;</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Juan E. Aristizabal
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

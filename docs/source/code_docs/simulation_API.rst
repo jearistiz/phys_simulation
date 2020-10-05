@@ -1,3 +1,5 @@
+.. _code-API-package:
+
 =======================
 simulation\_API Package
 =======================

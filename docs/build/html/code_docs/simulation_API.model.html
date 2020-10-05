@@ -13,17 +13,10 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/tooltipster.custom.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/tooltipster.bundle.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/tooltipster-sideTip-shadow.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/tooltipster-sideTip-punk.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/tooltipster-sideTip-noir.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/tooltipster-sideTip-light.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/tooltipster-sideTip-borderless.min.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/micromodal.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/sphinx_rtd_theme.css" type="text/css" />
 
   
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
   
   
   
@@ -39,9 +32,6 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/language_data.js"></script>
-        <script src="../_static/js/hoverxref.js"></script>
-        <script src="../_static/js/tooltipster.bundle.min.js"></script>
-        <script src="../_static/js/micromodal.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
@@ -120,7 +110,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="new_simulation.html">Add a New Simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="new_simulation.html">Add a new simulation</a></li>
 </ul>
 
             
@@ -201,7 +191,7 @@
 CRUD comes from: Create, Read, Update, and Delete.</p>
 <dl class="py function">
 <dt id="simulation_API.model.crud._create_parameters">
-<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_create_parameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">parameters</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.ParameterDBSchCreate" title="simulation_API.controller.schemas.ParameterDBSchCreate">simulation_API.controller.schemas.ParameterDBSchCreate</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#simulation_API.model.crud._create_parameters" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_create_parameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">parameters</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.ParameterDBSchCreate" title="simulation_API.controller.schemas.ParameterDBSchCreate">simulation_API.controller.schemas.ParameterDBSchCreate</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/simulation_API/model/crud.html#_create_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation_API.model.crud._create_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Insert parameter entry into parameters table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -221,7 +211,7 @@ CRUD comes from: Create, Read, Update, and Delete.</p>
 
 <dl class="py function">
 <dt id="simulation_API.model.crud._create_plot_query_values">
-<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_create_plot_query_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">plot_query_params</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.PlotDBSchCreate" title="simulation_API.controller.schemas.PlotDBSchCreate">simulation_API.controller.schemas.PlotDBSchCreate</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#simulation_API.model.crud._create_plot_query_values" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_create_plot_query_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">plot_query_params</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.PlotDBSchCreate" title="simulation_API.controller.schemas.PlotDBSchCreate">simulation_API.controller.schemas.PlotDBSchCreate</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/simulation_API/model/crud.html#_create_plot_query_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation_API.model.crud._create_plot_query_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Insert row in plots table (contains plot query params)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -241,7 +231,7 @@ CRUD comes from: Create, Read, Update, and Delete.</p>
 
 <dl class="py function">
 <dt id="simulation_API.model.crud._create_simulation">
-<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_create_simulation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">simulation</span><span class="p">:</span> <span class="n"><a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.SimulationDBSchCreate" title="simulation_API.controller.schemas.SimulationDBSchCreate">simulation_API.controller.schemas.SimulationDBSchCreate</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#simulation_API.model.models.SimulationDB" title="simulation_API.model.models.SimulationDB">simulation_API.model.models.SimulationDB</a><a class="headerlink" href="#simulation_API.model.crud._create_simulation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_create_simulation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">simulation</span><span class="p">:</span> <span class="n"><a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.SimulationDBSchCreate" title="simulation_API.controller.schemas.SimulationDBSchCreate">simulation_API.controller.schemas.SimulationDBSchCreate</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#simulation_API.model.models.SimulationDB" title="simulation_API.model.models.SimulationDB">simulation_API.model.models.SimulationDB</a><a class="reference internal" href="../_modules/simulation_API/model/crud.html#_create_simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation_API.model.crud._create_simulation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Inserts simulation in simulations table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -261,7 +251,7 @@ CRUD comes from: Create, Read, Update, and Delete.</p>
 
 <dl class="py function">
 <dt id="simulation_API.model.crud._create_user">
-<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_create_user</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">user</span><span class="p">:</span> <span class="n"><a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.UserDBSchCreate" title="simulation_API.controller.schemas.UserDBSchCreate">simulation_API.controller.schemas.UserDBSchCreate</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#simulation_API.model.models.UserDB" title="simulation_API.model.models.UserDB">simulation_API.model.models.UserDB</a><a class="headerlink" href="#simulation_API.model.crud._create_user" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_create_user</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">user</span><span class="p">:</span> <span class="n"><a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.UserDBSchCreate" title="simulation_API.controller.schemas.UserDBSchCreate">simulation_API.controller.schemas.UserDBSchCreate</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#simulation_API.model.models.UserDB" title="simulation_API.model.models.UserDB">simulation_API.model.models.UserDB</a><a class="reference internal" href="../_modules/simulation_API/model/crud.html#_create_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation_API.model.crud._create_user" title="Permalink to this definition">¶</a></dt>
 <dd><p>Inserts <code class="docutils literal notranslate"><span class="pre">user</span></code> in <code class="docutils literal notranslate"><span class="pre">users</span></code> table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -281,7 +271,7 @@ CRUD comes from: Create, Read, Update, and Delete.</p>
 
 <dl class="py function">
 <dt id="simulation_API.model.crud._get_all_simulations">
-<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_get_all_simulations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span><a class="reference internal" href="#simulation_API.model.models.SimulationDB" title="simulation_API.model.models.SimulationDB">simulation_API.model.models.SimulationDB</a><span class="p">]</span><a class="headerlink" href="#simulation_API.model.crud._get_all_simulations" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_get_all_simulations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span><a class="reference internal" href="#simulation_API.model.models.SimulationDB" title="simulation_API.model.models.SimulationDB">simulation_API.model.models.SimulationDB</a><span class="p">]</span><a class="reference internal" href="../_modules/simulation_API/model/crud.html#_get_all_simulations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation_API.model.crud._get_all_simulations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all simulation entries in <code class="docutils literal notranslate"><span class="pre">simulations</span></code> table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -298,7 +288,7 @@ CRUD comes from: Create, Read, Update, and Delete.</p>
 
 <dl class="py function">
 <dt id="simulation_API.model.crud._get_parameters">
-<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_get_parameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">param_type</span><span class="p">:</span> <span class="n"><a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.ParamType" title="simulation_API.controller.schemas.ParamType">simulation_API.controller.schemas.ParamType</a></span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>List<span class="p">[</span>float<span class="p">]</span><span class="p">, </span>Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><span class="p">]</span><a class="headerlink" href="#simulation_API.model.crud._get_parameters" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_get_parameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">param_type</span><span class="p">:</span> <span class="n"><a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.ParamType" title="simulation_API.controller.schemas.ParamType">simulation_API.controller.schemas.ParamType</a></span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>List<span class="p">[</span>float<span class="p">]</span><span class="p">, </span>Dict<span class="p">[</span>str<span class="p">, </span>float<span class="p">]</span><span class="p">]</span><a class="reference internal" href="../_modules/simulation_API/model/crud.html#_get_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation_API.model.crud._get_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters from parameters table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -320,7 +310,7 @@ parameter values.</p>
 
 <dl class="py function">
 <dt id="simulation_API.model.crud._get_plot_query_values">
-<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_get_plot_query_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.crud._get_plot_query_values" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_get_plot_query_values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/simulation_API/model/crud.html#_get_plot_query_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation_API.model.crud._get_plot_query_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return plot query parameters for a given simulation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -340,7 +330,7 @@ parameter values.</p>
 
 <dl class="py function">
 <dt id="simulation_API.model.crud._get_simulation">
-<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_get_simulation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#simulation_API.model.models.SimulationDB" title="simulation_API.model.models.SimulationDB">simulation_API.model.models.SimulationDB</a><a class="headerlink" href="#simulation_API.model.crud._get_simulation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_get_simulation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">sim_id</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#simulation_API.model.models.SimulationDB" title="simulation_API.model.models.SimulationDB">simulation_API.model.models.SimulationDB</a><a class="reference internal" href="../_modules/simulation_API/model/crud.html#_get_simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation_API.model.crud._get_simulation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get simulation with specific id from simulations table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -360,7 +350,7 @@ parameter values.</p>
 
 <dl class="py function">
 <dt id="simulation_API.model.crud._get_username">
-<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_get_username</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">user_id</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.crud._get_username" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">simulation_API.model.crud.</code><code class="sig-name descname">_get_username</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">db</span><span class="p">:</span> <span class="n">sqlalchemy.orm.session.Session</span></em>, <em class="sig-param"><span class="n">user_id</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/simulation_API/model/crud.html#_get_username"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation_API.model.crud._get_username" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets <code class="docutils literal notranslate"><span class="pre">user</span></code> from <code class="docutils literal notranslate"><span class="pre">users</span></code> table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -389,7 +379,7 @@ basemodel for the database tables.</p>
 <p>This program creates all the models and tables in the database</p>
 <dl class="py class">
 <dt id="simulation_API.model.models.ParameterDB">
-<em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.models.</code><code class="sig-name descname">ParameterDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.ParameterDB" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.models.</code><code class="sig-name descname">ParameterDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/simulation_API/model/models.html#ParameterDB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation_API.model.models.ParameterDB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
 <p>Parmaeters table model.</p>
 <p>Stores parameters and initial conditions of simulations.</p>
@@ -450,7 +440,7 @@ the system being simulated.</p>
 
 <dl class="py class">
 <dt id="simulation_API.model.models.PlotDB">
-<em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.models.</code><code class="sig-name descname">PlotDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.PlotDB" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.models.</code><code class="sig-name descname">PlotDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/simulation_API/model/models.html#PlotDB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation_API.model.models.PlotDB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
 <p>Plots table model.</p>
 <p>Stores query parameter values of plots needed to access simulation
@@ -496,7 +486,7 @@ route <code class="docutils literal notranslate"><span class="pre">/api/results/
 
 <dl class="py class">
 <dt id="simulation_API.model.models.SimulationDB">
-<em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.models.</code><code class="sig-name descname">SimulationDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.SimulationDB" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.models.</code><code class="sig-name descname">SimulationDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/simulation_API/model/models.html#SimulationDB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation_API.model.models.SimulationDB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
 <p>Simulation Status table model.</p>
 <dl class="py method">
@@ -596,7 +586,7 @@ for example, any mapped columns or relationships.</p>
 
 <dl class="py class">
 <dt id="simulation_API.model.models.UserDB">
-<em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.models.</code><code class="sig-name descname">UserDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_API.model.models.UserDB" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulation_API.model.models.</code><code class="sig-name descname">UserDB</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/simulation_API/model/models.html#UserDB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation_API.model.models.UserDB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
 <p>Users table model.</p>
 <p>This table stores basic user information.</p>
