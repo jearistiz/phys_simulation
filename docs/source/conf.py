@@ -36,9 +36,10 @@ release = '0.0.1'
 # ones.
 extensions = [
     'sphinx.ext.viewcode',
-    #'sphinx.ext.linkcode',  # Show exact codeblock: difficult to configure.
+    #'sphinx.ext.linkcode',  # Shows code in github, but showing exact codeblock is difficult to configure. See numpy's documentation conf.py, for example.
     #'hoverxref.extension',
     'sphinx.ext.autodoc',
+    'sphinx-jsonschema',
     'sphinx.ext.napoleon',
     'sphinx_rtd_theme',
 ]
@@ -107,6 +108,16 @@ html_favicon = '../../simulation_API/static/img/favicon.ico'
 # Background color for code blocks 
 codebgcolor = '#F0FFFF' # Did not work wih read the docs theme
 
+# Some latex configurations, therea re many other options...
+# If you want internal links in your pdf, run twise 'make latexpdf'.
+latex_elements = {
+     'papersize': 'a4paper,landscape',
+}
+
+# sphinx-jsonschema configurations
+jsonschema_options = {
+    "lift_title": True,
+}
 
 # hoverxref configurations (taken from conf.py from hoverxref documentation source code)
 # hoverxref_tooltip_maxwidth = 650

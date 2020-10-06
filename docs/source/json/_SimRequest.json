@@ -1,0 +1,83 @@
+{
+  "title": ":class:`~simulation_API.controller.schemas.SimRequest`",
+  "description": "Schema needed to request simulations via POST in\n``/api/request/{sim_system}``.",
+  "type": "object",
+  "properties": {
+    "system": {
+      "description": ":class:`~simulation_API.controller.schemas.SimSystem`",
+      "type": "string"
+    },
+    "t_span": {
+      "title": "T Span",
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "t_eval": {
+      "title": "T Eval",
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "t_steps": {
+      "title": "T Steps",
+      "default": 0,
+      "type": "integer"
+    },
+    "ini_cndtn": {
+      "title": "Ini Cndtn",
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "params": {
+      "title": "Params",
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "method": {
+      "description": ":class:`~simulation_API.controller.schemas.IntegrationMethods`",
+      "type": "string"
+    },
+    "username": {
+      "title": "Username",
+      "default": "Pepito Perez",
+      "type": "string"
+    }
+  },
+  "required": [
+    "system",
+    "t_span",
+    "params",
+    "ini_cndtn",
+    "username"
+  ],
+  "definitions": {
+    "SimSystem": {
+      "title": "SimSystem",
+      "description": "List of available systems for simulation.",
+      "enum": [
+        "Harmonic-Oscillator",
+        "Chen-Lee-Attractor"
+      ],
+      "type": "string"
+    },
+    "IntegrationMethods": {
+      "title": "IntegrationMethods",
+      "description": "List of available integration methods.\n\nFor more information see `scipy.integrate.solve_ivp`_.\n\n.. _scipy.integrate.solve_ivp: https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html",
+      "enum": [
+        "RK45",
+        "RK23"
+      ],
+      "type": "string"
+    }
+  }
+}

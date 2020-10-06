@@ -13,7 +13,7 @@ Package contents
    :show-inheritance:
 
 Subpackages
------------
+===========
 
 .. toctree::
    :maxdepth: 4
@@ -23,7 +23,7 @@ Subpackages
    simulation_API.simulation
 
 Submodules
-----------
+==========
 
 .. toctree::
    :maxdepth: 1

@@ -92,8 +92,15 @@
               <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#request-a-simulation">Request a simulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#request-simulation-status">Request Simulation Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#request-a-simulation">Request a simulation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#simrequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimRequest</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#simidresponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimIdResponse</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#request-simulation-status">Request Simulation Status</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#simstatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimStatus</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#request-results">Request Results</a></li>
 </ul>
 </li>
@@ -171,18 +178,538 @@
             
   <div class="section" id="overview">
 <span id="start-overview"></span><h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
-<p>Some explanation</p>
+<p>In PHYS Simulation API you can request –via HTTP POST method– a simulation from
+a list of available simulations. Here we will show you the schemas you need to
+appropiately request your simulation. In <a class="reference internal" href="examples.html#start-examples"><span class="std std-ref">Examples</span></a> you
+will see how this works in the real life.</p>
 <div class="section" id="request-a-simulation">
 <h2>Request a simulation<a class="headerlink" href="#request-a-simulation" title="Permalink to this headline">¶</a></h2>
-<p>Some explanation</p>
+<p>The simulation requests are made in route <code class="docutils literal notranslate"><span class="pre">/api/simulate/{sim_system}</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">sim_system</span></code> is one of the members of
+<a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimSystem</span></code></a>.</p>
+<p>The body of the request must abide by the following schema</p>
+<div class="section" id="simrequest">
+<h3><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimRequest" title="simulation_API.controller.schemas.SimRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimRequest</span></code></a><a class="headerlink" href="#simrequest" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td colspan="4"><p>Schema needed to request simulations via POST in
+<code class="docutils literal notranslate"><span class="pre">/api/request/{sim_system}</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p><strong>system</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimSystem</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p><strong>t_span</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>T Span</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>t_eval</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>T Eval</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>t_steps</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>T Steps</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>0</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p><strong>ini_cndtn</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Ini Cndtn</em></p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="2"></td>
+</tr>
+<tr class="row-even"><td><p>items</p></td>
+<td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p><strong>params</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Params</em></p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td><p>type</p></td>
+<td><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>method</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.IntegrationMethods" title="simulation_API.controller.schemas.IntegrationMethods"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntegrationMethods</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>username</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Username</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"><p>Pepito Perez</p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>definitions</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>SimSystem</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>SimSystem</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>List of available systems for simulation.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td colspan="2"><p>Harmonic-Oscillator, Chen-Lee-Attractor</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>IntegrationMethods</p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>IntegrationMethods</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>List of available integration methods.</p>
+<p>For more information see <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html">scipy.integrate.solve_ivp</a>.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>enum</p></td>
+<td colspan="2"><p>RK45, RK23</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The body of the HTML response will have the following schema</p>
+<div class="section" id="simidresponse">
+<span id="id1"></span><h3><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimIdResponse" title="simulation_API.controller.schemas.SimIdResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimIdResponse</span></code></a><a class="headerlink" href="#simidresponse" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td colspan="3"><p>Schema for the response of a simulation request (requested via POST in
+route <code class="docutils literal notranslate"><span class="pre">/api/simulate/{sim_sys}</span></code>.)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>sim_id</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Sim Id</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>user_id</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>User Id</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>username</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Username</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>sim_sys</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimSystem</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>sim_status_path</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Sim Status Path</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>sim_pickle_path</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Sim Pickle Path</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>message</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Message</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div class="section" id="request-simulation-status">
 <h2>Request Simulation Status<a class="headerlink" href="#request-simulation-status" title="Permalink to this headline">¶</a></h2>
-<p>Some explanation</p>
+<p>The response of the request simulation (<a class="reference internal" href="#simidresponse"><span class="std std-ref">SimIdResponse</span></a>)
+contains a simulation ID, <code class="docutils literal notranslate"><span class="pre">sim_id</span></code>. In order to know the simulation status you
+just need to make an HTTP request via GET with empty body in route
+<code class="docutils literal notranslate"><span class="pre">/api/request/status/{sim_id}</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The route will be availble just after the simulation is finished. If you do
+not receive a successful response and you are sure about the <code class="docutils literal notranslate"><span class="pre">sim_id</span></code> you
+provided in the API route, the simulation may still be in course.</p>
+</div>
+<p>The schema of the response will be the following</p>
+<div class="section" id="simstatus">
+<span id="id2"></span><h3><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimStatus" title="simulation_API.controller.schemas.SimStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimStatus</span></code></a><a class="headerlink" href="#simstatus" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td colspan="6"><p>Schema of the Simulation Satus.</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="5"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="6"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p><strong>sim_id</strong></p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Sim Id</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p><strong>user_id</strong></p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>User Id</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>integer</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p><strong>date</strong></p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Date</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>format</p></td>
+<td colspan="4"><p>date-time</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>system</p></li>
+</ul>
+</td>
+<td colspan="5"><p><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimSystem</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>ini_cndtn</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Ini Cndtn</em></p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>items</p></td>
+<td><p>type</p></td>
+<td colspan="3"><p><em>number</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>params</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Params</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td><p>type</p></td>
+<td colspan="3"><p><em>number</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>method</p></li>
+</ul>
+</td>
+<td colspan="5"><p><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.IntegrationMethods" title="simulation_API.controller.schemas.IntegrationMethods"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntegrationMethods</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>route_pickle</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Route Pickle</em></p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>route_results</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Route Results</em></p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="2"><ul class="simple">
+<li><p>route_plots</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Route Plots</em></p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="8"><ul class="simple">
+<li><p>plot_query_values</p></li>
+</ul>
+</td>
+<td colspan="5"><p><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.PlotQueryValues" title="simulation_API.controller.schemas.PlotQueryValues"><code class="xref py py-data docutils literal notranslate"><span class="pre">PlotQueryValues</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="6"><p>items</p></td>
+<td rowspan="6"><p>anyOf</p></td>
+<td colspan="3"><p><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.PlotQueryValues_HO" title="simulation_API.controller.schemas.PlotQueryValues_HO"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotQueryValues_HO</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.PlotQueryValues_ChenLee" title="simulation_API.controller.schemas.PlotQueryValues_ChenLee"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotQueryValues_ChenLee</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>plot_query_receipe</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Plot Query Receipe</em></p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td colspan="4"><p>‘route_plots’ + ‘?value=’ + ‘plot_query_value’</p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>success</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Success</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><ul class="simple">
+<li><p>message</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>Message</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="6"><p>definitions</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>SimSystem</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>SimSystem</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="5"><p>List of available systems for simulation.</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="4"><p>Harmonic-Oscillator, Chen-Lee-Attractor</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>IntegrationMethods</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>IntegrationMethods</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="5"><p>List of available integration methods.</p>
+<p>For more information see <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html">scipy.integrate.solve_ivp</a>.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="4"><p>RK45, RK23</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>PlotQueryValues_HO</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>PlotQueryValues_HO</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="5"><p>List of tags of each different plot generated automatically by the</p>
+<p>backend when a Harmonic Oscillator simulation is requested.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="4"><p>coord, phase</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<li><p>PlotQueryValues_ChenLee</p></li>
+</ul>
+</td>
+<td colspan="5"><p><em>PlotQueryValues_ChenLee</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="5"><p>List of tags of each different plot generated automatically by the</p>
+<p>backend when a Chen-Lee simulation is requested.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="4"><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>enum</p></td>
+<td colspan="4"><p>threeD, project</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div class="section" id="request-results">
 <h2>Request Results<a class="headerlink" href="#request-results" title="Permalink to this headline">¶</a></h2>
-<p>Some explanation</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">success=True</span></code> in <a class="reference internal" href="#simstatus"><span class="std std-ref">SimStatus</span></a>, you can</p>
+<ol class="arabic simple">
+<li><p><cite>Directly download your results</cite></p>
+<ol class="loweralpha simple">
+<li><p>Download pickle file with all the simulation results as returned by
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html">scipy.integrate.solve_ivp</a>. You can do this via GET with empty body
+in route <code class="docutils literal notranslate"><span class="pre">/api/results/{sim_id}/pickle</span></code>.</p></li>
+<li><p>Download your simulation’s automatically generated plots. You can do this
+via GET with empty body in route
+<code class="docutils literal notranslate"><span class="pre">/api/results/{sim_id}/plot?value={plot_query_value}</span></code>, where
+<code class="docutils literal notranslate"><span class="pre">plot_query_value</span></code> is one of the items in <code class="docutils literal notranslate"><span class="pre">plot_query_values</span></code> in the
+simulation status, <a class="reference internal" href="#simstatus"><span class="std std-ref">SimStatus</span></a>.</p></li>
+</ol>
+</li>
+<li><p><cite>See your results online</cite>. You can do this via GET in route
+<code class="docutils literal notranslate"><span class="pre">/results/{sim_system}/{sim_id}</span></code>. In the rendered HTML file, you have the
+option to download both the generated plots and the pickle file mentioned in
+the last item.</p></li>
+</ol>
 </div>
 </div>
 

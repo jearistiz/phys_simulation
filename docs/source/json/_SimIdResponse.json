@@ -1,0 +1,44 @@
+{
+  "title": ":class:`~simulation_API.controller.schemas.SimIdResponse`",
+  "description": "Schema for the response of a simulation request (requested via POST in\nroute ``/api/simulate/{sim_sys}``.)",
+  "type": "object",
+  "properties": {
+    "sim_id": {
+      "title": "Sim Id",
+      "type": "string"
+    },
+    "user_id": {
+      "title": "User Id",
+      "type": "integer"
+    },
+    "username": {
+      "title": "Username",
+      "type": "string"
+    },
+    "sim_sys": {
+      "description": ":class:`~simulation_API.controller.schemas.SimSystem`",
+      "type": "string"
+    },
+    "sim_status_path": {
+      "title": "Sim Status Path",
+      "type": "string"
+    },
+    "sim_pickle_path": {
+      "title": "Sim Pickle Path",
+      "type": "string"
+    },
+    "message": {
+      "title": "Message",
+      "type": "string"
+    }
+  },
+  "SimSystem": {
+    "title": "SimSystem",
+    "description": "List of available systems for simulation.",
+    "enum": [
+      "Harmonic-Oscillator",
+      "Chen-Lee-Attractor"
+    ],
+    "type": "string"
+  }
+}

@@ -15,7 +15,7 @@ mathematical systems such as the `Harmonic Oscillator`_ or the
 
 .. _Harmonic Oscillator: https://en.wikipedia.org/wiki/Harmonic_oscillator
 .. _Chen-Lee Attractor: https://doi.org/10.1016/j.chaos.2003.12.034 
-
+ 
 History
 =======
 
@@ -26,16 +26,25 @@ writting code! Of course, we had to read a lot and fail a lot as well, but
 we managed to develop our very first web application and we are proud of it, as
 impefect as it may be.
 
-In the future we want to add as many features as we can, so far that it enriches
-the user experience.
+In the future we want to add as many features as we can, so far it enriches
+the client experience.
+
+
+Getting Started
+===============
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 6
    :caption: Getting Started
+   :hidden:
 
    start/overview
    start/examples
    start/frontend
+
+- :ref:`Overview <start-overview>`
+- :ref:`Examples <start-examples>`
+- :ref:`Website <start-frontend>`
 
 ==============
 For Developers
@@ -79,6 +88,7 @@ The Code
    :mod:`simulation_API.config`
       Configuration module. Some very basic configurations of our web application.
 
+==================
 Indices and tables
 ==================
 
@@ -86,8 +96,8 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-
+========================
 A Special Aknowledgement
-------------------------
+========================
 
 To Camilo Hincapié who guided me in this process.

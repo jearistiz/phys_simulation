@@ -1,0 +1,132 @@
+{
+  "title": ":class:`~simulation_API.controller.schemas.SimStatus`",
+  "description": "Schema of the Simulation Satus.",
+  "type": "object",
+  "properties": {
+    "sim_id": {
+      "title": "Sim Id",
+      "type": "string"
+    },
+    "user_id": {
+      "title": "User Id",
+      "type": "integer"
+    },
+    "date": {
+      "title": "Date",
+      "type": "string",
+      "format": "date-time"
+    },
+    "system": {
+      "description": ":class:`~simulation_API.controller.schemas.SimSystem`",
+      "type": "string"
+    },
+    "ini_cndtn": {
+      "title": "Ini Cndtn",
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "params": {
+      "title": "Params",
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "method": {
+      "description": ":class:`~simulation_API.controller.schemas.IntegrationMethods`",
+      "type": "string"
+    },
+    "route_pickle": {
+      "title": "Route Pickle",
+      "type": "string"
+    },
+    "route_results": {
+      "title": "Route Results",
+      "type": "string"
+    },
+    "route_plots": {
+      "title": "Route Plots",
+      "type": "string"
+    },
+    "plot_query_values": {
+      "description": ":data:`~simulation_API.controller.schemas.PlotQueryValues`",
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "description": ":class:`~simulation_API.controller.schemas.PlotQueryValues_HO`",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          {
+            "description": ":class:`~simulation_API.controller.schemas.PlotQueryValues_ChenLee`",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "plot_query_receipe": {
+      "title": "Plot Query Receipe",
+      "default": "'route_plots' + '?value=' + 'plot_query_value'",
+      "type": "string"
+    },
+    "success": {
+      "title": "Success",
+      "type": "boolean"
+    },
+    "message": {
+      "title": "Message",
+      "type": "string"
+    }
+  },
+  "required": [
+    "sim_id",
+    "user_id",
+    "date"
+  ],
+  "definitions": {
+    "SimSystem": {
+      "title": "SimSystem",
+      "description": "List of available systems for simulation.",
+      "enum": [
+        "Harmonic-Oscillator",
+        "Chen-Lee-Attractor"
+      ],
+      "type": "string"
+    },
+    "IntegrationMethods": {
+      "title": "IntegrationMethods",
+      "description": "List of available integration methods.\n\nFor more information see `scipy.integrate.solve_ivp`_.\n\n.. _scipy.integrate.solve_ivp: https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html",
+      "enum": [
+        "RK45",
+        "RK23"
+      ],
+      "type": "string"
+    },
+    "PlotQueryValues_HO": {
+      "title": "PlotQueryValues_HO",
+      "description": "List of tags of each different plot generated automatically by the\n\nbackend when a Harmonic Oscillator simulation is requested.",
+      "enum": [
+        "coord",
+        "phase"
+      ],
+      "type": "string"
+    },
+    "PlotQueryValues_ChenLee": {
+      "title": "PlotQueryValues_ChenLee",
+      "description": "List of tags of each different plot generated automatically by the\n\nbackend when a Chen-Lee simulation is requested.",
+      "enum": [
+        "threeD",
+        "project"
+      ],
+      "type": "string"
+    }
+  }
+}
