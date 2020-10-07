@@ -17,7 +17,8 @@ from simulation_API import app, templates
 from .schemas import *
 # Simulation handler
 from .tasks import (_create_pickle_path_disk, _create_plot_path_disk, 
-                    _sim_form_to_sim_request, _api_simulation_request)
+                    _sim_form_to_sim_request, _api_simulation_request,
+                    _check_chen_lee_params)
 # Database-related
 from simulation_API.model import crud, models
 from simulation_API.model.db_manager import SessionLocal, engine
@@ -171,6 +172,7 @@ async def simulate_sim_system_post(request: Request, sim_system: SimSystem,
                                    t0: float = Form(...),
                                    tf: float = Form(...),
                                    dt: float = Form(...),
+                                   t_steps: int = Form(...),
                                    method: IntegrationMethods = Form(...)):
     """Receives the simulation request information from the frontend form and
     requests the simulation to the backend.
@@ -206,6 +208,9 @@ async def simulate_sim_system_post(request: Request, sim_system: SimSystem,
         Form entry: final time of simulation.
     dt : float
         Form entry: timestep of simulation.
+    t_steps:
+        Form entry: number of time steps. If different from 0 or ``None``,
+        ``dt`` is ignored.
     method : IntegrationMethods
         Form entry: method of integration. Must be a member of
         IntegrationMethods.
@@ -237,12 +242,30 @@ async def simulate_sim_system_post(request: Request, sim_system: SimSystem,
     form = await request.form()
     form = form.__dict__['_dict']
 
-    # Check for some errors
+    ########################## Check for some errors ##########################
     error_message = ""
-    if not t0 < tf:
-        error_message = "in Time Stamp, t0 must be less than tf"
-    elif not tf - t0 > dt or dt <= 0:
-        error_message = "in Time Stamp, dt must be within 0 and tf - t0"
+    if not t_steps:
+        if not t0 < tf:
+            error_message = "in Time Stamp, t0 must be less than tf"
+        elif not tf - t0 > dt or dt <= 0:
+            error_message = "in Time Stamp, dt must be within 0 and tf - t0"
+
+    # Maximum number of steps: 2e5
+    maxsteps = 2e5
+    maxsteps_reached_message = "maximum number of time steps is 2e5. " \
+                               "Increase dt or decrease t_steps."
+    if t_steps and t_steps > maxsteps:
+        error_message = maxsteps_reached_message
+    elif (tf - t0) / dt > maxsteps:
+        error_message = maxsteps_reached_message
+
+    # Check Chen-Lee parameters
+    if sim_sys.value == SimSystem.ChenLee.value:
+        a, b, c = [float(form[f"param{i}"]) for i in range(3)]
+        if not _check_chen_lee_params(a, b, c):
+            error_message = "Chen-Lee parameters must satisfy a + b + c < 0, " \
+                            "and ab + bc + ca > 0, and abc > 0"
+
     if error_message:
         SysSimForm = SimFormDict[sim_system.value]
         sim_form = SysSimForm()
@@ -257,6 +280,7 @@ async def simulate_sim_system_post(request: Request, sim_system: SimSystem,
             },
             status_code=400
         )
+    ############################## End of check ###############################
 
     # Change format from form data to SimRequest schema.
     sim_request = _sim_form_to_sim_request(form)

@@ -116,6 +116,8 @@ class SimForm(BaseModel):
     """Final time of simulation."""
     dt: Optional[float] = pi / 10
     """Time step size of simulation."""
+    t_steps: Optional[int] = 0
+    """Number of time steps. If different from 0, dt is ignored."""
     method: Optional[IntegrationMethods] = "RK45"
     """Integration method used in simulation."""
 

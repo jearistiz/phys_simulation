@@ -71,19 +71,33 @@ def _api_simulation_request(sim_system: SimSystem,
         :class:`~simulation_API.controller.schemas.SimIdResponse` for more
         information.
     """
+    
+    ########################## Check for some errors ##########################
     # Check that the simulation parameters are the ones needed for the
     # requested simulation. This is not checked by the pydantic model.
+    error_message = ""
     try:
         ParamsModel = SimSystem_to_SimParams[sim_system.value]
         ParamsModel(**sim_params.params)
     except:
+        error_message = "Error: you provided the wrong set of parameters. " \
+                        "Your simulation was not requested"
+
+    # Check Chen-Lee parameters
+    if sim_system.value == SimSystem.ChenLee.value and not error_message:
+        params = sim_params.params
+        if not _check_chen_lee_params(params["a"], params["b"], params["c"]):
+            error_message = "Chen-Lee parameters must satisfy a + b + c < 0, " \
+                            "and ab + bc + ca > 0, and abc > 0"
+
+    if error_message:
         sim_id_response = SimIdResponse(
             username=sim_params.username,
-            message="Error: you provided the wrong set of parameters. "
-                    "Your simulation was not requested"
+            message=error_message
         )
         return sim_id_response
-    
+    ############################## End of check ###############################
+
     # Create user in database (meanwhile)
     # FIXME FIXME FIXME
     # In production user can NOT be created here, login will be required.
@@ -383,12 +397,18 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
         plot_query_values.append(plot_query_value)
         
         # Plot limits
-        limx = 1.05 * max(abs(sim_results.y[0]))
-        limy = 1.05 * max(abs(sim_results.y[1]))
-        limz = 1.05 * max(abs(sim_results.y[2]))
-        xlim = (-limx, limx)
-        ylim = (-limy, limy)
-        zlim = (0, limz)
+        limx_max = max(sim_results.y[0])
+        limx_min = min(sim_results.y[0])
+        margin_x = 0.05 * (limx_max - limx_min)
+        limy_max = max(sim_results.y[1])
+        limy_min = min(sim_results.y[1])
+        margin_y = 0.05 * (limy_max - limy_min)
+        limz_max = max(sim_results.y[2])
+        limz_min = min(sim_results.y[2])
+        margin_z = 0.05 * (limz_max - limz_min)
+        xlim = (limx_min - margin_x, limx_max + margin_x)
+        ylim = (limy_min - margin_y, limy_max + margin_y)
+        zlim = (limz_min - margin_z, limz_max + margin_z)
 
         fig = Figure() # figsize=(12,10))
         ax = fig.gca(projection='3d')    #Parametric 3D curve
@@ -521,8 +541,12 @@ def _sim_form_to_sim_request(form: Dict[str, str]) -> SimRequest:
     # Generate t_eval
     t0 = float(form["t0"])
     tf = float(form["tf"])
-    dt = float(form["dt"])
-    t_eval = list(linspace(t0, tf, int((tf - t0) / dt)))
+    t_steps = int(form["t_steps"])
+    if t_steps:
+        t_eval = list(linspace(t0, tf, t_steps))
+    else:
+        dt = float(form["dt"])
+        t_eval = list(linspace(t0, tf, int((tf - t0) / dt)))
 
     # Initial conditions
     ini_cndtn_keys = [key for key in form.keys() if key[:3]=="ini"]
@@ -568,3 +592,40 @@ def _create_plot_path_disk(sim_id: str, query_param: PlotQueryValues,
     """Creates disk path to plots of simulation results by
     :attr:`~simulation_API.controller.schemas.SimIdResponse.sim_id`."""
     return PATH_PLOTS + sim_id + "_" + query_param + plot_format
+
+
+########################## Check Chen-Lee Parameters ##########################
+
+def _check_chen_lee_params(a: float, b:float, c: float):
+    """Checks that the set of Chen-Lee parameters satisfy chaotic conditions, 
+    therefore bound solutions.
+
+    The conditions are
+
+    .. math::
+
+        a + b + c < 0 \,\\text{ and }\, ab + bc + ca > 0 \\text{ and }\, abc > 0
+
+    and due to symmetry of Chen-Lee system, cyclic permutations of :math:`a`,
+    :math:`b` and :math:`c`.
+
+    Note
+    ----
+    This conditions are stated in `this reference`_.
+    
+    .. _this reference: https://doi.org/10.1142/S0218127403006509
+
+    Parameters
+    ----------
+    a : float
+        :math:`\omega_x` parameter.
+    b : float
+        :math:`\omega_y` parameter.
+    c : float
+        :math:`\omega_z` parameter.
+    """
+    print("\n\n\n", a * b + b * c + c * a > 0, "\n\n\n")
+    def check(_a, _b, _c):
+        return a > 0 and b < 0 and c < 0 and a < - (b + c)
+    return check(a, b, c) or check(b, c, a) or check(c, a, b)
+    #return (a + b + c < 0) and (a * b + b * c + c * a > 0) and (a * b * c > 0)

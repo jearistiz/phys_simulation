@@ -40,6 +40,11 @@
         <div class="form-group">
             Time Step (dt)<br><input autocomplete="off" autofocus class="form-control" name="dt" placeholder="Time Step (dt)" type="number" step="any" value={{dt}} min=1e-12>
         </div>
+        or
+        <div class="form-group">
+            Number of time steps (t_steps)<br><input autocomplete="off" autofocus class="form-control" name="t_steps" placeholder="t_steps" type="number" step=1 value={{t_steps}} min=0>
+        </div>
+        <div style="font-size: 10; color: #f5b82e"">Note: if you provide t_steps, dt will be ignored.</div>
 
         
         {% if sim_system=="Harmonic-Oscillator" %}

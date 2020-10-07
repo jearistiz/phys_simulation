@@ -74,7 +74,7 @@
 
 
 \title{PHYS Simulation API}
-\date{Oct 05, 2020}
+\date{Oct 06, 2020}
 \release{0.0.1}
 \author{Juan E.\@{} Aristizabal}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -2033,7 +2033,7 @@ Template displaying the simulation request form.
 \index{simulate\_sim\_system\_post() (in module simulation\_API.controller.main)@\spxentry{simulate\_sim\_system\_post()}\spxextra{in module simulation\_API.controller.main}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{code_docs/simulation_API.controller:simulation_API.controller.main.simulate_sim_system_post}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{async }}\sphinxcode{\sphinxupquote{simulation\_API.controller.main.}}\sphinxbfcode{\sphinxupquote{simulate\_sim\_system\_post}}}{\emph{\DUrole{n}{request}\DUrole{p}{:} \DUrole{n}{starlette.requests.Request}}, \emph{\DUrole{n}{sim\_system}\DUrole{p}{:} \DUrole{n}{{\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.SimSystem}]{\sphinxcrossref{simulation\_API.controller.schemas.SimSystem}}}}}, \emph{\DUrole{n}{background\_tasks}\DUrole{p}{:} \DUrole{n}{starlette.background.BackgroundTasks}}, \emph{\DUrole{n}{db}\DUrole{p}{:} \DUrole{n}{sqlalchemy.orm.session.Session} \DUrole{o}{=} \DUrole{default_value}{Depends(get\_db)}}, \emph{\DUrole{n}{sim\_sys}\DUrole{p}{:} \DUrole{n}{{\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.SimSystem}]{\sphinxcrossref{simulation\_API.controller.schemas.SimSystem}}}} \DUrole{o}{=} \DUrole{default_value}{Form(Ellipsis)}}, \emph{\DUrole{n}{username}\DUrole{p}{:} \DUrole{n}{str} \DUrole{o}{=} \DUrole{default_value}{Form(Ellipsis)}}, \emph{\DUrole{n}{t0}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{Form(Ellipsis)}}, \emph{\DUrole{n}{tf}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{Form(Ellipsis)}}, \emph{\DUrole{n}{dt}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{Form(Ellipsis)}}, \emph{\DUrole{n}{method}\DUrole{p}{:} \DUrole{n}{{\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.IntegrationMethods}]{\sphinxcrossref{simulation\_API.controller.schemas.IntegrationMethods}}}} \DUrole{o}{=} \DUrole{default_value}{Form(Ellipsis)}}}{}
+\phantomsection\label{\detokenize{code_docs/simulation_API.controller:simulation_API.controller.main.simulate_sim_system_post}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{async }}\sphinxcode{\sphinxupquote{simulation\_API.controller.main.}}\sphinxbfcode{\sphinxupquote{simulate\_sim\_system\_post}}}{\emph{\DUrole{n}{request}\DUrole{p}{:} \DUrole{n}{starlette.requests.Request}}, \emph{\DUrole{n}{sim\_system}\DUrole{p}{:} \DUrole{n}{{\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.SimSystem}]{\sphinxcrossref{simulation\_API.controller.schemas.SimSystem}}}}}, \emph{\DUrole{n}{background\_tasks}\DUrole{p}{:} \DUrole{n}{starlette.background.BackgroundTasks}}, \emph{\DUrole{n}{db}\DUrole{p}{:} \DUrole{n}{sqlalchemy.orm.session.Session} \DUrole{o}{=} \DUrole{default_value}{Depends(get\_db)}}, \emph{\DUrole{n}{sim\_sys}\DUrole{p}{:} \DUrole{n}{{\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.SimSystem}]{\sphinxcrossref{simulation\_API.controller.schemas.SimSystem}}}} \DUrole{o}{=} \DUrole{default_value}{Form(Ellipsis)}}, \emph{\DUrole{n}{username}\DUrole{p}{:} \DUrole{n}{str} \DUrole{o}{=} \DUrole{default_value}{Form(Ellipsis)}}, \emph{\DUrole{n}{t0}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{Form(Ellipsis)}}, \emph{\DUrole{n}{tf}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{Form(Ellipsis)}}, \emph{\DUrole{n}{dt}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{Form(Ellipsis)}}, \emph{\DUrole{n}{t\_steps}\DUrole{p}{:} \DUrole{n}{int} \DUrole{o}{=} \DUrole{default_value}{Form(Ellipsis)}}, \emph{\DUrole{n}{method}\DUrole{p}{:} \DUrole{n}{{\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.IntegrationMethods}]{\sphinxcrossref{simulation\_API.controller.schemas.IntegrationMethods}}}} \DUrole{o}{=} \DUrole{default_value}{Form(Ellipsis)}}}{}
 Receives the simulation request information from the frontend form and
 requests the simulation to the backend.
 
@@ -2074,6 +2074,10 @@ SimSystem.
 
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{dt}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} Form entry: timestep of simulation.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{t\_steps}} \textendash{} Form entry: number of time steps. If different from 0 or \sphinxcode{\sphinxupquote{None}},
+\sphinxcode{\sphinxupquote{dt}} is ignored.
 
 \item {} 
 \sphinxstyleliteralstrong{\sphinxupquote{method}} ({\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.IntegrationMethods}]{\sphinxcrossref{\sphinxstyleliteralemphasis{\sphinxupquote{IntegrationMethods}}}}}) \textendash{} Form entry: method of integration. Must be a member of
@@ -2190,7 +2194,7 @@ appropiate new class similar to this one or to
 \index{ChenLeeSimForm (class in simulation\_API.controller.schemas)@\spxentry{ChenLeeSimForm}\spxextra{class in simulation\_API.controller.schemas}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.ChenLeeSimForm}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{simulation\_API.controller.schemas.}}\sphinxbfcode{\sphinxupquote{ChenLeeSimForm}}}{\emph{\DUrole{o}{*}}, \emph{\DUrole{n}{username}\DUrole{p}{:} \DUrole{n}{str} \DUrole{o}{=} \DUrole{default_value}{\textquotesingle{}Pepito\textquotesingle{}}}, \emph{\DUrole{n}{t0}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{0.0}}, \emph{\DUrole{n}{tf}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{6.283185307179586}}, \emph{\DUrole{n}{dt}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{0.3141592653589793}}, \emph{\DUrole{n}{method}\DUrole{p}{:} \DUrole{n}{{\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.IntegrationMethods}]{\sphinxcrossref{simulation\_API.controller.schemas.IntegrationMethods}}}} \DUrole{o}{=} \DUrole{default_value}{\textquotesingle{}RK45\textquotesingle{}}}, \emph{\DUrole{n}{sim\_sys}\DUrole{p}{:} \DUrole{n}{{\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.SimSystem}]{\sphinxcrossref{simulation\_API.controller.schemas.SimSystem}}}} \DUrole{o}{=} \DUrole{default_value}{\textquotesingle{}Chen\sphinxhyphen{}Lee\sphinxhyphen{}Attractor\textquotesingle{}}}, \emph{\DUrole{n}{ini0}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{10.0}}, \emph{\DUrole{n}{ini1}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{10.0}}, \emph{\DUrole{n}{ini2}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{0.0}}, \emph{\DUrole{n}{param0}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{3.0}}, \emph{\DUrole{n}{param1}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{\sphinxhyphen{} 5.0}}, \emph{\DUrole{n}{param2}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{\sphinxhyphen{} 1.0}}}{}
+\phantomsection\label{\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.ChenLeeSimForm}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{simulation\_API.controller.schemas.}}\sphinxbfcode{\sphinxupquote{ChenLeeSimForm}}}{\emph{\DUrole{o}{*}}, \emph{\DUrole{n}{username}\DUrole{p}{:} \DUrole{n}{str} \DUrole{o}{=} \DUrole{default_value}{\textquotesingle{}Pepito\textquotesingle{}}}, \emph{\DUrole{n}{t0}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{0.0}}, \emph{\DUrole{n}{tf}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{6.283185307179586}}, \emph{\DUrole{n}{dt}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{0.3141592653589793}}, \emph{\DUrole{n}{t\_steps}\DUrole{p}{:} \DUrole{n}{int} \DUrole{o}{=} \DUrole{default_value}{0}}, \emph{\DUrole{n}{method}\DUrole{p}{:} \DUrole{n}{{\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.IntegrationMethods}]{\sphinxcrossref{simulation\_API.controller.schemas.IntegrationMethods}}}} \DUrole{o}{=} \DUrole{default_value}{\textquotesingle{}RK45\textquotesingle{}}}, \emph{\DUrole{n}{sim\_sys}\DUrole{p}{:} \DUrole{n}{{\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.SimSystem}]{\sphinxcrossref{simulation\_API.controller.schemas.SimSystem}}}} \DUrole{o}{=} \DUrole{default_value}{\textquotesingle{}Chen\sphinxhyphen{}Lee\sphinxhyphen{}Attractor\textquotesingle{}}}, \emph{\DUrole{n}{ini0}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{10.0}}, \emph{\DUrole{n}{ini1}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{10.0}}, \emph{\DUrole{n}{ini2}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{0.0}}, \emph{\DUrole{n}{param0}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{3.0}}, \emph{\DUrole{n}{param1}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{\sphinxhyphen{} 5.0}}, \emph{\DUrole{n}{param2}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{\sphinxhyphen{} 1.0}}}{}
 Bases: {\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.SimForm}]{\sphinxcrossref{\sphinxcode{\sphinxupquote{simulation\_API.controller.schemas.SimForm}}}}}
 
 Schema used to Request Chen Lee Simulation in Frontend via form.
@@ -2298,7 +2302,7 @@ Mass of object.
 \index{HOSimForm (class in simulation\_API.controller.schemas)@\spxentry{HOSimForm}\spxextra{class in simulation\_API.controller.schemas}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.HOSimForm}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{simulation\_API.controller.schemas.}}\sphinxbfcode{\sphinxupquote{HOSimForm}}}{\emph{\DUrole{o}{*}}, \emph{\DUrole{n}{username}\DUrole{p}{:} \DUrole{n}{str} \DUrole{o}{=} \DUrole{default_value}{\textquotesingle{}Pepito\textquotesingle{}}}, \emph{\DUrole{n}{t0}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{0.0}}, \emph{\DUrole{n}{tf}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{6.283185307179586}}, \emph{\DUrole{n}{dt}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{0.3141592653589793}}, \emph{\DUrole{n}{method}\DUrole{p}{:} \DUrole{n}{{\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.IntegrationMethods}]{\sphinxcrossref{simulation\_API.controller.schemas.IntegrationMethods}}}} \DUrole{o}{=} \DUrole{default_value}{\textquotesingle{}RK45\textquotesingle{}}}, \emph{\DUrole{n}{sim\_sys}\DUrole{p}{:} \DUrole{n}{{\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.SimSystem}]{\sphinxcrossref{simulation\_API.controller.schemas.SimSystem}}}} \DUrole{o}{=} \DUrole{default_value}{\textquotesingle{}Harmonic\sphinxhyphen{}Oscillator\textquotesingle{}}}, \emph{\DUrole{n}{ini0}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{1.0}}, \emph{\DUrole{n}{ini1}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{0.0}}, \emph{\DUrole{n}{param0}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{1.0}}, \emph{\DUrole{n}{param1}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{1.0}}}{}
+\phantomsection\label{\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.HOSimForm}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{simulation\_API.controller.schemas.}}\sphinxbfcode{\sphinxupquote{HOSimForm}}}{\emph{\DUrole{o}{*}}, \emph{\DUrole{n}{username}\DUrole{p}{:} \DUrole{n}{str} \DUrole{o}{=} \DUrole{default_value}{\textquotesingle{}Pepito\textquotesingle{}}}, \emph{\DUrole{n}{t0}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{0.0}}, \emph{\DUrole{n}{tf}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{6.283185307179586}}, \emph{\DUrole{n}{dt}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{0.3141592653589793}}, \emph{\DUrole{n}{t\_steps}\DUrole{p}{:} \DUrole{n}{int} \DUrole{o}{=} \DUrole{default_value}{0}}, \emph{\DUrole{n}{method}\DUrole{p}{:} \DUrole{n}{{\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.IntegrationMethods}]{\sphinxcrossref{simulation\_API.controller.schemas.IntegrationMethods}}}} \DUrole{o}{=} \DUrole{default_value}{\textquotesingle{}RK45\textquotesingle{}}}, \emph{\DUrole{n}{sim\_sys}\DUrole{p}{:} \DUrole{n}{{\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.SimSystem}]{\sphinxcrossref{simulation\_API.controller.schemas.SimSystem}}}} \DUrole{o}{=} \DUrole{default_value}{\textquotesingle{}Harmonic\sphinxhyphen{}Oscillator\textquotesingle{}}}, \emph{\DUrole{n}{ini0}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{1.0}}, \emph{\DUrole{n}{ini1}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{0.0}}, \emph{\DUrole{n}{param0}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{1.0}}, \emph{\DUrole{n}{param1}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{1.0}}}{}
 Bases: {\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.SimForm}]{\sphinxcrossref{\sphinxcode{\sphinxupquote{simulation\_API.controller.schemas.SimForm}}}}}
 
 Schema used to Request Harmonic Oscillator Simulation in Frontend via
@@ -2708,7 +2712,7 @@ related to the Harmonic Oscillator system.
 \index{SimForm (class in simulation\_API.controller.schemas)@\spxentry{SimForm}\spxextra{class in simulation\_API.controller.schemas}}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.SimForm}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{simulation\_API.controller.schemas.}}\sphinxbfcode{\sphinxupquote{SimForm}}}{\emph{\DUrole{o}{*}}, \emph{\DUrole{n}{username}\DUrole{p}{:} \DUrole{n}{str} \DUrole{o}{=} \DUrole{default_value}{\textquotesingle{}Pepito\textquotesingle{}}}, \emph{\DUrole{n}{t0}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{0.0}}, \emph{\DUrole{n}{tf}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{6.283185307179586}}, \emph{\DUrole{n}{dt}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{0.3141592653589793}}, \emph{\DUrole{n}{method}\DUrole{p}{:} \DUrole{n}{{\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.IntegrationMethods}]{\sphinxcrossref{simulation\_API.controller.schemas.IntegrationMethods}}}} \DUrole{o}{=} \DUrole{default_value}{\textquotesingle{}RK45\textquotesingle{}}}}{}
+\phantomsection\label{\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.SimForm}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{simulation\_API.controller.schemas.}}\sphinxbfcode{\sphinxupquote{SimForm}}}{\emph{\DUrole{o}{*}}, \emph{\DUrole{n}{username}\DUrole{p}{:} \DUrole{n}{str} \DUrole{o}{=} \DUrole{default_value}{\textquotesingle{}Pepito\textquotesingle{}}}, \emph{\DUrole{n}{t0}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{0.0}}, \emph{\DUrole{n}{tf}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{6.283185307179586}}, \emph{\DUrole{n}{dt}\DUrole{p}{:} \DUrole{n}{float} \DUrole{o}{=} \DUrole{default_value}{0.3141592653589793}}, \emph{\DUrole{n}{t\_steps}\DUrole{p}{:} \DUrole{n}{int} \DUrole{o}{=} \DUrole{default_value}{0}}, \emph{\DUrole{n}{method}\DUrole{p}{:} \DUrole{n}{{\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.IntegrationMethods}]{\sphinxcrossref{simulation\_API.controller.schemas.IntegrationMethods}}}} \DUrole{o}{=} \DUrole{default_value}{\textquotesingle{}RK45\textquotesingle{}}}}{}
 Bases: \sphinxcode{\sphinxupquote{pydantic.main.BaseModel}}
 
 Basemodel of schema used to Request a Simulation in Frontend.
@@ -2749,6 +2753,14 @@ Integration method used in simulation.
 \begin{fulllineitems}
 \phantomsection\label{\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.SimForm.t0}}\pysigline{\sphinxbfcode{\sphinxupquote{t0}}\sphinxbfcode{\sphinxupquote{: Optional\DUrole{p}{{[}}float\DUrole{p}{{]}}}}}
 Initial time of simulation.
+
+\end{fulllineitems}
+
+\index{t\_steps (simulation\_API.controller.schemas.SimForm attribute)@\spxentry{t\_steps}\spxextra{simulation\_API.controller.schemas.SimForm attribute}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.SimForm.t_steps}}\pysigline{\sphinxbfcode{\sphinxupquote{t\_steps}}\sphinxbfcode{\sphinxupquote{: Optional\DUrole{p}{{[}}int\DUrole{p}{{]}}}}}
+Number of time steps. If different from 0, dt is ignored.
 
 \end{fulllineitems}
 
@@ -3478,6 +3490,40 @@ information.
 
 \item[{Return type}] \leavevmode
 {\hyperref[\detokenize{code_docs/simulation_API.controller:simulation_API.controller.schemas.SimIdResponse}]{\sphinxcrossref{SimIdResponse}}}
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{\_check\_chen\_lee\_params() (in module simulation\_API.controller.tasks)@\spxentry{\_check\_chen\_lee\_params()}\spxextra{in module simulation\_API.controller.tasks}}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{code_docs/simulation_API.controller:simulation_API.controller.tasks._check_chen_lee_params}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{simulation\_API.controller.tasks.}}\sphinxbfcode{\sphinxupquote{\_check\_chen\_lee\_params}}}{\emph{\DUrole{n}{a}\DUrole{p}{:} \DUrole{n}{float}}, \emph{\DUrole{n}{b}\DUrole{p}{:} \DUrole{n}{float}}, \emph{\DUrole{n}{c}\DUrole{p}{:} \DUrole{n}{float}}}{}
+Checks that the set of Chen\sphinxhyphen{}Lee parameters satisfy chaotic conditions,
+therefore bound solutions.
+
+The conditions are
+\begin{equation*}
+\begin{split}a + b + c < 0 \,\text{ and }\, ab + bc + ca > 0 \text{ and }\, abc > 0\end{split}
+\end{equation*}
+and due to symmetry of Chen\sphinxhyphen{}Lee system, cyclic permutations of \(a\),
+\(b\) and \(c\).
+
+\begin{sphinxadmonition}{note}{Note:}
+This conditions are stated in \sphinxhref{https://doi.org/10.1142/S0218127403006509}{this reference}.
+\end{sphinxadmonition}
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{a}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} \(\omega_x\) parameter.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{b}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} \(\omega_y\) parameter.
+
+\item {} 
+\sphinxstyleliteralstrong{\sphinxupquote{c}} (\sphinxstyleliteralemphasis{\sphinxupquote{float}}) \textendash{} \(\omega_z\) parameter.
+
+\end{itemize}
 
 \end{description}\end{quote}
 
@@ -4268,7 +4314,7 @@ float
 
 The Chen\sphinxhyphen{}Lee Attractor is a dynamical system defined by:%
 \begin{footnote}[1]\sphinxAtStartFootnote
-\sphinxurl{https://doi.org/10.1016/j.chaos.2003.12.034}
+\sphinxurl{https://doi.org/10.1142/S0218127403006509}
 %
 \end{footnote}
 \begin{align*}\!\begin{aligned}

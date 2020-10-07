@@ -180,7 +180,8 @@
 <span class="kn">from</span> <span class="nn">.schemas</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="c1"># Simulation handler</span>
 <span class="kn">from</span> <span class="nn">.tasks</span> <span class="kn">import</span> <span class="p">(</span><span class="n">_create_pickle_path_disk</span><span class="p">,</span> <span class="n">_create_plot_path_disk</span><span class="p">,</span> 
-                    <span class="n">_sim_form_to_sim_request</span><span class="p">,</span> <span class="n">_api_simulation_request</span><span class="p">)</span>
+                    <span class="n">_sim_form_to_sim_request</span><span class="p">,</span> <span class="n">_api_simulation_request</span><span class="p">,</span>
+                    <span class="n">_check_chen_lee_params</span><span class="p">)</span>
 <span class="c1"># Database-related</span>
 <span class="kn">from</span> <span class="nn">simulation_API.model</span> <span class="kn">import</span> <span class="n">crud</span><span class="p">,</span> <span class="n">models</span>
 <span class="kn">from</span> <span class="nn">simulation_API.model.db_manager</span> <span class="kn">import</span> <span class="n">SessionLocal</span><span class="p">,</span> <span class="n">engine</span>
@@ -334,6 +335,7 @@
                                    <span class="n">t0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
                                    <span class="n">tf</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
                                    <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+                                   <span class="n">t_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
                                    <span class="n">method</span><span class="p">:</span> <span class="n">IntegrationMethods</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">)):</span>
     <span class="sd">&quot;&quot;&quot;Receives the simulation request information from the frontend form and</span>
 <span class="sd">    requests the simulation to the backend.</span>
@@ -369,6 +371,9 @@
 <span class="sd">        Form entry: final time of simulation.</span>
 <span class="sd">    dt : float</span>
 <span class="sd">        Form entry: timestep of simulation.</span>
+<span class="sd">    t_steps:</span>
+<span class="sd">        Form entry: number of time steps. If different from 0 or ``None``,</span>
+<span class="sd">        ``dt`` is ignored.</span>
 <span class="sd">    method : IntegrationMethods</span>
 <span class="sd">        Form entry: method of integration. Must be a member of</span>
 <span class="sd">        IntegrationMethods.</span>
@@ -400,12 +405,30 @@
     <span class="n">form</span> <span class="o">=</span> <span class="k">await</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">()</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;_dict&#39;</span><span class="p">]</span>
 
-    <span class="c1"># Check for some errors</span>
+    <span class="c1">########################## Check for some errors ##########################</span>
     <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">t0</span> <span class="o">&lt;</span> <span class="n">tf</span><span class="p">:</span>
-        <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;in Time Stamp, t0 must be less than tf&quot;</span>
-    <span class="k">elif</span> <span class="ow">not</span> <span class="n">tf</span> <span class="o">-</span> <span class="n">t0</span> <span class="o">&gt;</span> <span class="n">dt</span> <span class="ow">or</span> <span class="n">dt</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;in Time Stamp, dt must be within 0 and tf - t0&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">t_steps</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">t0</span> <span class="o">&lt;</span> <span class="n">tf</span><span class="p">:</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;in Time Stamp, t0 must be less than tf&quot;</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">tf</span> <span class="o">-</span> <span class="n">t0</span> <span class="o">&gt;</span> <span class="n">dt</span> <span class="ow">or</span> <span class="n">dt</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;in Time Stamp, dt must be within 0 and tf - t0&quot;</span>
+
+    <span class="c1"># Maximum number of steps: 2e5</span>
+    <span class="n">maxsteps</span> <span class="o">=</span> <span class="mf">2e5</span>
+    <span class="n">maxsteps_reached_message</span> <span class="o">=</span> <span class="s2">&quot;maximum number of time steps is 2e5. &quot;</span> \
+                               <span class="s2">&quot;Increase dt or decrease t_steps.&quot;</span>
+    <span class="k">if</span> <span class="n">t_steps</span> <span class="ow">and</span> <span class="n">t_steps</span> <span class="o">&gt;</span> <span class="n">maxsteps</span><span class="p">:</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="n">maxsteps_reached_message</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">tf</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span> <span class="o">/</span> <span class="n">dt</span> <span class="o">&gt;</span> <span class="n">maxsteps</span><span class="p">:</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="n">maxsteps_reached_message</span>
+
+    <span class="c1"># Check Chen-Lee parameters</span>
+    <span class="k">if</span> <span class="n">sim_sys</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">SimSystem</span><span class="o">.</span><span class="n">ChenLee</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;param</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_check_chen_lee_params</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;Chen-Lee parameters must satisfy a + b + c &lt; 0, &quot;</span> \
+                            <span class="s2">&quot;and ab + bc + ca &gt; 0, and abc &gt; 0&quot;</span>
+
     <span class="k">if</span> <span class="n">error_message</span><span class="p">:</span>
         <span class="n">SysSimForm</span> <span class="o">=</span> <span class="n">SimFormDict</span><span class="p">[</span><span class="n">sim_system</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
         <span class="n">sim_form</span> <span class="o">=</span> <span class="n">SysSimForm</span><span class="p">()</span>
@@ -420,6 +443,7 @@
             <span class="p">},</span>
             <span class="n">status_code</span><span class="o">=</span><span class="mi">400</span>
         <span class="p">)</span>
+    <span class="c1">############################## End of check ###############################</span>
 
     <span class="c1"># Change format from form data to SimRequest schema.</span>
     <span class="n">sim_request</span> <span class="o">=</span> <span class="n">_sim_form_to_sim_request</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>

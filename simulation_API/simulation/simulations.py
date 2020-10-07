@@ -232,7 +232,7 @@ class ChenLeeAttractor(Simulation):
 
     References
     ----------
-    .. [#] https://doi.org/10.1016/j.chaos.2003.12.034
+    .. [#] https://doi.org/10.1142/S0218127403006509
     """
     system = "Chen-Lee-Attractor"
 

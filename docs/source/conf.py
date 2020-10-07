@@ -64,12 +64,16 @@ exclude_patterns = []
 
 autodoc_default_options = {
     'members': True,
-    'private-members': '_api_simulation_request, '
+    'private-members': # from controller.tasks
+                       '_api_simulation_request, '
                        '_create_pickle_path_disk, '
                        '_create_plot_path_disk, '
-                       '_pickle, _plot_solution, '
+                       '_pickle, '
+                       '_plot_solution, '
                        '_run_simulation, '
                        '_sim_form_to_sim_request, '
+                       '_check_chen_lee_params, '
+                       # from model.models
                        '_create_user, '
                        '_get_username, '
                        '_create_simulation, '

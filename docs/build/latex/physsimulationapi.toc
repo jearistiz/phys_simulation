@@ -24,26 +24,26 @@
 \contentsline {subparagraph}{\numberline {3.1.1.2.1.3}\sphinxstyleliteralintitle {\sphinxupquote {simulation\_API.controller.main}}}{20}{subparagraph.3.1.1.2.1.3}%
 \contentsline {subparagraph}{\numberline {3.1.1.2.1.4}\sphinxstyleliteralintitle {\sphinxupquote {simulation\_API.controller.schemas}}}{25}{subparagraph.3.1.1.2.1.4}%
 \contentsline {subparagraph}{\numberline {3.1.1.2.1.5}\sphinxstyleliteralintitle {\sphinxupquote {simulation\_API.controller.tasks}}}{38}{subparagraph.3.1.1.2.1.5}%
-\contentsline {paragraph}{\numberline {3.1.1.2.2}\sphinxstyleliteralintitle {\sphinxupquote {simulation\_API.model}}}{40}{paragraph.3.1.1.2.2}%
-\contentsline {subparagraph}{\numberline {3.1.1.2.2.1}Package contents}{40}{subparagraph.3.1.1.2.2.1}%
-\contentsline {subparagraph}{\numberline {3.1.1.2.2.2}Submodules}{40}{subparagraph.3.1.1.2.2.2}%
-\contentsline {subparagraph}{\numberline {3.1.1.2.2.3}\sphinxstyleliteralintitle {\sphinxupquote {simulation\_API.model.crud}}}{40}{subparagraph.3.1.1.2.2.3}%
-\contentsline {subparagraph}{\numberline {3.1.1.2.2.4}\sphinxstyleliteralintitle {\sphinxupquote {simulation\_API.model.db\_manager}}}{43}{subparagraph.3.1.1.2.2.4}%
-\contentsline {subparagraph}{\numberline {3.1.1.2.2.5}\sphinxstyleliteralintitle {\sphinxupquote {simulation\_API.model.models}}}{43}{subparagraph.3.1.1.2.2.5}%
-\contentsline {paragraph}{\numberline {3.1.1.2.3}\sphinxstyleliteralintitle {\sphinxupquote {simulation\_API.simulation}}}{46}{paragraph.3.1.1.2.3}%
-\contentsline {subparagraph}{\numberline {3.1.1.2.3.1}Package contents}{46}{subparagraph.3.1.1.2.3.1}%
-\contentsline {subparagraph}{\numberline {3.1.1.2.3.2}Submodules}{46}{subparagraph.3.1.1.2.3.2}%
-\contentsline {subparagraph}{\numberline {3.1.1.2.3.3}\sphinxstyleliteralintitle {\sphinxupquote {simulation\_API.simulation.demo\_run\_simulation}}}{46}{subparagraph.3.1.1.2.3.3}%
-\contentsline {subparagraph}{\numberline {3.1.1.2.3.4}\sphinxstyleliteralintitle {\sphinxupquote {simulation\_API.simulation.simulations}}}{46}{subparagraph.3.1.1.2.3.4}%
-\contentsline {subsubsection}{\numberline {3.1.1.3}Submodules}{52}{subsubsection.3.1.1.3}%
-\contentsline {paragraph}{\numberline {3.1.1.3.1}simulation\_API.config module}{52}{paragraph.3.1.1.3.1}%
-\contentsline {subsection}{\numberline {3.1.2}Add a new simulation}{52}{subsection.3.1.2}%
-\contentsline {subsubsection}{\numberline {3.1.2.1}1. Add the simulation to \sphinxstyleliteralintitle {\sphinxupquote {simulations}} module}{52}{subsubsection.3.1.2.1}%
-\contentsline {subsubsection}{\numberline {3.1.2.2}2. Add relevant schemas and models to \sphinxstyleliteralintitle {\sphinxupquote {schemas}}}{53}{subsubsection.3.1.2.2}%
-\contentsline {subsubsection}{\numberline {3.1.2.3}3. Add relevant plots to \sphinxstyleliteralintitle {\sphinxupquote {\_plot\_solution()}}}{53}{subsubsection.3.1.2.3}%
-\contentsline {subsubsection}{\numberline {3.1.2.4}4. Add relevant form entries in frontend}{54}{subsubsection.3.1.2.4}%
-\contentsline {subsubsection}{\numberline {3.1.2.5}5. Modify \sphinxstyleliteralintitle {\sphinxupquote {results.html}} template to show results}{54}{subsubsection.3.1.2.5}%
+\contentsline {paragraph}{\numberline {3.1.1.2.2}\sphinxstyleliteralintitle {\sphinxupquote {simulation\_API.model}}}{41}{paragraph.3.1.1.2.2}%
+\contentsline {subparagraph}{\numberline {3.1.1.2.2.1}Package contents}{41}{subparagraph.3.1.1.2.2.1}%
+\contentsline {subparagraph}{\numberline {3.1.1.2.2.2}Submodules}{41}{subparagraph.3.1.1.2.2.2}%
+\contentsline {subparagraph}{\numberline {3.1.1.2.2.3}\sphinxstyleliteralintitle {\sphinxupquote {simulation\_API.model.crud}}}{41}{subparagraph.3.1.1.2.2.3}%
+\contentsline {subparagraph}{\numberline {3.1.1.2.2.4}\sphinxstyleliteralintitle {\sphinxupquote {simulation\_API.model.db\_manager}}}{44}{subparagraph.3.1.1.2.2.4}%
+\contentsline {subparagraph}{\numberline {3.1.1.2.2.5}\sphinxstyleliteralintitle {\sphinxupquote {simulation\_API.model.models}}}{44}{subparagraph.3.1.1.2.2.5}%
+\contentsline {paragraph}{\numberline {3.1.1.2.3}\sphinxstyleliteralintitle {\sphinxupquote {simulation\_API.simulation}}}{47}{paragraph.3.1.1.2.3}%
+\contentsline {subparagraph}{\numberline {3.1.1.2.3.1}Package contents}{47}{subparagraph.3.1.1.2.3.1}%
+\contentsline {subparagraph}{\numberline {3.1.1.2.3.2}Submodules}{47}{subparagraph.3.1.1.2.3.2}%
+\contentsline {subparagraph}{\numberline {3.1.1.2.3.3}\sphinxstyleliteralintitle {\sphinxupquote {simulation\_API.simulation.demo\_run\_simulation}}}{47}{subparagraph.3.1.1.2.3.3}%
+\contentsline {subparagraph}{\numberline {3.1.1.2.3.4}\sphinxstyleliteralintitle {\sphinxupquote {simulation\_API.simulation.simulations}}}{47}{subparagraph.3.1.1.2.3.4}%
+\contentsline {subsubsection}{\numberline {3.1.1.3}Submodules}{53}{subsubsection.3.1.1.3}%
+\contentsline {paragraph}{\numberline {3.1.1.3.1}simulation\_API.config module}{53}{paragraph.3.1.1.3.1}%
+\contentsline {subsection}{\numberline {3.1.2}Add a new simulation}{53}{subsection.3.1.2}%
+\contentsline {subsubsection}{\numberline {3.1.2.1}1. Add the simulation to \sphinxstyleliteralintitle {\sphinxupquote {simulations}} module}{53}{subsubsection.3.1.2.1}%
+\contentsline {subsubsection}{\numberline {3.1.2.2}2. Add relevant schemas and models to \sphinxstyleliteralintitle {\sphinxupquote {schemas}}}{54}{subsubsection.3.1.2.2}%
+\contentsline {subsubsection}{\numberline {3.1.2.3}3. Add relevant plots to \sphinxstyleliteralintitle {\sphinxupquote {\_plot\_solution()}}}{54}{subsubsection.3.1.2.3}%
+\contentsline {subsubsection}{\numberline {3.1.2.4}4. Add relevant form entries in frontend}{55}{subsubsection.3.1.2.4}%
+\contentsline {subsubsection}{\numberline {3.1.2.5}5. Modify \sphinxstyleliteralintitle {\sphinxupquote {results.html}} template to show results}{55}{subsubsection.3.1.2.5}%
 \contentsline {chapter}{\numberline {4}Indices and tables}{57}{chapter.4}%
 \contentsline {chapter}{\numberline {5}A Special Aknowledgement}{59}{chapter.5}%
-\contentsline {chapter}{Python Module Index}{61}{section*.246}%
-\contentsline {chapter}{Index}{63}{section*.247}%
+\contentsline {chapter}{Python Module Index}{61}{section*.248}%
+\contentsline {chapter}{Index}{63}{section*.249}%
