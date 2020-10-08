@@ -14,9 +14,8 @@ documentation
 *.pickle
 *.png
 # Builds made by VScode restructured text extension.
-docs/source/_*  
-!/**/docs/**/plot_project.png
-!/**/docs/**/plot_threeD.png
+!docs/**/plot_project.png
+!docs/**/plot_threeD.png
 
 # User-specific files
 *.rsuser
