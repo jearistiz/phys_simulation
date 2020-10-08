@@ -68,6 +68,7 @@ sim_status_route = f"/api/simulate/status/{sim_id}"
 sim_status_response = requests.get(url + sim_status_route)
 
 # Print response
+sim_status_response_json = sim_status_response.json()
 print(
     "",
     "Simulation status Response",
@@ -77,12 +78,16 @@ print(
     "    {",
     sep='\n',
 )
-for key, v in sim_status_response.json().items():
+for key, v in sim_status_response_json.items():
     print(f"        '{key}': {v},")
 print("    }\n")
 
 
 ############################# GET Results Example #############################
+
+if not sim_status_response_json["success"]:
+    print("Warning: pickle and plot files not available.\n")
+    sys.exit(1)
 
 # Pickle download route
 pickle_route = sim_status_response.json()["route_pickle"]

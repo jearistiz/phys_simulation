@@ -19,7 +19,7 @@ mathematical systems such as the `Harmonic Oscillator`_ or the
 History
 =======
 
-PHYS Simulation API started as a way of learning to develop a web application.
+PHYS Simulation API started as a way of learning to develop an API.
 We believe that the best way of learning is by doing. This way, we chose
 a topic that drives us (yes, physics and mathematics!) and started learning by
 writting code! Of course, we had to read a lot and fail a lot as well, but
