@@ -25,8 +25,8 @@ copyright = '2020, Juan E. Aristizabal'
 author = 'Juan E. Aristizabal'
 
 # The full version, including alpha/beta/rc tags
-version = '0.0'
-release = '0.0'
+version = '1.0'
+release = '1.0'
 
 
 # -- General configuration ---------------------------------------------------
