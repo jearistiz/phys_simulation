@@ -17,11 +17,12 @@ Lets start with some imports and defining our simulation request body.
 
 .. code-block:: python
 
-    >>> import requests
     >>> import os
     >>> from time import sleep
     >>> 
-    >>> ######################### Simulation Request Example ##########################
+    >>> import requests
+    >>> 
+    >>> ######################## Example: Simulation Request ##########################
     >>> 
     >>> # Prepare the simulation request
     >>> sim_system = "Chen-Lee-Attractor"
@@ -102,6 +103,8 @@ We proceed now to request the simulation results via GET in route
 
 .. code-block:: python
 
+   >>> ######################### Example: Simulation Status ##########################
+   >>> 
    >>> # Wait until the simulation is done
    >>> sleep(5)
    >>> 
@@ -168,6 +171,8 @@ Lets start with the pickle
 
 .. code-block:: python
    
+   >>> ############################ Example: GET Results #############################
+   >>>
    >>> # Pickle download route
    >>> pickle_route = sim_status_response.json()["route_pickle"]
    >>> 

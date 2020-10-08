@@ -1,9 +1,10 @@
 """This is an example of the workflow of the 
 """
-import requests
 import sys
 import os
 from time import sleep
+
+import requests
 
 this_directory = os.path.dirname(__file__)
 sys.path.append(os.path.join(this_directory, '..', '..', '..'))

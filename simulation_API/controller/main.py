@@ -263,8 +263,8 @@ async def simulate_sim_system_post(request: Request, sim_system: SimSystem,
     if sim_sys.value == SimSystem.ChenLee.value:
         a, b, c = [float(form[f"param{i}"]) for i in range(3)]
         if not _check_chen_lee_params(a, b, c):
-            error_message = "Chen-Lee parameters must satisfy a + b + c < 0, " \
-                            "and ab + bc + ca > 0, and abc > 0"
+            error_message = "Chen-Lee parameters must satisfy a > 0, and " \
+                            "b < 0, and c < 0 and a < -(b + c)"
 
     if error_message:
         SysSimForm = SimFormDict[sim_system.value]

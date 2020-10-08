@@ -81,14 +81,14 @@ def _api_simulation_request(sim_system: SimSystem,
         ParamsModel(**sim_params.params)
     except:
         error_message = "Error: you provided the wrong set of parameters. " \
-                        "Your simulation was not requested"
+                        "Your simulation was not requested."
 
     # Check Chen-Lee parameters
     if sim_system.value == SimSystem.ChenLee.value and not error_message:
         params = sim_params.params
         if not _check_chen_lee_params(params["a"], params["b"], params["c"]):
-            error_message = "Chen-Lee parameters must satisfy a + b + c < 0, " \
-                            "and ab + bc + ca > 0, and abc > 0"
+            error_message = "Chen-Lee parameters must satisfy a > 0, and " \
+                            "b < 0, and c < 0 and a < -(b + c)"
 
     if error_message:
         sim_id_response = SimIdResponse(
@@ -604,10 +604,7 @@ def _check_chen_lee_params(a: float, b:float, c: float):
 
     .. math::
 
-        a + b + c < 0 \,\\text{ and }\, ab + bc + ca > 0 \\text{ and }\, abc > 0
-
-    and due to symmetry of Chen-Lee system, cyclic permutations of :math:`a`,
-    :math:`b` and :math:`c`.
+        a > 0 \,\\text{ and }\, b < 0 \,\\text{ and }\, c < 0 \,\\text{ and }\, a < - (b + c)
 
     Note
     ----
@@ -623,9 +620,5 @@ def _check_chen_lee_params(a: float, b:float, c: float):
         :math:`\omega_y` parameter.
     c : float
         :math:`\omega_z` parameter.
-    """
-    print("\n\n\n", a * b + b * c + c * a > 0, "\n\n\n")
-    def check(_a, _b, _c):
-        return a > 0 and b < 0 and c < 0 and a < - (b + c)
-    return check(a, b, c) or check(b, c, a) or check(c, a, b)
-    #return (a + b + c < 0) and (a * b + b * c + c * a > 0) and (a * b * c > 0)
+    """ 
+    return (a > 0) and (b < 0) and (c < 0) and (a < - (b + c))
