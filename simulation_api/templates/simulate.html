@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Simulate
+{% endblock %}
+
+{% block main %}
+    <h2>Simulate your mechanical system</h2>
+    {% for sys in sys_values%}
+        <div class="form-group">
+            <a class="btn btn-primary" href="/simulate/{{sys[0]}}">{{sys[1]}}</a> <br>
+        </div>
+    {% endfor %}
+{% endblock %}
