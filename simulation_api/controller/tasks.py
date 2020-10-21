@@ -68,7 +68,7 @@ def _api_simulation_request(sim_system: SimSystem,
     sim_id_response : SimIdResponse
         Contains information about simulation request, such as simulation ID
         and others. See
-        :class:`~simulation_API.controller.schemas.SimIdResponse` for more
+        :class:`~simulation_api.controller.schemas.SimIdResponse` for more
         information.
     """
     
@@ -184,7 +184,7 @@ def _run_simulation(sim_params: SimRequest) -> None:
     sim_params = sim_params.dict()
 
     # Pop some values Simulation __init__ method does not accept.
-    # Remember "system" will be a member of SimSystem defined in simulation_API.controll.schemas
+    # Remember "system" will be a member of SimSystem defined in simulation_api.controll.schemas
     system = sim_params.pop("system")
     sim_id = sim_params.pop("sim_id")
     user_id = sim_params.pop("user_id")
@@ -286,7 +286,7 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
     ----------
     sim_results : SimResults
         Simulation results as returned by
-        :meth:`~simulation_API.simulation.simulations.Simulation.simulate`.
+        :meth:`~simulation_api.simulation.simulations.Simulation.simulate`.
     system : SimSystem
         System to be simulated.
     plots_basename : str
@@ -294,7 +294,7 @@ def _plot_solution(sim_results: SimResults, system: SimSystem,
         ``<plotbasename>_<plot_query_value>.png``, where ``<plot_query_value>``
         is a special tag for each type of plot. In this API, baseplot will
         always be the value of
-        :attr:`~simulation_API.controller.schemas.SimIdResponse.sim_id`.
+        :attr:`~simulation_api.controller.schemas.SimIdResponse.sim_id`.
 
     Returns
     -------
@@ -526,7 +526,7 @@ def _pickle(file_name: str, path: str = '',
 def _sim_form_to_sim_request(form: Dict[str, str]) -> SimRequest:
     """Translates simulation form –from frontend– to simulation request which
     is understood by backend in
-    :func:`~simulation_API.controller.tasks._api_simulation_request`.
+    :func:`~simulation_api.controller.tasks._api_simulation_request`.
 
     Parameters
     ----------
@@ -583,14 +583,14 @@ def _sim_form_to_sim_request(form: Dict[str, str]) -> SimRequest:
 
 def _create_pickle_path_disk(sim_id: str) -> str:
     """Creates disk path to simulation results (pickle) by
-    :attr:`~simulation_API.controller.schemas.SimIdResponse.sim_id`."""
+    :attr:`~simulation_api.controller.schemas.SimIdResponse.sim_id`."""
     return PATH_PICKLES + sim_id + ".pickle"
 
 
 def _create_plot_path_disk(sim_id: str, query_param: PlotQueryValues,
                            plot_format: str = PLOTS_FORMAT) -> str:
     """Creates disk path to plots of simulation results by
-    :attr:`~simulation_API.controller.schemas.SimIdResponse.sim_id`."""
+    :attr:`~simulation_api.controller.schemas.SimIdResponse.sim_id`."""
     return PATH_PLOTS + sim_id + "_" + query_param + plot_format
 
 

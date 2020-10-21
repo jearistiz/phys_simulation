@@ -146,7 +146,7 @@ def _get_plot_query_values(db: Session, sim_id: str):
 
     Returns
     -------
-    List[:data:`~simulation_API.controller.schemas.PlotQueryValues`]
+    List[:data:`~simulation_api.controller.schemas.PlotQueryValues`]
         Plot query values associated to ``sim_id``.
     """
     return [

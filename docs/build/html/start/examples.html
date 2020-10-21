@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Examples &mdash; PHYS Simulation API 0.0.1 documentation</title>
+  <title>Examples &mdash; PHYS Simulation API 1.0 documentation</title>
   
 
   
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.0.1
+                1.0
               </div>
             
           
@@ -102,7 +102,7 @@
 </ul>
 <p class="caption"><span class="caption-text">THE CODE</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../code_docs/simulation_API.html">simulation_API Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code_docs/simulation_api.html">simulation_API Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../code_docs/new_simulation.html">Add a new simulation</a></li>
 </ul>
 
@@ -177,7 +177,8 @@ HTTP requests we will use the <code class="docutils literal notranslate"><span c
 <div class="section" id="request-simulation">
 <h2>1. Request Simulation<a class="headerlink" href="#request-simulation" title="Permalink to this headline">¶</a></h2>
 <p>Lets start with some imports and defining our simulation request body.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">requests</span>
@@ -201,12 +202,12 @@ HTTP requests we will use the <code class="docutils literal notranslate"><span c
 </pre></div>
 </div>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">sim_request</span></code> follows the pydantic model
-<a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimRequest" title="simulation_API.controller.schemas.SimRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulation_API.controller.schemas.SimRequest</span></code></a>. For the
-<a class="reference internal" href="../code_docs/simulation_API.simulation.html#simulation_API.simulation.simulations.ChenLeeAttractor" title="simulation_API.simulation.simulations.ChenLeeAttractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChenLeeAttractor</span></code></a>, the initial
+<code class="xref py py-class docutils literal notranslate"><span class="pre">simulation_API.controller.schemas.SimRequest</span></code>. For the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ChenLeeAttractor</span></code>, the initial
 condition array is of length 3, and the parameters are
-<a class="reference internal" href="../code_docs/simulation_API.simulation.html#simulation_API.simulation.simulations.ChenLeeAttractor.a" title="simulation_API.simulation.simulations.ChenLeeAttractor.a"><code class="xref py py-attr docutils literal notranslate"><span class="pre">a</span></code></a>,
-<a class="reference internal" href="../code_docs/simulation_API.simulation.html#simulation_API.simulation.simulations.ChenLeeAttractor.b" title="simulation_API.simulation.simulations.ChenLeeAttractor.b"><code class="xref py py-attr docutils literal notranslate"><span class="pre">b</span></code></a> and
-<a class="reference internal" href="../code_docs/simulation_API.simulation.html#simulation_API.simulation.simulations.ChenLeeAttractor.c" title="simulation_API.simulation.simulations.ChenLeeAttractor.c"><code class="xref py py-attr docutils literal notranslate"><span class="pre">c</span></code></a>. In your
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">a</span></code>,
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">b</span></code> and
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">c</span></code>. In your
 case, the conditions may be different, so you must check what are the parameters
 and what are the initial conditions for the system you want to simulate.</p>
 <p>Now we request the simulation via post to the appropiate route and print the
@@ -215,24 +216,24 @@ result</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://0.0.0.0:5700&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Simulation request route</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sim_requrest_route</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;/api/simulate/</span><span class="si">{</span><span class="n">sim_system</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sim_requrest_route</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;/api/simulate/{sim_system}&#39;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Request simulation via HTTP using `requests` module</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sim_request_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span> <span class="o">+</span> <span class="n">sim_requrest_route</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">sim_request</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Print response</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;&quot;</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;Simulation Request Response&quot;</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;----------------------------------------&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="sa">f</span><span class="s2">&quot;HTML status code: </span><span class="si">{</span><span class="n">sim_request_response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">f</span><span class="s2">&quot;HTML status code: {sim_request_response.status_code}&quot;</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;Response:&quot;</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;    {&quot;</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sim_request_response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    }&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;        &#39;{key}&#39;: {v}&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;    }&quot;</span><span class="p">)</span>
 
 <span class="go">Simulation Request Response</span>
 <span class="go">----------------------------------------</span>
@@ -265,24 +266,25 @@ how to request the simulation results.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sim_id</span> <span class="o">=</span> <span class="n">sim_request_response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;sim_id&quot;</span><span class="p">]</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Simulation status route</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sim_status_route</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;/api/simulate/status/</span><span class="si">{</span><span class="n">sim_id</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sim_status_route</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;/api/simulate/status/{sim_id}&quot;</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Request simulation status via HTTP using `requests` module</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sim_status_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span> <span class="o">+</span> <span class="n">sim_status_route</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Print response</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span>
-<span class="gp">&gt;&gt;&gt; </span>   <span class="s2">&quot;&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>   <span class="s2">&quot;Simulation status Response&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>   <span class="s2">&quot;----------------------------------------&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>   <span class="sa">f</span><span class="s2">&quot;HTML status code: </span><span class="si">{</span><span class="n">sim_status_response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>   <span class="s2">&quot;Response:&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>   <span class="s2">&quot;    {&quot;</span><span class="p">,</span>
-<span class="gp">&gt;&gt;&gt; </span>   <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sim_status_response_json</span> <span class="o">=</span> <span class="n">sim_status_response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;Simulation status Response&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;----------------------------------------&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">f</span><span class="s2">&quot;HTML status code: {sim_status_response.status_code}&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;Response:&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s2">&quot;    {&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sim_status_response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<span class="gp">&gt;&gt;&gt; </span>   <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;        &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">,&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    }</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sim_status_response_json</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;        &#39;{key}&#39;: {v},&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="s2">&quot;    }</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="go">Simulation status Response</span>
 <span class="go">----------------------------------------</span>
@@ -320,18 +322,22 @@ simulation status <code class="docutils literal notranslate"><span class="pre">&
 <p>Lets start with the pickle</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1">############################ Example: GET Results #############################</span>
 <span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="ow">not</span> <span class="n">sim_status_response_json</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Warning: pickle and plot files not available.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Pickle download route</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pickle_route</span> <span class="o">=</span> <span class="n">sim_status_response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;route_pickle&quot;</span><span class="p">]</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Request simulation status via HTTP using `requests` module</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pickle_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span> <span class="o">+</span> <span class="n">pickle_route</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pickle_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span> <span class="o">+</span> <span class="n">pickle_route</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get our directory absolute path</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">this_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Save Pickle</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">this_directory</span> <span class="o">+</span> <span class="s1">&#39;/simulation.pickle&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pickle_response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">this_directory</span> <span class="o">+</span> <span class="s1">&#39;/simulation.pickle&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pickle_response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The generated file is named <code class="docutils literal notranslate"><span class="pre">simulation.pickle</span></code> and contains all the
@@ -348,12 +354,12 @@ information of the simulation results.</p>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">plot_query_url</span> <span class="o">=</span> <span class="n">url</span> <span class="o">+</span> <span class="n">plots_route</span> <span class="o">+</span> <span class="s2">&quot;?value=&quot;</span> <span class="o">+</span> <span class="n">qv</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># Request the plot</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">plot_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">plot_query_url</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">plot_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">plot_query_url</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="c1"># Save the plot in a file</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">plot_file_name</span> <span class="o">=</span> <span class="n">this_directory</span> <span class="o">+</span> <span class="s2">&quot;/plot_&quot;</span> <span class="o">+</span> <span class="n">qv</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">plot_file_name</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-<span class="gp">&gt;&gt;&gt; </span>        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">plot_response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">plot_file_name</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="nb">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">plot_response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The two generated plots are named <code class="docutils literal notranslate"><span class="pre">plot_threeD.png</span></code> and <code class="docutils literal notranslate"><span class="pre">plot_project.png</span></code>

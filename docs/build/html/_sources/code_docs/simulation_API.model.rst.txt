@@ -1,11 +1,11 @@
 ===========================
-:mod:`simulation_API.model`
+:mod:`simulation_api.model`
 ===========================
 
 Package contents
 ================
 
-.. automodule:: simulation_API.model
+.. automodule:: simulation_api.model
    :members:
    :undoc-members:
    :show-inheritance:
@@ -13,26 +13,26 @@ Package contents
 Submodules
 ==========
 
-:mod:`simulation_API.model.crud`
+:mod:`simulation_api.model.crud`
 --------------------------------
 
-.. automodule:: simulation_API.model.crud
+.. automodule:: simulation_api.model.crud
    :members:
    :undoc-members:
    :show-inheritance:
 
-:mod:`simulation_API.model.db_manager`
+:mod:`simulation_api.model.db_manager`
 --------------------------------------
 
-.. automodule:: simulation_API.model.db_manager
+.. automodule:: simulation_api.model.db_manager
    :members:
    :undoc-members:
    :show-inheritance:
 
-:mod:`simulation_API.model.models`
+:mod:`simulation_api.model.models`
 ----------------------------------
 
-.. automodule:: simulation_API.model.models
+.. automodule:: simulation_api.model.models
    :members:
    :undoc-members:
    :show-inheritance:

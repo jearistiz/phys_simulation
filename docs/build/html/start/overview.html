@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Overview &mdash; PHYS Simulation API 0.0.1 documentation</title>
+  <title>Overview &mdash; PHYS Simulation API 1.0 documentation</title>
   
 
   
@@ -40,7 +40,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Examples" href="examples.html" />
-    <link rel="prev" title="PHYS Simulation API 0.0.1 documentation" href="../index.html" /> 
+    <link rel="prev" title="PHYS Simulation API 1.0 documentation" href="../index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                0.0.1
+                1.0
               </div>
             
           
@@ -109,7 +109,7 @@
 </ul>
 <p class="caption"><span class="caption-text">THE CODE</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../code_docs/simulation_API.html">simulation_API Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code_docs/simulation_api.html">simulation_API Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../code_docs/new_simulation.html">Add a new simulation</a></li>
 </ul>
 
@@ -186,10 +186,10 @@ will see how this works in the real life.</p>
 <h2>Request a simulation<a class="headerlink" href="#request-a-simulation" title="Permalink to this headline">¶</a></h2>
 <p>The simulation requests are made in route <code class="docutils literal notranslate"><span class="pre">/api/simulate/{sim_system}</span></code>,
 where <code class="docutils literal notranslate"><span class="pre">sim_system</span></code> is one of the members of
-<a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimSystem</span></code></a>.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">SimSystem</span></code>.</p>
 <p>The body of the request must abide by the following schema</p>
 <div class="section" id="simrequest">
-<h3><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimRequest" title="simulation_API.controller.schemas.SimRequest"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimRequest</span></code></a><a class="headerlink" href="#simrequest" title="Permalink to this headline">¶</a></h3>
+<h3><code class="xref py py-class docutils literal notranslate"><span class="pre">SimRequest</span></code><a class="headerlink" href="#simrequest" title="Permalink to this headline">¶</a></h3>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 25%" />
@@ -210,7 +210,7 @@ where <code class="docutils literal notranslate"><span class="pre">sim_system</s
 <li><p><strong>system</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimSystem</span></code></a></p></td>
+<td colspan="3"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">SimSystem</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -292,7 +292,7 @@ where <code class="docutils literal notranslate"><span class="pre">sim_system</s
 <li><p>method</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.IntegrationMethods" title="simulation_API.controller.schemas.IntegrationMethods"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntegrationMethods</span></code></a></p></td>
+<td colspan="3"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">IntegrationMethods</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
@@ -346,7 +346,7 @@ where <code class="docutils literal notranslate"><span class="pre">sim_system</s
 </div>
 <p>The body of the HTML response will have the following schema</p>
 <div class="section" id="simidresponse">
-<span id="id1"></span><h3><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimIdResponse" title="simulation_API.controller.schemas.SimIdResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimIdResponse</span></code></a><a class="headerlink" href="#simidresponse" title="Permalink to this headline">¶</a></h3>
+<span id="id1"></span><h3><code class="xref py py-class docutils literal notranslate"><span class="pre">SimIdResponse</span></code><a class="headerlink" href="#simidresponse" title="Permalink to this headline">¶</a></h3>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 33%" />
@@ -393,7 +393,7 @@ route <code class="docutils literal notranslate"><span class="pre">/api/simulate
 <li><p>sim_sys</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimSystem</span></code></a></p></td>
+<td colspan="2"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">SimSystem</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
@@ -443,7 +443,7 @@ provided in the API route, the simulation may still be in course.</p>
 </div>
 <p>The schema of the response will be the following</p>
 <div class="section" id="simstatus">
-<span id="id2"></span><h3><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimStatus" title="simulation_API.controller.schemas.SimStatus"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimStatus</span></code></a><a class="headerlink" href="#simstatus" title="Permalink to this headline">¶</a></h3>
+<span id="id2"></span><h3><code class="xref py py-class docutils literal notranslate"><span class="pre">SimStatus</span></code><a class="headerlink" href="#simstatus" title="Permalink to this headline">¶</a></h3>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 17%" />
@@ -495,7 +495,7 @@ provided in the API route, the simulation may still be in course.</p>
 <li><p>system</p></li>
 </ul>
 </td>
-<td colspan="5"><p><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimSystem</span></code></a></p></td>
+<td colspan="5"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">SimSystem</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="4"><p><em>string</em></p></td>
@@ -530,7 +530,7 @@ provided in the API route, the simulation may still be in course.</p>
 <li><p>method</p></li>
 </ul>
 </td>
-<td colspan="5"><p><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.IntegrationMethods" title="simulation_API.controller.schemas.IntegrationMethods"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntegrationMethods</span></code></a></p></td>
+<td colspan="5"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">IntegrationMethods</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="4"><p><em>string</em></p></td>
@@ -566,14 +566,14 @@ provided in the API route, the simulation may still be in course.</p>
 <li><p>plot_query_values</p></li>
 </ul>
 </td>
-<td colspan="5"><p><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.PlotQueryValues" title="simulation_API.controller.schemas.PlotQueryValues"><code class="xref py py-data docutils literal notranslate"><span class="pre">PlotQueryValues</span></code></a></p></td>
+<td colspan="5"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">PlotQueryValues</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="4"><p><em>array</em></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="6"><p>items</p></td>
 <td rowspan="6"><p>anyOf</p></td>
-<td colspan="3"><p><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.PlotQueryValues_HO" title="simulation_API.controller.schemas.PlotQueryValues_HO"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotQueryValues_HO</span></code></a></p></td>
+<td colspan="3"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotQueryValues_HO</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
@@ -582,7 +582,7 @@ provided in the API route, the simulation may still be in course.</p>
 <td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p><a class="reference internal" href="../code_docs/simulation_API.controller.html#simulation_API.controller.schemas.PlotQueryValues_ChenLee" title="simulation_API.controller.schemas.PlotQueryValues_ChenLee"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotQueryValues_ChenLee</span></code></a></p></td>
+<tr class="row-even"><td colspan="3"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotQueryValues_ChenLee</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
@@ -724,7 +724,7 @@ the last item.</p></li>
         <a href="examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral float-left" title="PHYS Simulation API 0.0.1 documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="PHYS Simulation API 1.0 documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

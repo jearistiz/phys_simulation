@@ -25,7 +25,7 @@ class SimSystem(str, Enum):
     -------
     The values of the attributes of this class must coincide with the
     dictionary keys defined in
-    :data:`simulation_API.simulation.simulations.Simulations`, otherwise the
+    :data:`simulation_api.simulation.simulations.Simulations`, otherwise the
     system won't be simulated by the backend.
 
     Warning
@@ -58,7 +58,7 @@ class IntegrationMethods(str, Enum):
     Please update this class with relvant simulation methods available in 
     `scipy.integrate.solve_ivp`_ –only the ones that do not require more
     parameters than the ones provided in
-    :py:class:`~simulation_API.controller.schemas.SimRequest`.
+    :py:class:`~simulation_api.controller.schemas.SimRequest`.
 
     .. _scipy.integrate.solve_ivp: https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html
     """
@@ -104,9 +104,9 @@ class SimForm(BaseModel):
     Needs update each time a new simulation is added:
 
     1. Create a new appropiate class similar to
-       :py:class:`~simulation_API.controller.schemas.HOSimForm` or to
-       :py:class:`~simulation_API.controller.schemas.ChenLeeSimForm`.
-    2. Add the class to the ``dict`` :data:`~simulation_API.controller.schemas.SimFormDict`
+       :py:class:`~simulation_api.controller.schemas.HOSimForm` or to
+       :py:class:`~simulation_api.controller.schemas.ChenLeeSimForm`.
+    2. Add the class to the ``dict`` :data:`~simulation_api.controller.schemas.SimFormDict`
        defined somewhere in this module.
     """
     username: Optional[str] = "Pepito"
@@ -130,7 +130,7 @@ class HOSimForm(SimForm):
     Note
     ----
     For more information about Chen-Lee Attactor simulation see 
-    :py:class:`~simulation_API.simulation.simulations.HarmonicOsc1D`.
+    :py:class:`~simulation_api.simulation.simulations.HarmonicOsc1D`.
     """
     sim_sys: SimSystem = SimSystem.HO.value
     """System to be simulated."""
@@ -139,9 +139,9 @@ class HOSimForm(SimForm):
     ini1: Optional[float] = 0.0
     """:math:`p` initial value."""
     param0: Optional[float] = 1.0
-    """Parameter of name :attr:`~simulation_API.controller.schemas.HOParams.m`."""
+    """Parameter of name :attr:`~simulation_api.controller.schemas.HOParams.m`."""
     param1: Optional[float] = 1.0
-    """Parameter of name :attr:`~simulation_API.controller.schemas.HOParams.k`."""
+    """Parameter of name :attr:`~simulation_api.controller.schemas.HOParams.k`."""
 
 
 class ChenLeeSimForm(SimForm):
@@ -151,7 +151,7 @@ class ChenLeeSimForm(SimForm):
     Note
     ----
     For more information about Chen-Lee Attactor simulation see 
-    :py:class:`~simulation_API.simulation.simulations.ChenLeeAttractor`.
+    :py:class:`~simulation_api.simulation.simulations.ChenLeeAttractor`.
     """
     sim_sys: SimSystem = SimSystem.ChenLee.value
     """System to be simulated."""
@@ -162,11 +162,11 @@ class ChenLeeSimForm(SimForm):
     ini2: Optional[float] = 0.0
     """:math:`\omega_z` initial condition."""
     param0: Optional[float] = 3.0
-    """Parameter of name :attr:`~simulation_API.controller.schemas.ChenLeeParams.a`."""
+    """Parameter of name :attr:`~simulation_api.controller.schemas.ChenLeeParams.a`."""
     param1: Optional[float] = - 5.0
-    """Parameter of name :attr:`~simulation_API.controller.schemas.ChenLeeParams.b`."""
+    """Parameter of name :attr:`~simulation_api.controller.schemas.ChenLeeParams.b`."""
     param2: Optional[float] = - 1.0
-    """Parameter of name :attr:`~simulation_API.controller.schemas.ChenLeeParams.c`."""
+    """Parameter of name :attr:`~simulation_api.controller.schemas.ChenLeeParams.c`."""
 
 
 
@@ -180,13 +180,13 @@ class HOParams(BaseModel):
     Note
     ----
     For more information about Harmonic Oscillator's parameters see 
-    :py:class:`~simulation_API.simulation.simulations.HarmonicOsc1D`.
+    :py:class:`~simulation_api.simulation.simulations.HarmonicOsc1D`.
 
     Warning
     -------
     This needs update each time a new simulation is added: add an
     appropiate new class similar to this one or to
-    :py:class:`simulation_API.controller.schemas.ChenLeeParams`.
+    :py:class:`simulation_api.controller.schemas.ChenLeeParams`.
     """
     m: float    # Mass
     """Mass of object."""
@@ -201,13 +201,13 @@ class ChenLeeParams(BaseModel):
     Note
     ----
     For more information about Chen-Lee Attactor's parameters see 
-    :py:class:`~simulation_API.simulation.simulations.ChenLeeAttractor`.
+    :py:class:`~simulation_api.simulation.simulations.ChenLeeAttractor`.
 
     Warning
     -------
     This needs update each time a new simulation is added: add an
     appropiate new class similar to this one or to
-    :py:class:`simulation_API.controller.schemas.HOParams`.
+    :py:class:`simulation_api.controller.schemas.HOParams`.
     """
     a: float
     """:math:`\omega_x` parameter."""
@@ -254,7 +254,7 @@ params_mapping_HO = {
 }
 """Maps the name of each Harmonic Oscillator parameter in frontend form to its
 name in backend (defined by its corresponding attribute in class
-:py:class:`~simulation_API.simulation.simulations.HarmonicOsc1D`)
+:py:class:`~simulation_api.simulation.simulations.HarmonicOsc1D`)
 """
 params_mapping_ChenLee = {
     "param0": "a",
@@ -263,7 +263,7 @@ params_mapping_ChenLee = {
 }
 """Maps the name of each Chen-Lee Attractor parameter in frontend form to its
 name in backend (defined by its corresponding attribute in class
-:py:class:`~simulation_API.simulation.simulations.ChenLeeAttractor`)
+:py:class:`~simulation_api.simulation.simulations.ChenLeeAttractor`)
 """
 
 # This dict maps each system to its parameter change-of-convention
@@ -273,13 +273,13 @@ system_to_params_dict = {
     SimSystem.ChenLee.value: params_mapping_ChenLee,
 }
 """Maps the name of each available system to its parameter change-of-convention
-mapping (e.g. :data:`~simulation_API.controller.schemas.params_mapping_HO` or
-:data:`~simulation_API.controller.schemas.params_mapping_ChenLee`.) 
+mapping (e.g. :data:`~simulation_api.controller.schemas.params_mapping_HO` or
+:data:`~simulation_api.controller.schemas.params_mapping_ChenLee`.) 
 
 This is used to translate the parameters name convention in frontend simulation
 request to the parameters name convention in backend simulation request (with
 appropiate schema given by
-:py:class:`simulation_API.controller.schemas.SimRequest`.)
+:py:class:`simulation_api.controller.schemas.SimRequest`.)
 """
 
 
@@ -292,12 +292,12 @@ class SimRequest(BaseModel):
     
     \f
     For the attributes that do not have a description see
-    :py:class:`simulation_API.simulation.simulations.Simulation`.
+    :py:class:`simulation_api.simulation.simulations.Simulation`.
     
     Note
     ----
     Most of the attributes in this pydantic class are arguments of the 
-    classes defined in the module :mod:`simulation_API.simulation.simulations`,
+    classes defined in the module :mod:`simulation_api.simulation.simulations`,
     for more information please refer to It.
     """
     system: SimSystem = SimSystem.HO
@@ -330,7 +330,7 @@ class SimIdResponse(BaseModel):
     Note
     ----
     The request of the simulation must follow the model
-    :py:class:`~simulation_API.controller.schemas.SimRequest`.
+    :py:class:`~simulation_api.controller.schemas.SimRequest`.
     """
     sim_id: Optional[str]
     """ID of simulation."""

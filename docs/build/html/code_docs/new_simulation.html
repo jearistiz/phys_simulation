@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Add a new simulation &mdash; PHYS Simulation API 0.0.1 documentation</title>
+  <title>Add a new simulation &mdash; PHYS Simulation API 1.0 documentation</title>
   
 
   
@@ -39,7 +39,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="simulation_API.config module" href="simulation_API.config.html" /> 
+    <link rel="prev" title="simulation_API.config module" href="simulation_api.config.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                0.0.1
+                1.0
               </div>
             
           
@@ -96,7 +96,7 @@
 </ul>
 <p class="caption"><span class="caption-text">THE CODE</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="simulation_API.html">simulation_API Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulation_api.html">simulation_API Package</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Add a new simulation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#add-the-simulation-to-simulations-module">1. Add the simulation to <code class="xref py py-mod docutils literal notranslate"><span class="pre">simulations</span></code> module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#add-relevant-schemas-and-models-to-schemas">2. Add relevant schemas and models to <code class="xref py py-mod docutils literal notranslate"><span class="pre">schemas</span></code></a></li>
@@ -180,67 +180,67 @@ coupled differential equations i.e. systems of the form</p>
 <p>If you want to add a new simulation to this API just follow the steps described
 below.</p>
 <div class="section" id="add-the-simulation-to-simulations-module">
-<h2>1. Add the simulation to <a class="reference internal" href="simulation_API.simulation.html#module-simulation_API.simulation.simulations" title="simulation_API.simulation.simulations"><code class="xref py py-mod docutils literal notranslate"><span class="pre">simulations</span></code></a> module<a class="headerlink" href="#add-the-simulation-to-simulations-module" title="Permalink to this headline">¶</a></h2>
+<h2>1. Add the simulation to <a class="reference internal" href="simulation_api.simulation.html#module-simulation_api.simulation.simulations" title="simulation_api.simulation.simulations"><code class="xref py py-mod docutils literal notranslate"><span class="pre">simulations</span></code></a> module<a class="headerlink" href="#add-the-simulation-to-simulations-module" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
-<li><p>Add a relevant class to <a class="reference internal" href="simulation_API.simulation.html#module-simulation_API.simulation.simulations" title="simulation_API.simulation.simulations"><code class="xref py py-mod docutils literal notranslate"><span class="pre">simulations</span></code></a>.
+<li><p>Add a relevant class to <a class="reference internal" href="simulation_api.simulation.html#module-simulation_api.simulation.simulations" title="simulation_api.simulation.simulations"><code class="xref py py-mod docutils literal notranslate"><span class="pre">simulations</span></code></a>.
 This class will define the relevant parameters used in the simulation as well
 as its dynamic equations. It must inherit
-<a class="reference internal" href="simulation_API.simulation.html#simulation_API.simulation.simulations.Simulation" title="simulation_API.simulation.simulations.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code></a>
+<a class="reference internal" href="simulation_api.simulation.html#simulation_api.simulation.simulations.Simulation" title="simulation_api.simulation.simulations.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code></a>
 and must have the same structure as
-<a class="reference internal" href="simulation_API.simulation.html#simulation_API.simulation.simulations.HarmonicOsc1D" title="simulation_API.simulation.simulations.HarmonicOsc1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">HarmonicOsc1D</span></code></a> and
-<a class="reference internal" href="simulation_API.simulation.html#simulation_API.simulation.simulations.ChenLeeAttractor" title="simulation_API.simulation.simulations.ChenLeeAttractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChenLeeAttractor</span></code></a>. Don’t
+<a class="reference internal" href="simulation_api.simulation.html#simulation_api.simulation.simulations.HarmonicOsc1D" title="simulation_api.simulation.simulations.HarmonicOsc1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">HarmonicOsc1D</span></code></a> and
+<a class="reference internal" href="simulation_api.simulation.html#simulation_api.simulation.simulations.ChenLeeAttractor" title="simulation_api.simulation.simulations.ChenLeeAttractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChenLeeAttractor</span></code></a>. Don’t
 forget to test your simulation by playing around in
-<a class="reference internal" href="simulation_API.simulation.html#module-simulation_API.simulation.demo_run_simulation" title="simulation_API.simulation.demo_run_simulation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">demo_run_simulation</span></code></a>.</p></li>
+<a class="reference internal" href="simulation_api.simulation.html#module-simulation_api.simulation.demo_run_simulation" title="simulation_api.simulation.demo_run_simulation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">demo_run_simulation</span></code></a>.</p></li>
 <li><p>Don’t forget to add the attribute
-<a class="reference internal" href="simulation_API.simulation.html#simulation_API.simulation.simulations.Simulation.system" title="simulation_API.simulation.simulations.Simulation.system"><code class="xref py py-attr docutils literal notranslate"><span class="pre">system</span></code></a> to your
+<a class="reference internal" href="simulation_api.simulation.html#simulation_api.simulation.simulations.Simulation.system" title="simulation_api.simulation.simulations.Simulation.system"><code class="xref py py-attr docutils literal notranslate"><span class="pre">system</span></code></a> to your
 class. The value of this attribute must be the name of the system separated
 by dashes. Use only alphanumerical characters and dashes.</p></li>
 <li><p>Add the relevant simulation class you just created to the <code class="docutils literal notranslate"><span class="pre">dict</span></code>
-<a class="reference internal" href="simulation_API.simulation.html#simulation_API.simulation.simulations.Simulations" title="simulation_API.simulation.simulations.Simulations"><code class="xref py py-data docutils literal notranslate"><span class="pre">Simulations</span></code></a>. This will tell
+<a class="reference internal" href="simulation_api.simulation.html#simulation_api.simulation.simulations.Simulations" title="simulation_api.simulation.simulations.Simulations"><code class="xref py py-data docutils literal notranslate"><span class="pre">Simulations</span></code></a>. This will tell
 the API that the simulation exists and it is available.</p></li>
 </ol>
 </div>
 <div class="section" id="add-relevant-schemas-and-models-to-schemas">
-<span id="new-simulation-schemas"></span><h2>2. Add relevant schemas and models to <a class="reference internal" href="simulation_API.controller.html#module-simulation_API.controller.schemas" title="simulation_API.controller.schemas"><code class="xref py py-mod docutils literal notranslate"><span class="pre">schemas</span></code></a><a class="headerlink" href="#add-relevant-schemas-and-models-to-schemas" title="Permalink to this headline">¶</a></h2>
+<span id="new-simulation-schemas"></span><h2>2. Add relevant schemas and models to <a class="reference internal" href="simulation_api.controller.html#module-simulation_api.controller.schemas" title="simulation_api.controller.schemas"><code class="xref py py-mod docutils literal notranslate"><span class="pre">schemas</span></code></a><a class="headerlink" href="#add-relevant-schemas-and-models-to-schemas" title="Permalink to this headline">¶</a></h2>
 <p>Follow the steps mentioned below –some of them may not make sense at first
 glance, but until you write the code.</p>
 <ol class="arabic simple">
-<li><p>Add the <a class="reference internal" href="simulation_API.simulation.html#simulation_API.simulation.simulations.Simulation.system" title="simulation_API.simulation.simulations.Simulation.system"><code class="xref py py-attr docutils literal notranslate"><span class="pre">system</span></code></a>
+<li><p>Add the <a class="reference internal" href="simulation_api.simulation.html#simulation_api.simulation.simulations.Simulation.system" title="simulation_api.simulation.simulations.Simulation.system"><code class="xref py py-attr docutils literal notranslate"><span class="pre">system</span></code></a>
 attribute value of the recently created class to
-<a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.SimSystem" title="simulation_API.controller.schemas.SimSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimSystem</span></code></a>.</p></li>
-<li><p>Create a class that inherits <a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.SimForm" title="simulation_API.controller.schemas.SimForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimForm</span></code></a>.
-It must be similar to <a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.HOSimForm" title="simulation_API.controller.schemas.HOSimForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">HOSimForm</span></code></a>
-and <a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.ChenLeeSimForm" title="simulation_API.controller.schemas.ChenLeeSimForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChenLeeSimForm</span></code></a>. This class
+<a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.schemas.SimSystem" title="simulation_api.controller.schemas.SimSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimSystem</span></code></a>.</p></li>
+<li><p>Create a class that inherits <a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.schemas.SimForm" title="simulation_api.controller.schemas.SimForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimForm</span></code></a>.
+It must be similar to <a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.schemas.HOSimForm" title="simulation_api.controller.schemas.HOSimForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">HOSimForm</span></code></a>
+and <a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.schemas.ChenLeeSimForm" title="simulation_api.controller.schemas.ChenLeeSimForm"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChenLeeSimForm</span></code></a>. This class
 will be used to check the simulation information provided in frontend.</p></li>
 <li><p>Add a relevant item –related to the class created in the last numeral– to the
-<code class="docutils literal notranslate"><span class="pre">dict</span></code> <a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.SimFormDict" title="simulation_API.controller.schemas.SimFormDict"><code class="xref py py-data docutils literal notranslate"><span class="pre">SimFormDict</span></code></a>. This will
+<code class="docutils literal notranslate"><span class="pre">dict</span></code> <a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.schemas.SimFormDict" title="simulation_api.controller.schemas.SimFormDict"><code class="xref py py-data docutils literal notranslate"><span class="pre">SimFormDict</span></code></a>. This will
 map the name of the system to its simulation form model.</p></li>
-<li><p>Add a new class similar to <a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.HOParams" title="simulation_API.controller.schemas.HOParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">HOParams</span></code></a>
-and <a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.ChenLeeParams" title="simulation_API.controller.schemas.ChenLeeParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChenLeeParams</span></code></a>. The names
+<li><p>Add a new class similar to <a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.schemas.HOParams" title="simulation_api.controller.schemas.HOParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">HOParams</span></code></a>
+and <a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.schemas.ChenLeeParams" title="simulation_api.controller.schemas.ChenLeeParams"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChenLeeParams</span></code></a>. The names
 of the attributes must match the names of the parameters defined in the
 relevant simulation class, created in the first numeral of this list.</p></li>
 <li><p>Add an appropiate item to the <code class="docutils literal notranslate"><span class="pre">dict</span></code>
-<a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.SimSystem_to_SimParams" title="simulation_API.controller.schemas.SimSystem_to_SimParams"><code class="xref py py-data docutils literal notranslate"><span class="pre">SimSystem_to_SimParams</span></code></a>.</p></li>
+<a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.schemas.SimSystem_to_SimParams" title="simulation_api.controller.schemas.SimSystem_to_SimParams"><code class="xref py py-data docutils literal notranslate"><span class="pre">SimSystem_to_SimParams</span></code></a>.</p></li>
 <li><p>Create an appropiate <code class="docutils literal notranslate"><span class="pre">dict</span></code> similar to
-<a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.params_mapping_HO" title="simulation_API.controller.schemas.params_mapping_HO"><code class="xref py py-data docutils literal notranslate"><span class="pre">params_mapping_HO</span></code></a> and
-<a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.params_mapping_ChenLee" title="simulation_API.controller.schemas.params_mapping_ChenLee"><code class="xref py py-data docutils literal notranslate"><span class="pre">params_mapping_ChenLee</span></code></a>.</p></li>
+<a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.schemas.params_mapping_HO" title="simulation_api.controller.schemas.params_mapping_HO"><code class="xref py py-data docutils literal notranslate"><span class="pre">params_mapping_HO</span></code></a> and
+<a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.schemas.params_mapping_ChenLee" title="simulation_api.controller.schemas.params_mapping_ChenLee"><code class="xref py py-data docutils literal notranslate"><span class="pre">params_mapping_ChenLee</span></code></a>.</p></li>
 <li><p>Add an appropiate item to the dict
-<a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.system_to_params_dict" title="simulation_API.controller.schemas.system_to_params_dict"><code class="xref py py-data docutils literal notranslate"><span class="pre">system_to_params_dict</span></code></a>.</p></li>
+<a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.schemas.system_to_params_dict" title="simulation_api.controller.schemas.system_to_params_dict"><code class="xref py py-data docutils literal notranslate"><span class="pre">system_to_params_dict</span></code></a>.</p></li>
 <li><p>Create a new class similar to
-<a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.PlotQueryValues_HO" title="simulation_API.controller.schemas.PlotQueryValues_HO"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotQueryValues_HO</span></code></a> and
-<a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.PlotQueryValues_ChenLee" title="simulation_API.controller.schemas.PlotQueryValues_ChenLee"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotQueryValues_ChenLee</span></code></a>.</p></li>
-<li><p>Add an appropiate item to <a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.PlotQueryValues" title="simulation_API.controller.schemas.PlotQueryValues"><code class="xref py py-data docutils literal notranslate"><span class="pre">PlotQueryValues</span></code></a>.</p></li>
+<a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.schemas.PlotQueryValues_HO" title="simulation_api.controller.schemas.PlotQueryValues_HO"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotQueryValues_HO</span></code></a> and
+<a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.schemas.PlotQueryValues_ChenLee" title="simulation_api.controller.schemas.PlotQueryValues_ChenLee"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotQueryValues_ChenLee</span></code></a>.</p></li>
+<li><p>Add an appropiate item to <a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.schemas.PlotQueryValues" title="simulation_api.controller.schemas.PlotQueryValues"><code class="xref py py-data docutils literal notranslate"><span class="pre">PlotQueryValues</span></code></a>.</p></li>
 </ol>
 <p>If you do not understand some of the steps above or how to implement them, refer
-to <a class="reference internal" href="simulation_API.html#code-api-package"><span class="std std-ref">the documentaton</span></a> of the relevant classes or schemas
+to <a class="reference internal" href="simulation_api.html#code-api-package"><span class="std std-ref">the documentaton</span></a> of the relevant classes or schemas
 for the already available systems –Chen-Lee Attractor or Harmonic Oscillator–,
 it may enlighten you.</p>
 </div>
 <div class="section" id="add-relevant-plots-to-plot-solution">
-<h2>3. Add relevant plots to <a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.tasks._plot_solution" title="simulation_API.controller.tasks._plot_solution"><code class="xref py py-func docutils literal notranslate"><span class="pre">_plot_solution()</span></code></a><a class="headerlink" href="#add-relevant-plots-to-plot-solution" title="Permalink to this headline">¶</a></h2>
+<h2>3. Add relevant plots to <a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.tasks._plot_solution" title="simulation_api.controller.tasks._plot_solution"><code class="xref py py-func docutils literal notranslate"><span class="pre">_plot_solution()</span></code></a><a class="headerlink" href="#add-relevant-plots-to-plot-solution" title="Permalink to this headline">¶</a></h2>
 <p>Here you can add two or three intersting plots related to the simulation you
 just added and tested. The code that generates the plots must be placed in
-<a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.tasks._plot_solution" title="simulation_API.controller.tasks._plot_solution"><code class="xref py py-func docutils literal notranslate"><span class="pre">simulation_API.controller.tasks._plot_solution()</span></code></a>.</p>
+<a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.tasks._plot_solution" title="simulation_api.controller.tasks._plot_solution"><code class="xref py py-func docutils literal notranslate"><span class="pre">simulation_api.controller.tasks._plot_solution()</span></code></a>.</p>
 <p>A few things to take into account:</p>
 <ol class="arabic">
 <li><p>We use matplotlib, but we use the class <code class="docutils literal notranslate"><span class="pre">Figure</span></code> directly, we do not use
@@ -262,7 +262,7 @@ the class was named <code class="docutils literal notranslate"><span class="pre"
 <code class="docutils literal notranslate"><span class="pre">plot_query_value</span></code> of the relevant plot was named <code class="docutils literal notranslate"><span class="pre">coord</span></code> and the value
 of the latter is accessed by using <code class="docutils literal notranslate"><span class="pre">.value</span></code>.
 Each <code class="docutils literal notranslate"><span class="pre">plot_query_value</span></code> is appended to the list <code class="docutils literal notranslate"><span class="pre">plot_query_values</span></code>,
-which is the return value of <a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.tasks._plot_solution" title="simulation_API.controller.tasks._plot_solution"><code class="xref py py-func docutils literal notranslate"><span class="pre">_plot_solution()</span></code></a>.
+which is the return value of <a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.tasks._plot_solution" title="simulation_api.controller.tasks._plot_solution"><code class="xref py py-func docutils literal notranslate"><span class="pre">_plot_solution()</span></code></a>.
 This item is very important, since the values we define here are used to name
 the plots as well as to look them up.</p>
 </li>
@@ -276,7 +276,7 @@ the plots as well as to look them up.</p>
 </div>
 <div class="section" id="add-relevant-form-entries-in-frontend">
 <h2>4. Add relevant form entries in frontend<a class="headerlink" href="#add-relevant-form-entries-in-frontend" title="Permalink to this headline">¶</a></h2>
-<p>Modify appropiately the template <code class="docutils literal notranslate"><span class="pre">simulation_API/templates/request-simulation.html</span></code>.
+<p>Modify appropiately the template <code class="docutils literal notranslate"><span class="pre">simulation_api/templates/request-simulation.html</span></code>.
 This template is the one that asks for the simulation parameters in the frontend.</p>
 <p>Some things to take into account:</p>
 <ol class="arabic simple">
@@ -300,15 +300,15 @@ it in item number 6 of the previous to last section. For example, in the
 Harmonic Oscillator we chose the convention of associating the parameter
 <code class="docutils literal notranslate"><span class="pre">m</span></code> with the HTML attribute <code class="docutils literal notranslate"><span class="pre">name=&quot;param0&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">k</span></code> with
 <code class="docutils literal notranslate"><span class="pre">name=&quot;param1&quot;</span></code>. You can check that
-<code class="docutils literal notranslate"><span class="pre">simulation_API/templates/request-simulation.html</span></code> as well as
-<a class="reference internal" href="simulation_API.controller.html#simulation_API.controller.schemas.params_mapping_HO" title="simulation_API.controller.schemas.params_mapping_HO"><code class="xref py py-data docutils literal notranslate"><span class="pre">params_mapping_HO</span></code></a> follow this
+<code class="docutils literal notranslate"><span class="pre">simulation_api/templates/request-simulation.html</span></code> as well as
+<a class="reference internal" href="simulation_api.controller.html#simulation_api.controller.schemas.params_mapping_HO" title="simulation_api.controller.schemas.params_mapping_HO"><code class="xref py py-data docutils literal notranslate"><span class="pre">params_mapping_HO</span></code></a> follow this
 convention.</p></li>
 </ol>
 </div>
 <div class="section" id="modify-results-html-template-to-show-results">
 <h2>5. Modify <code class="docutils literal notranslate"><span class="pre">results.html</span></code> template to show results<a class="headerlink" href="#modify-results-html-template-to-show-results" title="Permalink to this headline">¶</a></h2>
 <p>Finally, we need to add a relevant <code class="docutils literal notranslate"><span class="pre">elif</span></code> block to the template
-<code class="docutils literal notranslate"><span class="pre">simulation_API/templates/results.html</span></code>. This template should show the
+<code class="docutils literal notranslate"><span class="pre">simulation_api/templates/results.html</span></code>. This template should show the
 generated plots, give the option to download them with a button and
 give the option to download the pickle file as well.</p>
 </div>
@@ -323,7 +323,7 @@ give the option to download the pickle file as well.</p>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="simulation_API.config.html" class="btn btn-neutral float-left" title="simulation_API.config module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="simulation_api.config.html" class="btn btn-neutral float-left" title="simulation_API.config module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

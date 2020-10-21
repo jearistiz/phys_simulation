@@ -143,11 +143,11 @@ class HarmonicOsc1D(Simulation):
                  params: dict = {"m": 1., "k": 1.},
                  method: str = 'RK45',
                  user_name: Optional[str] = None) -> None:
-        """Extends :meth:`simulation_API.simulation.simulations.Simulation.__init__`
+        """Extends :meth:`Simulation.__init__`
         
         Adds attributes
-        :attr:`~simulation_API.simulation.simulations.HarmonicOsc1D.m` and
-        :attr:`~simulation_API.simulation.simulations.HarmonicOsc1D.k`.
+        :attr:`~simulation_api.simulation.simulations.HarmonicOsc1D.m` and
+        :attr:`~simulation_api.simulation.simulations.HarmonicOsc1D.k`.
         
         Parameters
         ----------
@@ -157,7 +157,7 @@ class HarmonicOsc1D(Simulation):
             generalised position and :math:`p_0` is the initial generalised
             momentum. Default is ``[0., 1.]``. A list of initial conditions
             can be used, in this case a list of solutions will be returned by
-            :meth:`~simulation_API.simulation.simulations.Simulation.simulate`.
+            :meth:`~simulation_api.simulation.simulations.Simulation.simulate`.
         params : dict, optional
             Contains all the parameters of the simulation. Schema must match::
 
@@ -177,7 +177,7 @@ class HarmonicOsc1D(Simulation):
 
         Note
         ----
-        Overwrites :attr:`simulation_API.simulation.simulations.Simulation.dyn_sys_eqns`.
+        Overwrites :attr:`simulation_api.simulation.simulations.Simulation.dyn_sys_eqns`.
 
         Parameters
         ----------
@@ -243,12 +243,12 @@ class ChenLeeAttractor(Simulation):
                  params: dict = {"a": 3., "b": - 5., "c": - 1.},
                  method: str = 'RK45',
                  user_name: Optional[str] = None) -> None:
-        """Extends :meth:`simulation_API.simulation.simulations.Simulation.__init__`
+        """Extends :meth:`simulation_api.simulation.simulations.Simulation.__init__`
         
         Adds attributes
-        :attr:`~simulation_API.simulation.simulations.ChenLeeAttractor.a`,
-        :attr:`~simulation_API.simulation.simulations.ChenLeeAttractor.b` and
-        :attr:`~simulation_API.simulation.simulations.ChenLeeAttractor.c`.
+        :attr:`~simulation_api.simulation.simulations.ChenLeeAttractor.a`,
+        :attr:`~simulation_api.simulation.simulations.ChenLeeAttractor.b` and
+        :attr:`~simulation_api.simulation.simulations.ChenLeeAttractor.c`.
         
         Parameters
         ----------
@@ -257,7 +257,7 @@ class ChenLeeAttractor(Simulation):
             :math:`\\texttt{ini_cndtn} = [\omega_{x0}, \omega_{y0}, \omega_{z0}]`.
             Default is ``[10, 10, 0]``. A list of initial conditions can be
             used, in this case a list of solutions will be returned by
-            :py:meth:`~simulation_API.simulation.simulations.Simulation.simulate`
+            :py:meth:`~simulation_api.simulation.simulations.Simulation.simulate`
         params : dict, optional
             Contains all the parameters of the simulation. Schema must match::
             
@@ -279,7 +279,7 @@ class ChenLeeAttractor(Simulation):
         
         Note
         ----
-        Overwrites :attr:`simulation_API.simulation.simulations.Simulation.dyn_sys_eqns`.
+        Overwrites :attr:`simulation_api.simulation.simulations.Simulation.dyn_sys_eqns`.
 
         Parameters
         ----------

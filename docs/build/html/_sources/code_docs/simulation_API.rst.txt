@@ -7,7 +7,7 @@ simulation\_API Package
 Package contents
 ================
 
-.. automodule:: simulation_API
+.. automodule:: simulation_api
    :members:
    :undoc-members:
    :show-inheritance:
@@ -18,9 +18,9 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   simulation_API.controller
-   simulation_API.model
-   simulation_API.simulation
+   simulation_api.controller
+   simulation_api.model
+   simulation_api.simulation
 
 Submodules
 ==========
@@ -28,4 +28,4 @@ Submodules
 .. toctree::
    :maxdepth: 1
 
-   simulation_API.config
+   simulation_api.config

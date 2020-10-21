@@ -68,24 +68,24 @@ The Code
    :caption: THE CODE
    :hidden:
 
-   code_docs/simulation_API
+   code_docs/simulation_api
    code_docs/new_simulation
 
-:mod:`simulation_API`
+:mod:`simulation_api`
    Initialization of web application.
 
-   :mod:`simulation_API.controller`
+   :mod:`simulation_api.controller`
       The core package of our API. Here you can find the main app, schemas and
       background tasks.
 
-   :mod:`simulation_API.model`
+   :mod:`simulation_api.model`
       Database-related package.
 
-   :mod:`simulation_API.simulation`
+   :mod:`simulation_api.simulation`
       Simulation-related package. Here you can find all the programs we use to
       simulate the available systems.
 
-   :mod:`simulation_API.config`
+   :mod:`simulation_api.config`
       Configuration module. Some very basic configurations of our web application.
 
 ==================

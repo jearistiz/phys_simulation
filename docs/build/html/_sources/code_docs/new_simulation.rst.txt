@@ -14,71 +14,71 @@ coupled differential equations i.e. systems of the form
 If you want to add a new simulation to this API just follow the steps described
 below.
 
-1. Add the simulation to :py:mod:`~simulation_API.simulation.simulations` module
+1. Add the simulation to :py:mod:`~simulation_api.simulation.simulations` module
 ================================================================================
 
-1. Add a relevant class to :py:mod:`~simulation_API.simulation.simulations`.
+1. Add a relevant class to :py:mod:`~simulation_api.simulation.simulations`.
    This class will define the relevant parameters used in the simulation as well
    as its dynamic equations. It must inherit
-   :py:class:`~simulation_API.simulation.simulations.Simulation`
+   :py:class:`~simulation_api.simulation.simulations.Simulation`
    and must have the same structure as
-   :py:class:`~simulation_API.simulation.simulations.HarmonicOsc1D` and
-   :py:class:`~simulation_API.simulation.simulations.ChenLeeAttractor`. Don't
+   :py:class:`~simulation_api.simulation.simulations.HarmonicOsc1D` and
+   :py:class:`~simulation_api.simulation.simulations.ChenLeeAttractor`. Don't
    forget to test your simulation by playing around in
-   :py:mod:`~simulation_API.simulation.demo_run_simulation`.
+   :py:mod:`~simulation_api.simulation.demo_run_simulation`.
 2. Don't forget to add the attribute
-   :py:attr:`~simulation_API.simulation.simulations.Simulation.system` to your
+   :py:attr:`~simulation_api.simulation.simulations.Simulation.system` to your
    class. The value of this attribute must be the name of the system separated
    by dashes. Use only alphanumerical characters and dashes.
 3. Add the relevant simulation class you just created to the ``dict``
-   :py:data:`~simulation_API.simulation.simulations.Simulations`. This will tell
+   :py:data:`~simulation_api.simulation.simulations.Simulations`. This will tell
    the API that the simulation exists and it is available.
 
 .. _new-simulation-schemas:
 
-2. Add relevant schemas and models to :py:mod:`~simulation_API.controller.schemas`
+2. Add relevant schemas and models to :py:mod:`~simulation_api.controller.schemas`
 ==================================================================================
 
 Follow the steps mentioned below –some of them may not make sense at first
 glance, but until you write the code.
 
-1. Add the :py:attr:`~simulation_API.simulation.simulations.Simulation.system`
+1. Add the :py:attr:`~simulation_api.simulation.simulations.Simulation.system`
    attribute value of the recently created class to
-   :py:class:`~simulation_API.controller.schemas.SimSystem`.
-2. Create a class that inherits :py:class:`~simulation_API.controller.schemas.SimForm`.
-   It must be similar to :py:class:`~simulation_API.controller.schemas.HOSimForm`
-   and :py:class:`~simulation_API.controller.schemas.ChenLeeSimForm`. This class
+   :py:class:`~simulation_api.controller.schemas.SimSystem`.
+2. Create a class that inherits :py:class:`~simulation_api.controller.schemas.SimForm`.
+   It must be similar to :py:class:`~simulation_api.controller.schemas.HOSimForm`
+   and :py:class:`~simulation_api.controller.schemas.ChenLeeSimForm`. This class
    will be used to check the simulation information provided in frontend.
 3. Add a relevant item –related to the class created in the last numeral– to the
-   ``dict`` :py:data:`~simulation_API.controller.schemas.SimFormDict`. This will
+   ``dict`` :py:data:`~simulation_api.controller.schemas.SimFormDict`. This will
    map the name of the system to its simulation form model.
-4. Add a new class similar to :py:class:`~simulation_API.controller.schemas.HOParams`
-   and :py:class:`~simulation_API.controller.schemas.ChenLeeParams`. The names
+4. Add a new class similar to :py:class:`~simulation_api.controller.schemas.HOParams`
+   and :py:class:`~simulation_api.controller.schemas.ChenLeeParams`. The names
    of the attributes must match the names of the parameters defined in the
    relevant simulation class, created in the first numeral of this list.
 5. Add an appropiate item to the ``dict``
-   :py:data:`~simulation_API.controller.schemas.SimSystem_to_SimParams`.
+   :py:data:`~simulation_api.controller.schemas.SimSystem_to_SimParams`.
 6. Create an appropiate ``dict`` similar to
-   :py:data:`~simulation_API.controller.schemas.params_mapping_HO` and
-   :py:data:`~simulation_API.controller.schemas.params_mapping_ChenLee`.
+   :py:data:`~simulation_api.controller.schemas.params_mapping_HO` and
+   :py:data:`~simulation_api.controller.schemas.params_mapping_ChenLee`.
 7. Add an appropiate item to the dict
-   :py:data:`~simulation_API.controller.schemas.system_to_params_dict`.
+   :py:data:`~simulation_api.controller.schemas.system_to_params_dict`.
 8. Create a new class similar to
-   :py:class:`~simulation_API.controller.schemas.PlotQueryValues_HO` and
-   :py:class:`~simulation_API.controller.schemas.PlotQueryValues_ChenLee`.
-9. Add an appropiate item to :py:data:`~simulation_API.controller.schemas.PlotQueryValues`.
+   :py:class:`~simulation_api.controller.schemas.PlotQueryValues_HO` and
+   :py:class:`~simulation_api.controller.schemas.PlotQueryValues_ChenLee`.
+9. Add an appropiate item to :py:data:`~simulation_api.controller.schemas.PlotQueryValues`.
 
 If you do not understand some of the steps above or how to implement them, refer
 to :ref:`the documentaton <code-API-package>` of the relevant classes or schemas
 for the already available systems –Chen-Lee Attractor or Harmonic Oscillator–,
 it may enlighten you.
    
-3. Add relevant plots to :py:func:`~simulation_API.controller.tasks._plot_solution`
+3. Add relevant plots to :py:func:`~simulation_api.controller.tasks._plot_solution`
 ===================================================================================
 
 Here you can add two or three intersting plots related to the simulation you
 just added and tested. The code that generates the plots must be placed in
-:py:func:`simulation_API.controller.tasks._plot_solution`.
+:py:func:`simulation_api.controller.tasks._plot_solution`.
 
 A few things to take into account:
 
@@ -101,7 +101,7 @@ A few things to take into account:
    ``plot_query_value`` of the relevant plot was named ``coord`` and the value
    of the latter is accessed by using ``.value``.
    Each ``plot_query_value`` is appended to the list ``plot_query_values``,
-   which is the return value of :py:func:`~simulation_API.controller.tasks._plot_solution`.
+   which is the return value of :py:func:`~simulation_api.controller.tasks._plot_solution`.
    This item is very important, since the values we define here are used to name
    the plots as well as to look them up.
 4. Finally, the last line of code that generates each plot must be::
@@ -115,7 +115,7 @@ A few things to take into account:
 4. Add relevant form entries in frontend
 ========================================
 
-Modify appropiately the template ``simulation_API/templates/request-simulation.html``.
+Modify appropiately the template ``simulation_api/templates/request-simulation.html``.
 This template is the one that asks for the simulation parameters in the frontend.
 
 Some things to take into account:
@@ -140,14 +140,14 @@ Some things to take into account:
    Harmonic Oscillator we chose the convention of associating the parameter
    ``m`` with the HTML attribute ``name="param0"`` and ``k`` with
    ``name="param1"``. You can check that
-   ``simulation_API/templates/request-simulation.html`` as well as
-   :py:data:`~simulation_API.controller.schemas.params_mapping_HO` follow this
+   ``simulation_api/templates/request-simulation.html`` as well as
+   :py:data:`~simulation_api.controller.schemas.params_mapping_HO` follow this
    convention.
 
 5. Modify ``results.html`` template to show results
 ===================================================
 
 Finally, we need to add a relevant ``elif`` block to the template
-``simulation_API/templates/results.html``. This template should show the
+``simulation_api/templates/results.html``. This template should show the
 generated plots, give the option to download them with a button and
 give the option to download the pickle file as well.

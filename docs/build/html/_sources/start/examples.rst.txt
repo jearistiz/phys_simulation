@@ -17,6 +17,7 @@ Lets start with some imports and defining our simulation request body.
 
 .. code-block:: python
 
+    >>> import sys
     >>> import os
     >>> from time import sleep
     >>> 
@@ -118,17 +119,18 @@ We proceed now to request the simulation results via GET in route
    >>> sim_status_response = requests.get(url + sim_status_route)
    >>> 
    >>> # Print response
+   >>> sim_status_response_json = sim_status_response.json()
    >>> print(
-   >>>    "",
-   >>>    "Simulation status Response",
-   >>>    "----------------------------------------",
-   >>>    f"HTML status code: {sim_status_response.status_code}",
-   >>>    "Response:",
-   >>>    "    {",
-   >>>    sep='\n',
+   >>>     "",
+   >>>     "Simulation status Response",
+   >>>     "----------------------------------------",
+   >>>     f"HTML status code: {sim_status_response.status_code}",
+   >>>     "Response:",
+   >>>     "    {",
+   >>>     sep='\n',
    >>> )
-   >>> for key, v in sim_status_response.json().items():
-   >>>    print(f"        '{key}': {v},")
+   >>> for key, v in sim_status_response_json.items():
+   >>>     print(f"        '{key}': {v},")
    >>> print("    }\n")
 
    Simulation status Response
@@ -172,6 +174,10 @@ Lets start with the pickle
 .. code-block:: python
    
    >>> ############################ Example: GET Results #############################
+   >>> 
+   >>> if not sim_status_response_json["success"]:
+   >>>     print("Warning: pickle and plot files not available.\n")
+   >>>     sys.exit(1)
    >>>
    >>> # Pickle download route
    >>> pickle_route = sim_status_response.json()["route_pickle"]

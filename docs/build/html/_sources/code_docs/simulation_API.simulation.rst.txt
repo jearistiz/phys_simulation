@@ -1,11 +1,11 @@
 ================================
-:mod:`simulation_API.simulation`
+:mod:`simulation_api.simulation`
 ================================
 
 Package contents
 ================
 
-.. automodule:: simulation_API.simulation
+.. automodule:: simulation_api.simulation
    :members:
    :undoc-members:
    :show-inheritance:
@@ -13,18 +13,18 @@ Package contents
 Submodules
 ==========
 
-:mod:`simulation_API.simulation.demo_run_simulation`
+:mod:`simulation_api.simulation.demo_run_simulation`
 ----------------------------------------------------
 
-.. automodule:: simulation_API.simulation.demo_run_simulation
+.. automodule:: simulation_api.simulation.demo_run_simulation
    :members:
    :undoc-members:
    :show-inheritance:
 
-:mod:`simulation_API.simulation.simulations`
+:mod:`simulation_api.simulation.simulations`
 --------------------------------------------
 
-.. automodule:: simulation_API.simulation.simulations
+.. automodule:: simulation_api.simulation.simulations
    :members:
    :undoc-members:
    :show-inheritance:

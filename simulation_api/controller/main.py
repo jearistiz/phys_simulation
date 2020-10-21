@@ -181,7 +181,7 @@ async def simulate_sim_system_post(request: Request, sim_system: SimSystem,
     This route receives the form requesting a simulation (filled in
     frontend via GET in route ``/simulate/{sim_system}``). The simulation is
     internally requested using the function 
-    :func:`simulation_API.controller.tasks._api_simulation_request`.
+    :func:`simulation_api.controller.tasks._api_simulation_request`.
     Finally the client is redirected to the "Simulation ID" frontend web
     page, where further information about the simulation is displayed.
 

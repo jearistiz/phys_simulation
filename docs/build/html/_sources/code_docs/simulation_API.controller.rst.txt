@@ -1,11 +1,11 @@
 ================================
-:mod:`simulation_API.controller`
+:mod:`simulation_api.controller`
 ================================
 
 Package contents
 ================
 
-.. automodule:: simulation_API.controller
+.. automodule:: simulation_api.controller
    :members:
    :undoc-members:
    :show-inheritance:
@@ -13,26 +13,26 @@ Package contents
 Submodules
 ==========
 
-:mod:`simulation_API.controller.main`
+:mod:`simulation_api.controller.main`
 -------------------------------------
 
-.. automodule:: simulation_API.controller.main
+.. automodule:: simulation_api.controller.main
    :members:
    :undoc-members:
    :show-inheritance:
 
-:mod:`simulation_API.controller.schemas`
+:mod:`simulation_api.controller.schemas`
 ----------------------------------------
 
-.. automodule:: simulation_API.controller.schemas
+.. automodule:: simulation_api.controller.schemas
    :members:
    :undoc-members:
    :show-inheritance:
 
-:mod:`simulation_API.controller.tasks`
+:mod:`simulation_api.controller.tasks`
 --------------------------------------
 
-.. automodule:: simulation_API.controller.tasks
+.. automodule:: simulation_api.controller.tasks
    :members:
    :undoc-members:
    :show-inheritance:
