@@ -1,7 +1,7 @@
 .. _code-API-package:
 
 =======================
-simulation\_API Package
+simulation\_api Package
 =======================
 
 Package contents
