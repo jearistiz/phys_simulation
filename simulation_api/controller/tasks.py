@@ -526,7 +526,7 @@ def _pickle(file_name: str, path: str = '',
 def _sim_form_to_sim_request(form: Dict[str, str]) -> SimRequest:
     """Translates simulation form –from frontend– to simulation request which
     is understood by backend in
-    :func:`~simulation_api.controller.tasks._api_simulation_request`.
+    :func:`_api_simulation_request`.
 
     Parameters
     ----------

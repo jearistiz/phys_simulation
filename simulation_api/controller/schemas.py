@@ -58,7 +58,7 @@ class IntegrationMethods(str, Enum):
     Please update this class with relvant simulation methods available in 
     `scipy.integrate.solve_ivp`_ –only the ones that do not require more
     parameters than the ones provided in
-    :py:class:`~simulation_api.controller.schemas.SimRequest`.
+    :py:class:`SimRequest`.
 
     .. _scipy.integrate.solve_ivp: https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html
     """
@@ -104,9 +104,9 @@ class SimForm(BaseModel):
     Needs update each time a new simulation is added:
 
     1. Create a new appropiate class similar to
-       :py:class:`~simulation_api.controller.schemas.HOSimForm` or to
-       :py:class:`~simulation_api.controller.schemas.ChenLeeSimForm`.
-    2. Add the class to the ``dict`` :data:`~simulation_api.controller.schemas.SimFormDict`
+       :py:class:`HOSimForm` or to
+       :py:class:`ChenLeeSimForm`.
+    2. Add the class to the ``dict`` :data:`SimFormDict`
        defined somewhere in this module.
     """
     username: Optional[str] = "Pepito"
@@ -139,9 +139,9 @@ class HOSimForm(SimForm):
     ini1: Optional[float] = 0.0
     """:math:`p` initial value."""
     param0: Optional[float] = 1.0
-    """Parameter of name :attr:`~simulation_api.controller.schemas.HOParams.m`."""
+    """Parameter of name :attr:`HOParams.m`."""
     param1: Optional[float] = 1.0
-    """Parameter of name :attr:`~simulation_api.controller.schemas.HOParams.k`."""
+    """Parameter of name :attr:`HOParams.k`."""
 
 
 class ChenLeeSimForm(SimForm):
@@ -162,11 +162,11 @@ class ChenLeeSimForm(SimForm):
     ini2: Optional[float] = 0.0
     """:math:`\omega_z` initial condition."""
     param0: Optional[float] = 3.0
-    """Parameter of name :attr:`~simulation_api.controller.schemas.ChenLeeParams.a`."""
+    """Parameter of name :attr:`ChenLeeParams.a`."""
     param1: Optional[float] = - 5.0
-    """Parameter of name :attr:`~simulation_api.controller.schemas.ChenLeeParams.b`."""
+    """Parameter of name :attr:`ChenLeeParams.b`."""
     param2: Optional[float] = - 1.0
-    """Parameter of name :attr:`~simulation_api.controller.schemas.ChenLeeParams.c`."""
+    """Parameter of name :attr:`ChenLeeParams.c`."""
 
 
 
@@ -186,7 +186,7 @@ class HOParams(BaseModel):
     -------
     This needs update each time a new simulation is added: add an
     appropiate new class similar to this one or to
-    :py:class:`simulation_api.controller.schemas.ChenLeeParams`.
+    :py:class:`ChenLeeParams`.
     """
     m: float    # Mass
     """Mass of object."""
@@ -207,7 +207,7 @@ class ChenLeeParams(BaseModel):
     -------
     This needs update each time a new simulation is added: add an
     appropiate new class similar to this one or to
-    :py:class:`simulation_api.controller.schemas.HOParams`.
+    :py:class:`HOParams`.
     """
     a: float
     """:math:`\omega_x` parameter."""
@@ -273,13 +273,13 @@ system_to_params_dict = {
     SimSystem.ChenLee.value: params_mapping_ChenLee,
 }
 """Maps the name of each available system to its parameter change-of-convention
-mapping (e.g. :data:`~simulation_api.controller.schemas.params_mapping_HO` or
-:data:`~simulation_api.controller.schemas.params_mapping_ChenLee`.) 
+mapping (e.g. :data:`params_mapping_HO` or
+:data:`params_mapping_ChenLee`.) 
 
 This is used to translate the parameters name convention in frontend simulation
 request to the parameters name convention in backend simulation request (with
 appropiate schema given by
-:py:class:`simulation_api.controller.schemas.SimRequest`.)
+:py:class:`SimRequest`.)
 """
 
 
@@ -330,7 +330,7 @@ class SimIdResponse(BaseModel):
     Note
     ----
     The request of the simulation must follow the model
-    :py:class:`~simulation_api.controller.schemas.SimRequest`.
+    :py:class:`SimRequest`.
     """
     sim_id: Optional[str]
     """ID of simulation."""

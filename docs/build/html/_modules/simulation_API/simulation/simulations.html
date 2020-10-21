@@ -309,8 +309,8 @@
         <span class="sd">&quot;&quot;&quot;Extends :meth:`Simulation.__init__`</span>
 <span class="sd">        </span>
 <span class="sd">        Adds attributes</span>
-<span class="sd">        :attr:`~simulation_api.simulation.simulations.HarmonicOsc1D.m` and</span>
-<span class="sd">        :attr:`~simulation_api.simulation.simulations.HarmonicOsc1D.k`.</span>
+<span class="sd">        :attr:`HarmonicOsc1D.m` and</span>
+<span class="sd">        :attr:`HarmonicOsc1D.k`.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -320,7 +320,7 @@
 <span class="sd">            generalised position and :math:`p_0` is the initial generalised</span>
 <span class="sd">            momentum. Default is ``[0., 1.]``. A list of initial conditions</span>
 <span class="sd">            can be used, in this case a list of solutions will be returned by</span>
-<span class="sd">            :meth:`~simulation_api.simulation.simulations.Simulation.simulate`.</span>
+<span class="sd">            :meth:`Simulation.simulate`.</span>
 <span class="sd">        params : dict, optional</span>
 <span class="sd">            Contains all the parameters of the simulation. Schema must match::</span>
 
@@ -340,7 +340,7 @@
 
 <span class="sd">        Note</span>
 <span class="sd">        ----</span>
-<span class="sd">        Overwrites :attr:`simulation_api.simulation.simulations.Simulation.dyn_sys_eqns`.</span>
+<span class="sd">        Overwrites :attr:`Simulation.dyn_sys_eqns`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -406,12 +406,12 @@
                  <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mf">3.</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="o">-</span> <span class="mf">5.</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="o">-</span> <span class="mf">1.</span><span class="p">},</span>
                  <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;RK45&#39;</span><span class="p">,</span>
                  <span class="n">user_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Extends :meth:`simulation_api.simulation.simulations.Simulation.__init__`</span>
+        <span class="sd">&quot;&quot;&quot;Extends :meth:`Simulation.__init__`</span>
 <span class="sd">        </span>
 <span class="sd">        Adds attributes</span>
-<span class="sd">        :attr:`~simulation_api.simulation.simulations.ChenLeeAttractor.a`,</span>
-<span class="sd">        :attr:`~simulation_api.simulation.simulations.ChenLeeAttractor.b` and</span>
-<span class="sd">        :attr:`~simulation_api.simulation.simulations.ChenLeeAttractor.c`.</span>
+<span class="sd">        :attr:`ChenLeeAttractor.a`,</span>
+<span class="sd">        :attr:`ChenLeeAttractor.b` and</span>
+<span class="sd">        :attr:`ChenLeeAttractor.c`.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -420,7 +420,7 @@
 <span class="sd">            :math:`\\texttt{ini_cndtn} = [\omega_{x0}, \omega_{y0}, \omega_{z0}]`.</span>
 <span class="sd">            Default is ``[10, 10, 0]``. A list of initial conditions can be</span>
 <span class="sd">            used, in this case a list of solutions will be returned by</span>
-<span class="sd">            :py:meth:`~simulation_api.simulation.simulations.Simulation.simulate`</span>
+<span class="sd">            :py:meth:`Simulation.simulate`</span>
 <span class="sd">        params : dict, optional</span>
 <span class="sd">            Contains all the parameters of the simulation. Schema must match::</span>
 <span class="sd">            </span>
@@ -442,7 +442,7 @@
 <span class="sd">        </span>
 <span class="sd">        Note</span>
 <span class="sd">        ----</span>
-<span class="sd">        Overwrites :attr:`simulation_api.simulation.simulations.Simulation.dyn_sys_eqns`.</span>
+<span class="sd">        Overwrites :attr:`Simulation.dyn_sys_eqns`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

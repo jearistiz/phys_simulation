@@ -221,7 +221,7 @@
 <span class="sd">    Please update this class with relvant simulation methods available in </span>
 <span class="sd">    `scipy.integrate.solve_ivp`_ –only the ones that do not require more</span>
 <span class="sd">    parameters than the ones provided in</span>
-<span class="sd">    :py:class:`~simulation_api.controller.schemas.SimRequest`.</span>
+<span class="sd">    :py:class:`SimRequest`.</span>
 
 <span class="sd">    .. _scipy.integrate.solve_ivp: https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -267,9 +267,9 @@
 <span class="sd">    Needs update each time a new simulation is added:</span>
 
 <span class="sd">    1. Create a new appropiate class similar to</span>
-<span class="sd">       :py:class:`~simulation_api.controller.schemas.HOSimForm` or to</span>
-<span class="sd">       :py:class:`~simulation_api.controller.schemas.ChenLeeSimForm`.</span>
-<span class="sd">    2. Add the class to the ``dict`` :data:`~simulation_api.controller.schemas.SimFormDict`</span>
+<span class="sd">       :py:class:`HOSimForm` or to</span>
+<span class="sd">       :py:class:`ChenLeeSimForm`.</span>
+<span class="sd">    2. Add the class to the ``dict`` :data:`SimFormDict`</span>
 <span class="sd">       defined somewhere in this module.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Pepito&quot;</span>
@@ -302,9 +302,9 @@
     <span class="n">ini1</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="sd">&quot;&quot;&quot;:math:`p` initial value.&quot;&quot;&quot;</span>
     <span class="n">param0</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="sd">&quot;&quot;&quot;Parameter of name :attr:`~simulation_api.controller.schemas.HOParams.m`.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Parameter of name :attr:`HOParams.m`.&quot;&quot;&quot;</span>
     <span class="n">param1</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="sd">&quot;&quot;&quot;Parameter of name :attr:`~simulation_api.controller.schemas.HOParams.k`.&quot;&quot;&quot;</span></div>
+    <span class="sd">&quot;&quot;&quot;Parameter of name :attr:`HOParams.k`.&quot;&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="ChenLeeSimForm"><a class="viewcode-back" href="../../../code_docs/simulation_api.controller.html#simulation_api.controller.schemas.ChenLeeSimForm">[docs]</a><span class="k">class</span> <span class="nc">ChenLeeSimForm</span><span class="p">(</span><span class="n">SimForm</span><span class="p">):</span>
@@ -325,11 +325,11 @@
     <span class="n">ini2</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="sd">&quot;&quot;&quot;:math:`\omega_z` initial condition.&quot;&quot;&quot;</span>
     <span class="n">param0</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">3.0</span>
-    <span class="sd">&quot;&quot;&quot;Parameter of name :attr:`~simulation_api.controller.schemas.ChenLeeParams.a`.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Parameter of name :attr:`ChenLeeParams.a`.&quot;&quot;&quot;</span>
     <span class="n">param1</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span> <span class="mf">5.0</span>
-    <span class="sd">&quot;&quot;&quot;Parameter of name :attr:`~simulation_api.controller.schemas.ChenLeeParams.b`.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Parameter of name :attr:`ChenLeeParams.b`.&quot;&quot;&quot;</span>
     <span class="n">param2</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span> <span class="mf">1.0</span>
-    <span class="sd">&quot;&quot;&quot;Parameter of name :attr:`~simulation_api.controller.schemas.ChenLeeParams.c`.&quot;&quot;&quot;</span></div>
+    <span class="sd">&quot;&quot;&quot;Parameter of name :attr:`ChenLeeParams.c`.&quot;&quot;&quot;</span></div>
 
 
 
@@ -349,7 +349,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    This needs update each time a new simulation is added: add an</span>
 <span class="sd">    appropiate new class similar to this one or to</span>
-<span class="sd">    :py:class:`simulation_api.controller.schemas.ChenLeeParams`.</span>
+<span class="sd">    :py:class:`ChenLeeParams`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">m</span><span class="p">:</span> <span class="nb">float</span>    <span class="c1"># Mass</span>
     <span class="sd">&quot;&quot;&quot;Mass of object.&quot;&quot;&quot;</span>
@@ -370,7 +370,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    This needs update each time a new simulation is added: add an</span>
 <span class="sd">    appropiate new class similar to this one or to</span>
-<span class="sd">    :py:class:`simulation_api.controller.schemas.HOParams`.</span>
+<span class="sd">    :py:class:`HOParams`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">a</span><span class="p">:</span> <span class="nb">float</span>
     <span class="sd">&quot;&quot;&quot;:math:`\omega_x` parameter.&quot;&quot;&quot;</span>
@@ -436,13 +436,13 @@
     <span class="n">SimSystem</span><span class="o">.</span><span class="n">ChenLee</span><span class="o">.</span><span class="n">value</span><span class="p">:</span> <span class="n">params_mapping_ChenLee</span><span class="p">,</span>
 <span class="p">}</span>
 <span class="sd">&quot;&quot;&quot;Maps the name of each available system to its parameter change-of-convention</span>
-<span class="sd">mapping (e.g. :data:`~simulation_api.controller.schemas.params_mapping_HO` or</span>
-<span class="sd">:data:`~simulation_api.controller.schemas.params_mapping_ChenLee`.) </span>
+<span class="sd">mapping (e.g. :data:`params_mapping_HO` or</span>
+<span class="sd">:data:`params_mapping_ChenLee`.) </span>
 
 <span class="sd">This is used to translate the parameters name convention in frontend simulation</span>
 <span class="sd">request to the parameters name convention in backend simulation request (with</span>
 <span class="sd">appropiate schema given by</span>
-<span class="sd">:py:class:`simulation_api.controller.schemas.SimRequest`.)</span>
+<span class="sd">:py:class:`SimRequest`.)</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
@@ -493,7 +493,7 @@
 <span class="sd">    Note</span>
 <span class="sd">    ----</span>
 <span class="sd">    The request of the simulation must follow the model</span>
-<span class="sd">    :py:class:`~simulation_api.controller.schemas.SimRequest`.</span>
+<span class="sd">    :py:class:`SimRequest`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sim_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="sd">&quot;&quot;&quot;ID of simulation.&quot;&quot;&quot;</span>

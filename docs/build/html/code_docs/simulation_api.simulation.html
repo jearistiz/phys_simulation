@@ -247,11 +247,11 @@ frame of reference.</p>
 <dl class="py method">
 <dt id="simulation_api.simulation.simulations.ChenLeeAttractor.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t_span</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Tuple<span class="p">[</span>float<span class="p">, </span>float<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[0, 400]</span></em>, <em class="sig-param"><span class="n">t_eval</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>tuple<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ini_cndtn</span><span class="p">:</span> <span class="n">List<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[10.0, 10.0, 0.0]</span></em>, <em class="sig-param"><span class="n">params</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">{'a': 3.0, 'b': - 5.0, 'c': - 1.0}</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'RK45'</span></em>, <em class="sig-param"><span class="n">user_name</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/simulation_api/simulation/simulations.html#ChenLeeAttractor.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation_api.simulation.simulations.ChenLeeAttractor.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Extends <a class="reference internal" href="#simulation_api.simulation.simulations.Simulation.__init__" title="simulation_api.simulation.simulations.Simulation.__init__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simulation_api.simulation.simulations.Simulation.__init__()</span></code></a></p>
+<dd><p>Extends <a class="reference internal" href="#simulation_api.simulation.simulations.Simulation.__init__" title="simulation_api.simulation.simulations.Simulation.__init__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Simulation.__init__()</span></code></a></p>
 <p>Adds attributes
-<a class="reference internal" href="#simulation_api.simulation.simulations.ChenLeeAttractor.a" title="simulation_api.simulation.simulations.ChenLeeAttractor.a"><code class="xref py py-attr docutils literal notranslate"><span class="pre">a</span></code></a>,
-<a class="reference internal" href="#simulation_api.simulation.simulations.ChenLeeAttractor.b" title="simulation_api.simulation.simulations.ChenLeeAttractor.b"><code class="xref py py-attr docutils literal notranslate"><span class="pre">b</span></code></a> and
-<a class="reference internal" href="#simulation_api.simulation.simulations.ChenLeeAttractor.c" title="simulation_api.simulation.simulations.ChenLeeAttractor.c"><code class="xref py py-attr docutils literal notranslate"><span class="pre">c</span></code></a>.</p>
+<a class="reference internal" href="#simulation_api.simulation.simulations.ChenLeeAttractor.a" title="simulation_api.simulation.simulations.ChenLeeAttractor.a"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ChenLeeAttractor.a</span></code></a>,
+<a class="reference internal" href="#simulation_api.simulation.simulations.ChenLeeAttractor.b" title="simulation_api.simulation.simulations.ChenLeeAttractor.b"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ChenLeeAttractor.b</span></code></a> and
+<a class="reference internal" href="#simulation_api.simulation.simulations.ChenLeeAttractor.c" title="simulation_api.simulation.simulations.ChenLeeAttractor.c"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ChenLeeAttractor.c</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -259,7 +259,7 @@ frame of reference.</p>
 <span class="math notranslate nohighlight">\(\texttt{ini_cndtn} = [\omega_{x0}, \omega_{y0}, \omega_{z0}]\)</span>.
 Default is <code class="docutils literal notranslate"><span class="pre">[10,</span> <span class="pre">10,</span> <span class="pre">0]</span></code>. A list of initial conditions can be
 used, in this case a list of solutions will be returned by
-<a class="reference internal" href="#simulation_api.simulation.simulations.Simulation.simulate" title="simulation_api.simulation.simulations.Simulation.simulate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simulate()</span></code></a></p></li>
+<a class="reference internal" href="#simulation_api.simulation.simulations.Simulation.simulate" title="simulation_api.simulation.simulations.Simulation.simulate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Simulation.simulate()</span></code></a></p></li>
 <li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) – <p>Contains all the parameters of the simulation. Schema must match:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>     <span class="c1"># `\omega_x` parameter.</span>
@@ -281,7 +281,7 @@ used, in this case a list of solutions will be returned by
 <dd><p>Chen-Lee Dynamical system definition</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Overwrites <a class="reference internal" href="#simulation_api.simulation.simulations.Simulation.dyn_sys_eqns" title="simulation_api.simulation.simulations.Simulation.dyn_sys_eqns"><code class="xref py py-attr docutils literal notranslate"><span class="pre">simulation_api.simulation.simulations.Simulation.dyn_sys_eqns</span></code></a>.</p>
+<p>Overwrites <a class="reference internal" href="#simulation_api.simulation.simulations.Simulation.dyn_sys_eqns" title="simulation_api.simulation.simulations.Simulation.dyn_sys_eqns"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Simulation.dyn_sys_eqns</span></code></a>.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -343,8 +343,8 @@ Convention: <span class="math notranslate nohighlight">\(\texttt{w} = [\omega_x,
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t_span</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Tuple<span class="p">[</span>float<span class="p">, </span>float<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[0, 6.283185307179586]</span></em>, <em class="sig-param"><span class="n">t_eval</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>tuple<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ini_cndtn</span><span class="p">:</span> <span class="n">List<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[0.0, 1.0]</span></em>, <em class="sig-param"><span class="n">params</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">{'k': 1.0, 'm': 1.0}</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'RK45'</span></em>, <em class="sig-param"><span class="n">user_name</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/simulation_api/simulation/simulations.html#HarmonicOsc1D.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulation_api.simulation.simulations.HarmonicOsc1D.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extends <a class="reference internal" href="#simulation_api.simulation.simulations.Simulation.__init__" title="simulation_api.simulation.simulations.Simulation.__init__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Simulation.__init__()</span></code></a></p>
 <p>Adds attributes
-<a class="reference internal" href="#simulation_api.simulation.simulations.HarmonicOsc1D.m" title="simulation_api.simulation.simulations.HarmonicOsc1D.m"><code class="xref py py-attr docutils literal notranslate"><span class="pre">m</span></code></a> and
-<a class="reference internal" href="#simulation_api.simulation.simulations.HarmonicOsc1D.k" title="simulation_api.simulation.simulations.HarmonicOsc1D.k"><code class="xref py py-attr docutils literal notranslate"><span class="pre">k</span></code></a>.</p>
+<a class="reference internal" href="#simulation_api.simulation.simulations.HarmonicOsc1D.m" title="simulation_api.simulation.simulations.HarmonicOsc1D.m"><code class="xref py py-attr docutils literal notranslate"><span class="pre">HarmonicOsc1D.m</span></code></a> and
+<a class="reference internal" href="#simulation_api.simulation.simulations.HarmonicOsc1D.k" title="simulation_api.simulation.simulations.HarmonicOsc1D.k"><code class="xref py py-attr docutils literal notranslate"><span class="pre">HarmonicOsc1D.k</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -353,7 +353,7 @@ Convention: <span class="math notranslate nohighlight">\(\texttt{w} = [\omega_x,
 generalised position and <span class="math notranslate nohighlight">\(p_0\)</span> is the initial generalised
 momentum. Default is <code class="docutils literal notranslate"><span class="pre">[0.,</span> <span class="pre">1.]</span></code>. A list of initial conditions
 can be used, in this case a list of solutions will be returned by
-<a class="reference internal" href="#simulation_api.simulation.simulations.Simulation.simulate" title="simulation_api.simulation.simulations.Simulation.simulate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simulate()</span></code></a>.</p></li>
+<a class="reference internal" href="#simulation_api.simulation.simulations.Simulation.simulate" title="simulation_api.simulation.simulations.Simulation.simulate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Simulation.simulate()</span></code></a>.</p></li>
 <li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) – <p>Contains all the parameters of the simulation. Schema must match:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;m&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>     <span class="c1"># Mass of object.</span>
@@ -374,7 +374,7 @@ can be used, in this case a list of solutions will be returned by
 <dd><p>Hamilton’s equations for 1D-Harmonic Oscillator.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Overwrites <a class="reference internal" href="#simulation_api.simulation.simulations.Simulation.dyn_sys_eqns" title="simulation_api.simulation.simulations.Simulation.dyn_sys_eqns"><code class="xref py py-attr docutils literal notranslate"><span class="pre">simulation_api.simulation.simulations.Simulation.dyn_sys_eqns</span></code></a>.</p>
+<p>Overwrites <a class="reference internal" href="#simulation_api.simulation.simulations.Simulation.dyn_sys_eqns" title="simulation_api.simulation.simulations.Simulation.dyn_sys_eqns"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Simulation.dyn_sys_eqns</span></code></a>.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
