@@ -24,4 +24,4 @@ templates_dir = os.path.join(this_dir, 'templates')
 templates = Jinja2Templates(directory=templates_dir)
 
 # Import the file that will manage all the requests made to our app
-from simulation_API.controller import main, tasks
+from simulation_api.controller import main, tasks

@@ -28,9 +28,9 @@ sphinx-jsonschema = "*"
 python_version = "3.6"
 
 [scripts]
-simulation_API = "python run.py"
-s_autodoc = "sphinx-apidoc -o ./source ../simulation_API"
-s_autodoc_force = "sphinx-apidoc -f -o ./source ../simulation_API"
+simulation_api = "python run.py"
+s_autodoc = "sphinx-apidoc -o ./source ../simulation_api"
+s_autodoc_force = "sphinx-apidoc -f -o ./source ../simulation_api"
 
 [pipenv]
 allow_prereleases = true

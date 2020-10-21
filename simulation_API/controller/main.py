@@ -12,7 +12,7 @@ from starlette.status import HTTP_303_SEE_OTHER, HTTP_404_NOT_FOUND
 from sqlalchemy.orm import Session
 
 # App instance and templates
-from simulation_API import app, templates
+from simulation_api import app, templates
 # Schemas
 from .schemas import *
 # Simulation handler
@@ -20,9 +20,9 @@ from .tasks import (_create_pickle_path_disk, _create_plot_path_disk,
                     _sim_form_to_sim_request, _api_simulation_request,
                     _check_chen_lee_params)
 # Database-related
-from simulation_API.model import crud, models
-from simulation_API.model.db_manager import SessionLocal, engine
-from simulation_API.config import PLOTS_FORMAT
+from simulation_api.model import crud, models
+from simulation_api.model.db_manager import SessionLocal, engine
+from simulation_api.config import PLOTS_FORMAT
 
 # Creates all tables (defined in models) in database (simulations.db)
 models.Base.metadata.create_all(bind=engine)

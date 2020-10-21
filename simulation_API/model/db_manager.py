@@ -9,7 +9,7 @@ from sqlalchemy.ext.declarative import declarative_base
 # in Personal CS Projects notebook
 from sqlalchemy.orm import sessionmaker
 
-from simulation_API.config import PATH_DB
+from simulation_api.config import PATH_DB
 
 # Start sqlalchemy engine.
 # Set echo=True to see queries called by sqlalchemy. Set to false in production!

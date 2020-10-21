@@ -6,7 +6,7 @@ from typing import Union, Tuple
 from sqlalchemy.orm import Session
 
 from .models import *
-from simulation_API.controller.schemas import *
+from simulation_api.controller.schemas import *
 
 
 def _create_user(db: Session, user: UserDBSchCreate) -> UserDB:

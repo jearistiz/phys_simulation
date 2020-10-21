@@ -14,16 +14,16 @@ from mpl_toolkits.mplot3d import Axes3D
 import pickle as pkl
 from numpy import linspace, abs
 
-from simulation_API import app
+from simulation_api import app
 # Import pydantic schemas
 from .schemas import *
 # Import paths to save plots and pickles
-from simulation_API.config import PATH_PLOTS, PATH_PICKLES, PLOTS_FORMAT
+from simulation_api.config import PATH_PLOTS, PATH_PICKLES, PLOTS_FORMAT
 # Import simulation module
-from simulation_API.simulation.simulations import Simulations
+from simulation_api.simulation.simulations import Simulations
 # Database-related
-from simulation_API.model.db_manager import SessionLocal
-from simulation_API.model import crud
+from simulation_api.model.db_manager import SessionLocal
+from simulation_api.model import crud
 
 # Next line of code avoids a warning when generating matplotlib figures: 
 # `UserWarning: Starting a Matplotlib GUI outside of the main thread will likely
