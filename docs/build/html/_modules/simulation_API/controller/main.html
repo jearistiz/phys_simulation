@@ -90,6 +90,7 @@
               <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../start/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../start/install.html">Install and run PHYS Simulation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../start/examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../start/frontend.html">Website</a></li>
 </ul>
@@ -165,27 +166,27 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># TODO|FIXME|BUG|HACK|NOTE| Some nice colored tags for comments.</span>
 
-<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">isfile</span>
-<span class="kn">from</span> <span class="nn">uuid</span> <span class="k">import</span> <span class="n">UUID</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">isfile</span>
+<span class="kn">from</span> <span class="nn">uuid</span> <span class="kn">import</span> <span class="n">UUID</span>
 
-<span class="kn">from</span> <span class="nn">fastapi</span> <span class="k">import</span> <span class="n">Request</span><span class="p">,</span> <span class="n">BackgroundTasks</span><span class="p">,</span> <span class="n">HTTPException</span><span class="p">,</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">Form</span>
-<span class="kn">from</span> <span class="nn">starlette.exceptions</span> <span class="k">import</span> <span class="n">HTTPException</span> <span class="k">as</span> <span class="n">StarletteHTTPException</span>
-<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="k">import</span> <span class="n">FileResponse</span><span class="p">,</span> <span class="n">RedirectResponse</span>
-<span class="kn">from</span> <span class="nn">starlette.status</span> <span class="k">import</span> <span class="n">HTTP_303_SEE_OTHER</span><span class="p">,</span> <span class="n">HTTP_404_NOT_FOUND</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="k">import</span> <span class="n">Session</span>
+<span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">Request</span><span class="p">,</span> <span class="n">BackgroundTasks</span><span class="p">,</span> <span class="n">HTTPException</span><span class="p">,</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">Form</span>
+<span class="kn">from</span> <span class="nn">starlette.exceptions</span> <span class="kn">import</span> <span class="n">HTTPException</span> <span class="k">as</span> <span class="n">StarletteHTTPException</span>
+<span class="kn">from</span> <span class="nn">starlette.responses</span> <span class="kn">import</span> <span class="n">FileResponse</span><span class="p">,</span> <span class="n">RedirectResponse</span>
+<span class="kn">from</span> <span class="nn">starlette.status</span> <span class="kn">import</span> <span class="n">HTTP_303_SEE_OTHER</span><span class="p">,</span> <span class="n">HTTP_404_NOT_FOUND</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">Session</span>
 
 <span class="c1"># App instance and templates</span>
-<span class="kn">from</span> <span class="nn">simulation_api</span> <span class="k">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">templates</span>
+<span class="kn">from</span> <span class="nn">simulation_api</span> <span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">templates</span>
 <span class="c1"># Schemas</span>
-<span class="kn">from</span> <span class="nn">.schemas</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.schemas</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="c1"># Simulation handler</span>
-<span class="kn">from</span> <span class="nn">.tasks</span> <span class="k">import</span> <span class="p">(</span><span class="n">_create_pickle_path_disk</span><span class="p">,</span> <span class="n">_create_plot_path_disk</span><span class="p">,</span> 
+<span class="kn">from</span> <span class="nn">.tasks</span> <span class="kn">import</span> <span class="p">(</span><span class="n">_create_pickle_path_disk</span><span class="p">,</span> <span class="n">_create_plot_path_disk</span><span class="p">,</span> 
                     <span class="n">_sim_form_to_sim_request</span><span class="p">,</span> <span class="n">_api_simulation_request</span><span class="p">,</span>
                     <span class="n">_check_chen_lee_params</span><span class="p">)</span>
 <span class="c1"># Database-related</span>
-<span class="kn">from</span> <span class="nn">simulation_api.model</span> <span class="k">import</span> <span class="n">crud</span><span class="p">,</span> <span class="n">models</span>
-<span class="kn">from</span> <span class="nn">simulation_api.model.db_manager</span> <span class="k">import</span> <span class="n">SessionLocal</span><span class="p">,</span> <span class="n">engine</span>
-<span class="kn">from</span> <span class="nn">simulation_api.config</span> <span class="k">import</span> <span class="n">PLOTS_FORMAT</span>
+<span class="kn">from</span> <span class="nn">simulation_api.model</span> <span class="kn">import</span> <span class="n">crud</span><span class="p">,</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">simulation_api.model.db_manager</span> <span class="kn">import</span> <span class="n">SessionLocal</span><span class="p">,</span> <span class="n">engine</span>
+<span class="kn">from</span> <span class="nn">simulation_api.config</span> <span class="kn">import</span> <span class="n">PLOTS_FORMAT</span>
 
 <span class="c1"># Creates all tables (defined in models) in database (simulations.db)</span>
 <span class="n">models</span><span class="o">.</span><span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">bind</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
@@ -315,7 +316,7 @@
     <span class="n">sim_form</span> <span class="o">=</span> <span class="n">SysSimForm</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span>
-        <span class="n">f</span><span class="s2">&quot;request-simulation.html&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;request-simulation.html&quot;</span><span class="p">,</span>
         <span class="p">{</span>
             <span class="s2">&quot;sim_system&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">sim_system</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
             <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="n">request</span><span class="p">,</span>
@@ -424,7 +425,7 @@
 
     <span class="c1"># Check Chen-Lee parameters</span>
     <span class="k">if</span> <span class="n">sim_sys</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">SimSystem</span><span class="o">.</span><span class="n">ChenLee</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="n">f</span><span class="s2">&quot;param</span><span class="si">{i}</span><span class="s2">&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;param</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">_check_chen_lee_params</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
             <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;Chen-Lee parameters must satisfy a &gt; 0, and &quot;</span> \
                             <span class="s2">&quot;b &lt; 0, and c &lt; 0 and a &lt; -(b + c)&quot;</span>

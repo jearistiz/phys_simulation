@@ -29,6 +29,12 @@ impefect as it may be.
 In the future we want to add as many features as we can, so far it enriches
 the client experience.
 
+.. note:: 
+
+   This project was also presented as Harvard's CS50x final project. Check out
+   the `video`_.
+
+.. _video: https://www.youtube.com/watch?v=2QGRTdbjzLU
 
 Getting Started
 ===============
@@ -39,10 +45,12 @@ Getting Started
    :hidden:
 
    start/overview
+   start/install
    start/examples
    start/frontend
 
 - :ref:`Overview <start-overview>`
+- :ref:`Install and run locally <start-install>`
 - :ref:`Examples <start-examples>`
 - :ref:`Website <start-frontend>`
 

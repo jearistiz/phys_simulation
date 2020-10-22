@@ -90,6 +90,7 @@
               <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../start/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../start/install.html">Install and run PHYS Simulation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../start/examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../start/frontend.html">Website</a></li>
 </ul>
@@ -162,31 +163,31 @@
             
   <h1>Source code for simulation_api.controller.tasks</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;This file will do background tasks e.g. the simulation&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
-<span class="kn">from</span> <span class="nn">uuid</span> <span class="k">import</span> <span class="n">uuid4</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">uuid</span> <span class="kn">import</span> <span class="n">uuid4</span>
 
 <span class="c1"># Needed to simulate in backgroung</span>
-<span class="kn">from</span> <span class="nn">fastapi</span> <span class="k">import</span> <span class="n">BackgroundTasks</span><span class="p">,</span> <span class="n">HTTPException</span>
+<span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">BackgroundTasks</span><span class="p">,</span> <span class="n">HTTPException</span>
 <span class="c1"># Database-related</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="k">import</span> <span class="n">Session</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">Session</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
-<span class="kn">from</span> <span class="nn">matplotlib.figure</span> <span class="k">import</span> <span class="n">Figure</span>
-<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="k">import</span> <span class="n">Axes3D</span>
+<span class="kn">from</span> <span class="nn">matplotlib.figure</span> <span class="kn">import</span> <span class="n">Figure</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
 <span class="c1"># import matplotlib.pyplot as plt</span>
 <span class="kn">import</span> <span class="nn">pickle</span> <span class="k">as</span> <span class="nn">pkl</span>
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">linspace</span><span class="p">,</span> <span class="nb">abs</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">linspace</span><span class="p">,</span> <span class="nb">abs</span>
 
-<span class="kn">from</span> <span class="nn">simulation_api</span> <span class="k">import</span> <span class="n">app</span>
+<span class="kn">from</span> <span class="nn">simulation_api</span> <span class="kn">import</span> <span class="n">app</span>
 <span class="c1"># Import pydantic schemas</span>
-<span class="kn">from</span> <span class="nn">.schemas</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.schemas</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="c1"># Import paths to save plots and pickles</span>
-<span class="kn">from</span> <span class="nn">simulation_api.config</span> <span class="k">import</span> <span class="n">PATH_PLOTS</span><span class="p">,</span> <span class="n">PATH_PICKLES</span><span class="p">,</span> <span class="n">PLOTS_FORMAT</span>
+<span class="kn">from</span> <span class="nn">simulation_api.config</span> <span class="kn">import</span> <span class="n">PATH_PLOTS</span><span class="p">,</span> <span class="n">PATH_PICKLES</span><span class="p">,</span> <span class="n">PLOTS_FORMAT</span>
 <span class="c1"># Import simulation module</span>
-<span class="kn">from</span> <span class="nn">simulation_api.simulation.simulations</span> <span class="k">import</span> <span class="n">Simulations</span>
+<span class="kn">from</span> <span class="nn">simulation_api.simulation.simulations</span> <span class="kn">import</span> <span class="n">Simulations</span>
 <span class="c1"># Database-related</span>
-<span class="kn">from</span> <span class="nn">simulation_api.model.db_manager</span> <span class="k">import</span> <span class="n">SessionLocal</span>
-<span class="kn">from</span> <span class="nn">simulation_api.model</span> <span class="k">import</span> <span class="n">crud</span>
+<span class="kn">from</span> <span class="nn">simulation_api.model.db_manager</span> <span class="kn">import</span> <span class="n">SessionLocal</span>
+<span class="kn">from</span> <span class="nn">simulation_api.model</span> <span class="kn">import</span> <span class="n">crud</span>
 
 <span class="c1"># Next line of code avoids a warning when generating matplotlib figures: </span>
 <span class="c1"># `UserWarning: Starting a Matplotlib GUI outside of the main thread will likely</span>
@@ -713,7 +714,7 @@
 
     <span class="c1"># Initial conditions</span>
     <span class="n">ini_cndtn_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">key</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;ini&quot;</span><span class="p">]</span>
-    <span class="n">ini_cndtn</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="n">f</span><span class="s2">&quot;ini</span><span class="si">{i}</span><span class="s2">&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ini_cndtn_keys</span><span class="p">))]</span>
+    <span class="n">ini_cndtn</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;ini</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ini_cndtn_keys</span><span class="p">))]</span>
     
     <span class="c1"># Parameters</span>
     <span class="c1"># NOTE</span>
@@ -724,7 +725,7 @@
     <span class="n">param_convention</span> <span class="o">=</span> <span class="n">system_to_params_dict</span><span class="p">[</span><span class="n">form</span><span class="p">[</span><span class="s2">&quot;sim_sys&quot;</span><span class="p">]]</span>
     <span class="n">param_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">key</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;param&quot;</span><span class="p">]</span>
     <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">param_convention</span><span class="p">[</span><span class="n">f</span><span class="s2">&quot;param</span><span class="si">{i}</span><span class="s2">&quot;</span><span class="p">]:</span> <span class="nb">float</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="n">f</span><span class="s2">&quot;param</span><span class="si">{i}</span><span class="s2">&quot;</span><span class="p">])</span> 
+        <span class="n">param_convention</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;param</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]:</span> <span class="nb">float</span><span class="p">(</span><span class="n">form</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;param</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span> 
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">param_keys</span><span class="p">))</span>
     <span class="p">}</span>
 

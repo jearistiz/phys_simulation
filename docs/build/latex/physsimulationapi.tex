@@ -74,7 +74,7 @@
 
 
 \title{PHYS Simulation API}
-\date{Oct 21, 2020}
+\date{Oct 22, 2020}
 \release{1.0}
 \author{Juan E.\@{} Aristizabal}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -106,6 +106,11 @@ impefect as it may be.
 
 In the future we want to add as many features as we can, so far it enriches
 the client experience.
+
+\begin{sphinxadmonition}{note}{Note:}
+This project was also presented as Harvard’s CS50x final project. Check out
+the \sphinxhref{https://www.youtube.com/watch?v=2QGRTdbjzLU}{video}.
+\end{sphinxadmonition}
 
 
 \chapter{Getting Started}
@@ -1476,6 +1481,92 @@ the last item.
 \end{enumerate}
 
 
+\section{Install and run PHYS Simulation}
+\label{\detokenize{start/install:install-and-run-phys-simulation}}\label{\detokenize{start/install:start-install}}\label{\detokenize{start/install::doc}}\begin{enumerate}
+\sphinxsetlistlabels{\arabic}{enumi}{enumii}{}{.}%
+\item {} 
+Before installing PHYS Simulation make sure you \sphinxhref{https://pypi.org/project/pipenv/}{install pipenv}.
+
+\item {} 
+To download PHYS Simulation clone it from the github repository using the
+following command
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYGZdl{} git clone https://github.com/jearistiz/phys\PYGZus{}simulation
+\end{sphinxVerbatim}
+
+\item {} 
+Change to the directory where PHYS Simulation is installed
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYGZdl{} \PYG{n+nb}{cd} phys\PYGZus{}simulation
+\end{sphinxVerbatim}
+
+\item {} 
+Create a virtual environment and install all the requirements using
+\sphinxcode{\sphinxupquote{pipenv}} (this can take several minutes)
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYGZdl{} pipenv install
+\end{sphinxVerbatim}
+
+\item {} 
+Activate the virtual environment
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYGZdl{} pipenv shell
+\end{sphinxVerbatim}
+
+\item {} 
+Finally, run the web application in your localhost \sphinxurl{http://0.0.0.0:5700/}
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYGZdl{} pipenv run simulation\PYGZus{}api
+\end{sphinxVerbatim}
+
+You can manage \sphinxcode{\sphinxupquote{HOST}} and \sphinxcode{\sphinxupquote{PORT}} variables in the server configuration
+file \sphinxcode{\sphinxupquote{\textasciitilde{}/phys\_simulation/config.py}}.
+
+\end{enumerate}
+
+\begin{sphinxadmonition}{note}{Note:}\begin{itemize}
+\item {} 
+The project runs on a Uvicorn server. The file in charge of setting up and
+starting the server is \sphinxcode{\sphinxupquote{\textasciitilde{}/phys\_simulation/run.py}}. Change the options to
+your prefferred ones.
+
+\item {} 
+If you run the server locally you can try the frontend and API in the host
+and port you chose. The frontend is almost self\sphinxhyphen{}explanatory.
+
+\item {} 
+If you want to try out the API, go to the {\hyperref[\detokenize{start/examples:start-examples}]{\sphinxcrossref{\DUrole{std,std-ref}{Examples}}}}
+section. We also explain how to use the API in general terms in the
+{\hyperref[\detokenize{start/overview:start-overview}]{\sphinxcrossref{\DUrole{std,std-ref}{Overview}}}} section.
+
+\item {} 
+\sphinxstylestrong{The API has its own client documentation}, thanks to FastAPI’s
+integration with Swagger (formerly OpenAPI). To read this docs, after
+starting the server go to the resource \sphinxcode{\sphinxupquote{localhos:5700/docs}} or
+\sphinxcode{\sphinxupquote{localhos:5700/redoc}} and refer to the documentation of the resources
+starting with  \sphinxcode{\sphinxupquote{/api/}}.
+
+\item {} 
+If you want to stop the server, go to the terminal where you started it and
+use the shortcut \sphinxcode{\sphinxupquote{Ctrl + C}}.
+
+\item {} 
+If you want to remove the virtual environment after using the app move to
+\sphinxcode{\sphinxupquote{\textasciitilde{}/phys\_simulation/}} directory and execute
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYGZdl{} pipenv \PYGZhy{}\PYGZhy{}rm
+\end{sphinxVerbatim}
+
+\end{itemize}
+\end{sphinxadmonition}
+
+
 \section{Examples}
 \label{\detokenize{start/examples:examples}}\label{\detokenize{start/examples:start-examples}}\label{\detokenize{start/examples::doc}}
 Here we will see an example of the work flow with PHYS Simulation API. To make
@@ -1531,24 +1622,24 @@ result
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{url} \PYG{o}{=} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{http://0.0.0.0:5700}\PYG{l+s+s1}{\PYGZsq{}}
 \PYG{g+go}{\PYGZgt{}\PYGZgt{}\PYGZgt{}}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{c+c1}{\PYGZsh{} Simulation request route}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sim\PYGZus{}requrest\PYGZus{}route} \PYG{o}{=} \PYG{n}{f}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{/api/simulate/\PYGZob{}sim\PYGZus{}system\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sim\PYGZus{}requrest\PYGZus{}route} \PYG{o}{=} \PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{/api/simulate/}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{sim\PYGZus{}system}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}
 \PYG{g+go}{\PYGZgt{}\PYGZgt{}\PYGZgt{}}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{c+c1}{\PYGZsh{} Request simulation via HTTP using `requests` module}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sim\PYGZus{}request\PYGZus{}response} \PYG{o}{=} \PYG{n}{requests}\PYG{o}{.}\PYG{n}{post}\PYG{p}{(}\PYG{n}{url} \PYG{o}{+} \PYG{n}{sim\PYGZus{}requrest\PYGZus{}route}\PYG{p}{,} \PYG{n}{json}\PYG{o}{=}\PYG{n}{sim\PYGZus{}request}\PYG{p}{)}
 \PYG{g+go}{\PYGZgt{}\PYGZgt{}\PYGZgt{}}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{c+c1}{\PYGZsh{} Print response}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k}{print}\PYG{p}{(}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n+nb}{print}\PYG{p}{(}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Simulation Request Response}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{HTML status code: \PYGZob{}sim\PYGZus{}request\PYGZus{}response.status\PYGZus{}code\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{HTML status code: }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{sim\PYGZus{}request\PYGZus{}response}\PYG{o}{.}\PYG{n}{status\PYGZus{}code}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Response:}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{    \PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{    }\PYG{l+s+s2}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n}{sep}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{p}{)}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k}{for} \PYG{n}{key}\PYG{p}{,} \PYG{n}{v} \PYG{o+ow}{in} \PYG{n}{sim\PYGZus{}request\PYGZus{}response}\PYG{o}{.}\PYG{n}{json}\PYG{p}{(}\PYG{p}{)}\PYG{o}{.}\PYG{n}{items}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{k}{print}\PYG{p}{(}\PYG{n}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{        }\PYG{l+s+s2}{\PYGZsq{}}\PYG{l+s+s2}{\PYGZob{}key\PYGZcb{}}\PYG{l+s+s2}{\PYGZsq{}}\PYG{l+s+s2}{: \PYGZob{}v\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{    \PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{        }\PYG{l+s+s2}{\PYGZsq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{key}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZsq{}}\PYG{l+s+s2}{: }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{v}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{    \PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
 
 \PYG{g+go}{Simulation Request Response}
 \PYG{g+go}{\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
@@ -1584,25 +1675,25 @@ We proceed now to request the simulation results via GET in route
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sim\PYGZus{}id} \PYG{o}{=} \PYG{n}{sim\PYGZus{}request\PYGZus{}response}\PYG{o}{.}\PYG{n}{json}\PYG{p}{(}\PYG{p}{)}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{sim\PYGZus{}id}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]}
 \PYG{g+go}{\PYGZgt{}\PYGZgt{}\PYGZgt{}}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{c+c1}{\PYGZsh{} Simulation status route}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sim\PYGZus{}status\PYGZus{}route} \PYG{o}{=} \PYG{n}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{/api/simulate/status/\PYGZob{}sim\PYGZus{}id\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sim\PYGZus{}status\PYGZus{}route} \PYG{o}{=} \PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{/api/simulate/status/}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{sim\PYGZus{}id}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}
 \PYG{g+go}{\PYGZgt{}\PYGZgt{}\PYGZgt{}}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{c+c1}{\PYGZsh{} Request simulation status via HTTP using `requests` module}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sim\PYGZus{}status\PYGZus{}response} \PYG{o}{=} \PYG{n}{requests}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{n}{url} \PYG{o}{+} \PYG{n}{sim\PYGZus{}status\PYGZus{}route}\PYG{p}{)}
 \PYG{g+go}{\PYGZgt{}\PYGZgt{}\PYGZgt{}}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{c+c1}{\PYGZsh{} Print response}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{sim\PYGZus{}status\PYGZus{}response\PYGZus{}json} \PYG{o}{=} \PYG{n}{sim\PYGZus{}status\PYGZus{}response}\PYG{o}{.}\PYG{n}{json}\PYG{p}{(}\PYG{p}{)}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k}{print}\PYG{p}{(}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n+nb}{print}\PYG{p}{(}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Simulation status Response}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{HTML status code: \PYGZob{}sim\PYGZus{}status\PYGZus{}response.status\PYGZus{}code\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{HTML status code: }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{sim\PYGZus{}status\PYGZus{}response}\PYG{o}{.}\PYG{n}{status\PYGZus{}code}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Response:}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{    \PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{    }\PYG{l+s+s2}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n}{sep}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{p}{)}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k}{for} \PYG{n}{key}\PYG{p}{,} \PYG{n}{v} \PYG{o+ow}{in} \PYG{n}{sim\PYGZus{}status\PYGZus{}response\PYGZus{}json}\PYG{o}{.}\PYG{n}{items}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{k}{print}\PYG{p}{(}\PYG{n}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{        }\PYG{l+s+s2}{\PYGZsq{}}\PYG{l+s+s2}{\PYGZob{}key\PYGZcb{}}\PYG{l+s+s2}{\PYGZsq{}}\PYG{l+s+s2}{: \PYGZob{}v\PYGZcb{},}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{    \PYGZcb{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{        }\PYG{l+s+s2}{\PYGZsq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{key}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZsq{}}\PYG{l+s+s2}{: }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{v}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{    \PYGZcb{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
 
 \PYG{g+go}{Simulation status Response}
 \PYG{g+go}{\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
@@ -1646,21 +1737,21 @@ Lets start with the pickle
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{c+c1}{\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{} Example: GET Results \PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}\PYGZsh{}}
 \PYG{g+go}{\PYGZgt{}\PYGZgt{}\PYGZgt{}}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k}{if} \PYG{o+ow}{not} \PYG{n}{sim\PYGZus{}status\PYGZus{}response\PYGZus{}json}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{success}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]}\PYG{p}{:}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{k}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Warning: pickle and plot files not available.}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Warning: pickle and plot files not available.}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n}{sys}\PYG{o}{.}\PYG{n}{exit}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)}
 \PYG{g+go}{\PYGZgt{}\PYGZgt{}\PYGZgt{}}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{c+c1}{\PYGZsh{} Pickle download route}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{pickle\PYGZus{}route} \PYG{o}{=} \PYG{n}{sim\PYGZus{}status\PYGZus{}response}\PYG{o}{.}\PYG{n}{json}\PYG{p}{(}\PYG{p}{)}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{route\PYGZus{}pickle}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]}
 \PYG{g+go}{\PYGZgt{}\PYGZgt{}\PYGZgt{}}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{c+c1}{\PYGZsh{} Request simulation status via HTTP using `requests` module}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{pickle\PYGZus{}response} \PYG{o}{=} \PYG{n}{requests}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{n}{url} \PYG{o}{+} \PYG{n}{pickle\PYGZus{}route}\PYG{p}{,} \PYG{n}{stream}\PYG{o}{=}\PYG{n+nb+bp}{True}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{pickle\PYGZus{}response} \PYG{o}{=} \PYG{n}{requests}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{n}{url} \PYG{o}{+} \PYG{n}{pickle\PYGZus{}route}\PYG{p}{,} \PYG{n}{stream}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)}
 \PYG{g+go}{\PYGZgt{}\PYGZgt{}\PYGZgt{}}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{c+c1}{\PYGZsh{} Get our directory absolute path}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{this\PYGZus{}directory} \PYG{o}{=} \PYG{n}{os}\PYG{o}{.}\PYG{n}{path}\PYG{o}{.}\PYG{n}{dirname}\PYG{p}{(}\PYG{n+nv+vm}{\PYGZus{}\PYGZus{}file\PYGZus{}\PYGZus{}}\PYG{p}{)}
 \PYG{g+go}{\PYGZgt{}\PYGZgt{}\PYGZgt{}}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{c+c1}{\PYGZsh{} Save Pickle}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{n}{this\PYGZus{}directory} \PYG{o}{+} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{/simulation.pickle}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{wb}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n+nb}{file}\PYG{p}{:}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n+nb}{file}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{n}{pickle\PYGZus{}response}\PYG{o}{.}\PYG{n}{content}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{n}{this\PYGZus{}directory} \PYG{o}{+} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{/simulation.pickle}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{wb}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{file}\PYG{p}{:}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n}{file}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{n}{pickle\PYGZus{}response}\PYG{o}{.}\PYG{n}{content}\PYG{p}{)}
 \end{sphinxVerbatim}
 
 The generated file is named \sphinxcode{\sphinxupquote{simulation.pickle}} and contains all the
@@ -1680,12 +1771,12 @@ Finally, lets download the plots
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n}{plot\PYGZus{}query\PYGZus{}url} \PYG{o}{=} \PYG{n}{url} \PYG{o}{+} \PYG{n}{plots\PYGZus{}route} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{?value=}\PYG{l+s+s2}{\PYGZdq{}} \PYG{o}{+} \PYG{n}{qv}
 \PYG{g+go}{\PYGZgt{}\PYGZgt{}\PYGZgt{}}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{c+c1}{\PYGZsh{} Request the plot}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n}{plot\PYGZus{}response} \PYG{o}{=} \PYG{n}{requests}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{n}{plot\PYGZus{}query\PYGZus{}url}\PYG{p}{,} \PYG{n}{stream}\PYG{o}{=}\PYG{n+nb+bp}{True}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n}{plot\PYGZus{}response} \PYG{o}{=} \PYG{n}{requests}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{n}{plot\PYGZus{}query\PYGZus{}url}\PYG{p}{,} \PYG{n}{stream}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)}
 \PYG{g+go}{\PYGZgt{}\PYGZgt{}\PYGZgt{}}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{c+c1}{\PYGZsh{} Save the plot in a file}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n}{plot\PYGZus{}file\PYGZus{}name} \PYG{o}{=} \PYG{n}{this\PYGZus{}directory} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{/plot\PYGZus{}}\PYG{l+s+s2}{\PYGZdq{}} \PYG{o}{+} \PYG{n}{qv} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{.png}\PYG{l+s+s2}{\PYGZdq{}}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{n}{plot\PYGZus{}file\PYGZus{}name}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{wb}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n+nb}{file}\PYG{p}{:}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }        \PYG{n+nb}{file}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{n}{plot\PYGZus{}response}\PYG{o}{.}\PYG{n}{content}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{k}{with} \PYG{n+nb}{open}\PYG{p}{(}\PYG{n}{plot\PYGZus{}file\PYGZus{}name}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{wb}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)} \PYG{k}{as} \PYG{n}{file}\PYG{p}{:}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }        \PYG{n}{file}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{n}{plot\PYGZus{}response}\PYG{o}{.}\PYG{n}{content}\PYG{p}{)}
 \end{sphinxVerbatim}
 
 The two generated plots are named \sphinxcode{\sphinxupquote{plot\_threeD.png}} and \sphinxcode{\sphinxupquote{plot\_project.png}}
@@ -1698,14 +1789,18 @@ and  are respectively displayed below.
 
 \section{Website}
 \label{\detokenize{start/frontend:website}}\label{\detokenize{start/frontend:start-frontend}}\label{\detokenize{start/frontend::doc}}
-This API has a very simple website, where you can request your simulations and
+This API has a very simple frontend, where you can request your simulations and
 see all the available results, as well as some pretty plots of each simulation.
 
-The website, called \sphinxhref{http://localhost:5700}{PHYS Simulation} is self\sphinxhyphen{}explanatory. Just dive in and request
-your simulations!
+Right now we are not serving online, but plan to do so some day. If you want to
+run the frontend and API locally in your machine please go to the section
+{\hyperref[\detokenize{start/install:start-install}]{\sphinxcrossref{\DUrole{std,std-ref}{Install and run PHYS Simulation}}}}.
 \begin{itemize}
 \item {} 
 {\hyperref[\detokenize{start/overview:start-overview}]{\sphinxcrossref{\DUrole{std,std-ref}{Overview}}}}
+
+\item {} 
+{\hyperref[\detokenize{start/install:start-install}]{\sphinxcrossref{\DUrole{std,std-ref}{Install and run locally}}}}
 
 \item {} 
 {\hyperref[\detokenize{start/examples:start-examples}]{\sphinxcrossref{\DUrole{std,std-ref}{Examples}}}}
