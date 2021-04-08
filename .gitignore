@@ -374,3 +374,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# MacOS
+*.DS_Store
+
