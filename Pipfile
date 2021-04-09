@@ -25,7 +25,7 @@ sphinx-hoverxref = "*"
 sphinx-jsonschema = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.9"
 
 [scripts]
 simulation_api = "python run.py"
